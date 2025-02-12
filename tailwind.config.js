@@ -40,8 +40,11 @@ export default {
           light: "#FFAAAA"
         },
 
-        "bp_sucess": "#6AE156",
-        "bp_yellow": "#FFCC00",
+        "bp_green": "#6AE156",
+        "bp_yellow": {
+          100: "#D9B655",
+          200: "#A38D50"
+        },
         "vtd-primary": colors.sky, // Light mode Datepicker color
         "vtd-secondary": {
           800: "#030303", // Main color
