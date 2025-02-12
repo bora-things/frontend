@@ -1,8 +1,17 @@
 <script setup>
-import BpButton from '@/components/BpButton.vue'
-import PeriodCard from '@/components/PeriodCard.vue'
-import RadialProgress from '@/components/RadialProgress.vue'
-import SubjectCard from '@/components/SubjectCard.vue'
+import BpButton from '@/components/BpButton.vue';
+import PeriodCard from '@/components/PeriodCard.vue';
+import RadialProgress from '@/components/RadialProgress.vue';
+import SubjectCard from '@/components/SubjectCard.vue';
+import { ref, onMounted } from 'vue';
+import { getSubjects } from './DashboardController';
+
+const subjects = ref([]);
+
+onMounted(async () => {
+  subjects.value = await getSubjects();
+});
+
 </script>
 
 <template>
@@ -14,15 +23,12 @@ import SubjectCard from '@/components/SubjectCard.vue'
       </header>
 
       <section
-        class="max-w-full my-6 grid grid-cols-1 place-items-center sm:place-items-start sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+        class="max-w-full my-6 grid grid-cols-1 place-items-center sm:place-items-start sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
       >
-        <SubjectCard />
-        <SubjectCard />
-        <SubjectCard />
-        <SubjectCard />
-        <SubjectCard />
-        <SubjectCard />
-        <SubjectCard />
+        <SubjectCard class="w-full"
+        v-for="subject in subjects"
+        :key="subject.code"
+        :subject="subject"/>
       </section>
 
       <section class="mt-12 w-full">
