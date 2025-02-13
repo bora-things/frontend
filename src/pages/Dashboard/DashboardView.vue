@@ -3,7 +3,7 @@ import BpButton from '@/components/BpButton.vue';
 import PeriodCard from '@/components/PeriodCard.vue';
 import RadialProgress from '@/components/RadialProgress.vue';
 import SubjectCard from '@/components/SubjectCard.vue';
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { getSubjects } from './DashboardController';
 
 const subjects = ref([]);
