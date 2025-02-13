@@ -3,11 +3,12 @@ import BpButton from '@/components/BpButton.vue'
 import CardComponent from '@/components/CardComponent.vue'
 import SimboraImg from '@/components/SimboraImg.vue'
 import { addIcons } from 'oh-vue-icons'
-import { FaInstagram, FaDiscord } from 'oh-vue-icons/icons/fa'
-import {onMounted} from "vue"
+import { FaDiscord, FaInstagram } from 'oh-vue-icons/icons/fa'
+import { onMounted } from 'vue'
 
 // Adicionando os ícones do Font Awesome localmente
 addIcons(FaInstagram, FaDiscord)
+
 
 function scrollToElement(id) {
   const element = document.getElementById(id)
@@ -16,13 +17,13 @@ function scrollToElement(id) {
   const offsetPosition = elementPosition + window.pageYOffset - headerOffset
 
   window.scrollTo({
-    top: offsetPosition -100,
+    top: offsetPosition - 100,
     behavior: 'smooth'
   })
 }
 
 onMounted(() => {
-  document.querySelectorAll('a.nav-item').forEach(anchor => {
+  document.querySelectorAll('a.nav-item').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault()
       const href = this.getAttribute('href').substring(1)
@@ -30,11 +31,17 @@ onMounted(() => {
     })
   })
 })
+
+function login() {
+  window.location.href = 'http://localhost:8080/oauth2/authorization/sigaa'
+}
 </script>
 
 <template>
   <div>
-    <header class="flex justify-between place-items-center py-6 px-10 sticky top-0 w-full z-50 bg-bp_neutral-900 ">
+    <header
+      class="flex justify-between place-items-center py-6 px-10 sticky top-0 w-full z-50 bg-bp_neutral-900"
+    >
       <div class="flex place-items-center space-x-4">
         <SimboraImg />
         <p class="font-bold xl:text-3xl text-xl">BoraPagar</p>
@@ -45,7 +52,7 @@ onMounted(() => {
         <a class="nav-item" href="#criadores">Criadores</a>
       </div>
       <div>
-        <BpButton class="w-24 xl:w-32" type="primary" size="medium">Entrar</BpButton>
+        <BpButton class="w-24 xl:w-32" type="primary" size="medium" @click="login">Entrar</BpButton>
       </div>
     </header>
     <main class="space-y-20 h-full mx-auto">
@@ -132,7 +139,7 @@ onMounted(() => {
         </div>
         <div>
           <p class="text-4xl">Coordenador & Devops.</p>
-          <div class="grid grid-cols-2 lg:grid-cols-6 ">
+          <div class="grid grid-cols-2 lg:grid-cols-6">
             <CardComponent function="Front-End Developer" name="Naty" />
             <CardComponent function="Front-End Developer" name="Naty" />
           </div>
