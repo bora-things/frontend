@@ -65,7 +65,7 @@ onMounted(() => {
       </div>
     </header>
     <main class="h-full mx-auto bg-bp_neutral-800">
-      <section class="bg-bp_neutral-950 border-b border-bp_neutral-600 px-4 md:px-8 lg:px-20 pb-20" id="motivacao">
+      <section class="bg-bp_neutral-950 border-b border-bp_neutral-600 px-4 md:px-8 lg:px-20 pb-20">
         <div class="grid grid-cols-2 items-center gap-8 py-12">
           <div class="space-y-8  ">
             <p class="text-4xl lg:text-5xl font-bold">
@@ -90,17 +90,17 @@ onMounted(() => {
                     after:content-[''] after:w-2 after:h-2 after:bg-bp_neutral-700 after:rounded-full after:absolute after:right-0 after:top-1/2 after:translate-x-1/2 after:-translate-y-1/2">
             Um Projeto Oficial
           </p>
-          <div class="flex justify-center items-center border border-bp_neutral-700 rounded-2xl w-full h-28 overflow-hidden space-x-4 md:space-x-20">
-            <Image class="object-contain w-1/3" src="/public/images/ufrn-logo.png" :preview="false"/>
-            <Image class="object-contain w-1/3" src="/public/images/Vector.png" :preview="false"/>
-            <Image class="object-contain w-1/3" src="/public/images/logoSigaa.png" :preview="false"/>
+          <div class="flex justify-center items-center border border-bp_neutral-700 rounded-2xl w-full h-28 overflow-hidden space-x-4 md:space-x-20 px-4">
+            <Image class="object-contain" src="/public/images/ufrn-logo.png" :preview="false"/>
+            <Image class="object-contain" src="/public/images/Vector.png" :preview="false"/>
+            <Image class="object-contain" src="/public/images/logoSigaa.png" :preview="false"/>
           </div>
         </div>
                         
       </section>
 
       <div
-        id="sobre"
+        id="motivacao"
         class="text-bp_neutral-400 border-b border-bp_neutral-600 py-20 px-4 md:px-8 lg:px-20"
       >
         <div class="text-5xl text-center font-bold text-bp_neutral-200">
@@ -166,7 +166,9 @@ onMounted(() => {
        
       </div>
 
-      <section class="py-20 px-4 md:px-8 lg:px-20 bg-bp_neutral-950">
+      <section
+      id="sobre"
+      class="py-20 px-4 md:px-8 lg:px-20 bg-bp_neutral-950">
         <h1 class="text-5xl text-bp_neutral-200 mb-20">Tire Suas Dúvidas Aqui</h1>
         <div class="space-y-4">
           <CardDoubts
@@ -177,15 +179,19 @@ onMounted(() => {
         </div>
       </section>
 
-      <div class="py-20 px-4 md:px-8 lg:px-20 overflow-hidden relative">
+      <div
+      id="criadores"
+      class="py-20 px-4 md:px-8 lg:px-20 overflow-hidden relative">
         <p class="text-5xl text-bp_neutral-200 mb-20">Conheça Nosso Time</p>
-        <div class="flex gap-6 animate-marquee">
-          <CardComponent
-            v-for="component in components"
-            :key="component.name"
-            :component="component"
-            class="w-60"
-          />
+        <div class="flex w-max gap-6 animate-marquee">
+          <div v-for="i in 2" :key="i" class="flex gap-6">
+            <CardComponent
+              v-for="component in components"
+              :key="component.name + i"
+              :component="component"
+              
+            />
+          </div>
         </div>
       </div>
     </main>
@@ -243,12 +249,13 @@ onMounted(() => {
 
 <style>
 @keyframes marquee {
-  from { transform: translateX(100%); }
-  to { transform: translateX(-100%); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .animate-marquee {
   display: flex;
-  animation: marquee 10s linear infinite;
+  white-space: nowrap;
+  animation: marquee 50s linear infinite;
 }
 </style>

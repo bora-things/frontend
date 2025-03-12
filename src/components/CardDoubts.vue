@@ -16,7 +16,7 @@ const toggleQuestion = () => {
   <!-- Card fechado -->
   <div 
     v-if="!isOpen" 
-    class="w-full bg-bp_neutral-700 border border-bp_neutral-600 text-bp_neutral-900 rounded-[2.5rem] py-8 px-14"
+    class="w-full bg-bp_neutral-700 border border-bp_neutral-600 text-bp_neutral-200 rounded-[2.5rem] py-8 px-14"
   >
     <div class="flex justify-between space-x-3 md:space-x-8 items-center">
       <div class="flex font-bold gap-2 items-center">
