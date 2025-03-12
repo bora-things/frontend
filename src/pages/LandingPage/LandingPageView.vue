@@ -177,16 +177,16 @@ onMounted(() => {
         </div>
       </section>
 
-      <div class="py-20 px-4 md:px-8 lg:px-20" id="criadores">
-        <div>
-          <p class="text-5xl text-bp_neutral-200 mb-20">Conheça Nosso Time</p>
-        </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-x-6">
-            <CardComponent
+      <div class="py-20 px-4 md:px-8 lg:px-20 overflow-hidden relative">
+        <p class="text-5xl text-bp_neutral-200 mb-20">Conheça Nosso Time</p>
+        <div class="flex gap-6 animate-marquee">
+          <CardComponent
             v-for="component in components"
             :key="component.name"
-            :component="component"/>
-          </div>
+            :component="component"
+            class="w-60"
+          />
+        </div>
       </div>
     </main>
 
@@ -240,3 +240,15 @@ onMounted(() => {
 
   </div>
 </template>
+
+<style>
+@keyframes marquee {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 10s linear infinite;
+}
+</style>
