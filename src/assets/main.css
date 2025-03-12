@@ -13,7 +13,7 @@
   }
 
   .nav-item{
-    @apply font-bold relative p-2 before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[4px] before:bg-bp_primary-300  before:transition-all duration-1000 hover:before:w-full;
+    @apply font-bold relative p-2 before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[4px] before:bg-bp_green-400  before:transition-all duration-1000 hover:before:w-full;
   }
 
   .card-options {
@@ -21,7 +21,7 @@
   }
 
   .card-profile {
-    @apply space-y-6 p-6 border border-bp_neutral-600 rounded-xl bg-bp_neutral-800 text-bp_neutral-50;
+    @apply space-y-6 p-6 border border-bp_neutral-600 rounded-xl bg-bp_neutral-800 text-bp_neutral-50 ;
   }
 
   .title-h1 {
