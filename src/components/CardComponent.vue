@@ -1,16 +1,27 @@
 <script setup>
+import { LinkedinFilled } from '@ant-design/icons-vue';
+import { Avatar } from 'ant-design-vue';
 
-const props = defineProps(['function', 'name'])
+const props = defineProps(['component']);
+const { name, position, description } = props.component;
 
 </script>
 <template>
-    <div class="grid place-items-center relative mb-36 mt-4">
-        <div class="relative bg-bp_neutral-500 w-32 lg:w-48 h-32 lg:h-48 rounded-full z-10"></div>
-        <div class="absolute top-1/2 bg-bp_neutral-800 rounded-b-lg w-44 lg:w-52 h-44 lg:h-52 z-0">
-            <div class="pt-28 grid place-items-center space-y-2">
-                <span class="text-sm text-bp_neutral-400">{{ props.function }}</span>
-                <span class="text-xl font-bold">{{ props.name }}</span>
+    <div class="w-full bg-bp_neutral-700 border border-bp_neutral-600 rounded-xl p-4 ">
+        <div class="flex justify-between space-x-3 md:space-x-8 border-b border-b-bp_neutral-600 items-center pb-4 mb-4">
+            <div class="flex place-items-center space-x-4">
+                <div>
+                    <Avatar :size="64" src="/public/images/imgPerfil.png"/>
+                </div>
+                <div class="">
+                    <p class="font-semibold">{{ name }}</p>
+                    <p class="text-xs text-bp_neutral-400">{{ position }}</p>
+                </div>
             </div>
+            <LinkedinFilled class="r-0"/>
+        </div>
+        <div>
+            <p class="text-bp_neutral-400">{{ description }}</p>
         </div>
     </div>
     

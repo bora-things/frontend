@@ -1,12 +1,23 @@
 <script setup>
 import BpButton from '@/components/BpButton.vue'
 import CardComponent from '@/components/CardComponent.vue'
+import CardDoubts from '@/components/CardDoubts.vue'
 import SimboraImg from '@/components/SimboraImg.vue'
 import { addIcons } from 'oh-vue-icons'
 import { FaInstagram, FaDiscord } from 'oh-vue-icons/icons/fa'
-import {onMounted} from "vue"
+import { ref, onMounted } from "vue"
+import { Input, Image } from 'ant-design-vue'
+import { ArrowDownOutlined } from '@ant-design/icons-vue'
+import { getComponents, getDoubts } from './LandingPageController'
 
-// Adicionando os ícones do Font Awesome localmente
+const components = ref([]);
+const doubts = ref([]);
+
+onMounted(async () => {
+  components.value = await getComponents();
+  doubts.value = await getDoubts();
+});
+
 addIcons(FaInstagram, FaDiscord)
 
 function scrollToElement(id) {
@@ -34,7 +45,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <header class="flex justify-between place-items-center py-6 px-10 sticky top-0 w-full z-50 bg-bp_neutral-900 ">
+    <header class="flex justify-between place-items-center py-6 px-20 sticky top-0 w-full z-50 bg-bp_neutral-950 ">
       <div class="flex place-items-center space-x-4">
         <SimboraImg />
         <p class="font-bold xl:text-3xl text-xl">BoraPagar</p>
@@ -45,79 +56,106 @@ onMounted(() => {
         <a class="nav-item" href="#criadores">Criadores</a>
       </div>
       <div>
-        <BpButton class="w-24 xl:w-32" type="primary" size="medium">Entrar</BpButton>
+        <BpButton 
+        class="px-6"
+        type="green" 
+        size="small">
+          Entrar
+        </BpButton>
       </div>
     </header>
-    <main class="space-y-20 h-full mx-auto">
-      <div class="border-b border-bp_neutral-600 px-4 md:px-16 lg:px-40" id="motivacao">
-        <div class="space-y-8 py-20 md:py-32">
-          <p class="text-6xl lg:text-8xl">
-            <span class="text-bp_primary-300">Planeje</span> melhor o seu curso<span
-              class="text-bp_primary-300"
-              >.</span
-            >
-          </p>
-          <p class="text-bp_neutral-400">
-            Uma plataforma inovadora, criada por estudantes para estudantes, visamos mitigar
-            dificuldades acadêmicas como indeferimentos, problemas de horário, organização e
-            gerenciamento de curso, avaliação do corpo docente, trilhas de aprendizado
-            personalizadas entre outros. Nosso objetivo é proporcionar uma experiência acadêmica
-            mais eficiente e personalizada.
-          </p>
+    <main class="h-full mx-auto bg-bp_neutral-800">
+      <section class="bg-bp_neutral-950 border-b border-bp_neutral-600 px-4 md:px-8 lg:px-20 pb-20" id="motivacao">
+        <div class="grid grid-cols-2 items-center gap-8 py-12">
+          <div class="space-y-8  ">
+            <p class="text-4xl lg:text-5xl font-bold">
+              <span class="text-bp_green-400">Simbora</span> organizar o seu semestre
+            </p>
+            <p class="text-bp_neutral-400">
+              Gerencie seu curso, acompanhe seus resultados e se divirta no processo
+            </p>
+            <BpButton 
+              class="px-6"
+              type="green" 
+              size="small">
+                Comece Agora
+            </BpButton>          </div>
+          <div class="w-full flex justify-end">
+            <Image class="max-w-[450px] max-h-[450px]" src="/public/images/ILUSTRACAO_SIMBORA.png" :preview="false"/>
+          </div>
         </div>
-      </div>
+        <div class="relative w-full ">
+          <p class="md:text-xl font-semibold absolute -top-3 left-1/4 -translate-x-1/2 bg-bp_neutral-950 px-6 text-bp_neutral-200
+                    before:content-[''] before:w-2 before:h-2 before:bg-bp_neutral-700 before:rounded-full before:absolute before:left-0 before:top-1/2 before:-translate-x-1/2 before:-translate-y-1/2
+                    after:content-[''] after:w-2 after:h-2 after:bg-bp_neutral-700 after:rounded-full after:absolute after:right-0 after:top-1/2 after:translate-x-1/2 after:-translate-y-1/2">
+            Um Projeto Oficial
+          </p>
+          <div class="flex justify-center items-center border border-bp_neutral-700 rounded-2xl w-full h-28 overflow-hidden space-x-4 md:space-x-20">
+            <Image class="object-contain w-1/3" src="/public/images/ufrn-logo.png" :preview="false"/>
+            <Image class="object-contain w-1/3" src="/public/images/Vector.png" :preview="false"/>
+            <Image class="object-contain w-1/3" src="/public/images/logoSigaa.png" :preview="false"/>
+          </div>
+        </div>
+                        
+      </section>
 
       <div
         id="sobre"
-        class="grid grid-cols-2 md:grid-cols-3 gap-x-4 md:gap-x-14 gap-y-10 text-bp_neutral-400 border-b border-bp_neutral-600 pb-20 px-6 md:px-20 lg:px-56"
+        class="text-bp_neutral-400 border-b border-bp_neutral-600 py-20 px-4 md:px-8 lg:px-20"
       >
-        <div class="space-y-2">
-          <v-icon class="text-bp_primary-400" name="md-inventory-outlined" scale="1.5" />
-          <p class="text-bp_neutral-50 font-bold">Organização</p>
+        <div class="text-5xl text-center font-bold text-bp_neutral-200">
+          <h1 class="mb-6">Com o <span class="text-bp_green-400">Bora Pagar</span> Você Consegue...</h1>
+          <ArrowDownOutlined class="text-bp_neutral-700"/>
+        </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 md:gap-x-6 gap-y-3 md:gap-y-6 mt-20">
+         <div class="bg-bp_neutral-700 border border-bp_neutral-600 rounded-xl p-6 space-y-3 text-bp_neutral-50">
+          <v-icon name="md-inventory-outlined" scale="1.5" />
+          <p class="text-lg text-bp_green-400 font-bold">Organização</p>
           <p>
             Organize suas matérias de forma prática e eficiente. Ajudamos a tentar se organizar da
             melhor forma possível em relação a horários, fazer um semestre balanceado e escolher as
             matérias ideais de acordo com seu objetivo.
           </p>
         </div>
-        <div class="space-y-2">
-          <v-icon class="text-bp_primary-400" name="md-rule-sharp" scale="1.5" />
-          <p class="text-bp_neutral-50 font-bold">Progresso</p>
+        <div class="bg-bp_neutral-700 border border-bp_neutral-600 rounded-xl p-6 space-y-3 text-bp_neutral-50">
+          <v-icon name="md-rule-sharp" scale="1.5" />
+          <p class="text-lg text-bp_green-400 font-bold">Progresso</p>
           <p>
             Ajudamos o aluno em seu progresso acadêmico, monitorando e apoiando seu desenvolvimento
             ao longo do curso. Fornecemos uma visão geral das matérias já cursadas e das que ainda
             faltam cursar.
           </p>
         </div>
-        <div class="space-y-2">
-          <v-icon class="text-bp_primary-400" name="md-managesearch" scale="1.5" />
-          <p class="text-bp_neutral-50 font-bold">Matricula</p>
+        <div class="bg-bp_neutral-700 border border-bp_neutral-600 rounded-xl p-6 space-y-3 text-bp_neutral-50">
+          <v-icon name="md-managesearch" scale="1.5" />
+          <p class="text-lg text-bp_green-400 font-bold">Matricula</p>
           <p>
             Ajudamos os alunos a se organizar durante o período de matrícula, como escolher quais
             matérias cursar, ver quais amigos vão cursar essas matérias e montar um semestre
             balanceado de acordo com suas necessidades.
           </p>
         </div>
-        <div class="space-y-2">
-          <v-icon class="text-bp_primary-400" name="md-thumbupalt-sharp" scale="1.5" />
-          <p class="text-bp_neutral-50 font-bold">Avaliação e feedbacks</p>
+        <div class="bg-bp_neutral-700 border border-bp_neutral-600 rounded-xl p-6 space-y-3 text-bp_neutral-50">
+          <v-icon name="md-thumbupalt-sharp" scale="1.5" />
+          <p class="text-lg text-bp_green-400 font-bold">Avaliação e feedbacks</p>
           <p>
             A plataforma auxilia os alunos na avaliação do corpo docente e das matérias, permitindo
             que os estudantes forneçam feedback sobre seus professores, disciplinas e o ambiente de
             aprendizado.
           </p>
         </div>
-        <div class="space-y-2">
-          <v-icon class="text-bp_primary-400" name="md-description-outlined" scale="1.5" />
-          <p class="text-bp_neutral-50 font-bold">Relatórios</p>
+        <div class="bg-bp_neutral-700 border border-bp_neutral-600 rounded-xl p-6 space-y-3 text-bp_neutral-50">
+          <v-icon name="md-description-outlined" scale="1.5" />
+          <p class="text-lg text-bp_green-400 font-bold">Relatórios</p>
           <p>
             Relatórios para o DAAL visando um melhor entendimento das necessidades dos alunos em
             relação às matérias, suporte e eventos.
           </p>
         </div>
-        <div class="space-y-2">
-          <v-icon class="text-bp_primary-400" name="md-smarttoy-outlined" scale="1.5" />
-          <p class="text-bp_neutral-50 font-bold">Chatbot Inteligente</p>
+        <div class="bg-bp_neutral-700 border border-bp_neutral-600 rounded-xl p-6 space-y-3 text-bp_neutral-50">
+          <v-icon name="md-smarttoy-outlined" scale="1.5" />
+          <p class="text-lg text-bp_green-400 font-bold">Chatbot Inteligente</p>
           <p>
             Imagina ter um sagui chamado Simbora sempre ao seu lado durante a graduação. O Simbora é
             uma IA que tá aqui pra ajudar você a navegar pelos desafios do curso, tipo escolher as
@@ -125,76 +163,65 @@ onMounted(() => {
           </p>
         </div>
       </div>
+       
+      </div>
 
-      <div class="px-4 md:px-16 lg:px-40 pb-20" id="criadores">
-        <div>
-          <p class="text-bp_neutral-400">Equipe Bora Pagar</p>
+      <section class="py-20 px-4 md:px-8 lg:px-20 bg-bp_neutral-950">
+        <h1 class="text-5xl text-bp_neutral-200 mb-20">Tire Suas Dúvidas Aqui</h1>
+        <div class="space-y-4">
+          <CardDoubts
+          v-for="doubt in doubts"
+          :key="doubt.descriptionDoubt"
+          :doubt="doubt"
+          />
         </div>
+      </section>
+
+      <div class="py-20 px-4 md:px-8 lg:px-20" id="criadores">
         <div>
-          <p class="text-4xl">Coordenador & Devops.</p>
-          <div class="grid grid-cols-2 lg:grid-cols-6 ">
-            <CardComponent function="Front-End Developer" name="Naty" />
-            <CardComponent function="Front-End Developer" name="Naty" />
+          <p class="text-5xl text-bp_neutral-200 mb-20">Conheça Nosso Time</p>
+        </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-x-6">
+            <CardComponent
+            v-for="component in components"
+            :key="component.name"
+            :component="component"/>
           </div>
-        </div>
-        <div>
-          <p class="text-4xl">Front-End & UX/UI Designer.</p>
-          <div class="grid grid-cols-2 lg:grid-cols-6">
-            <CardComponent function="Front-End Developer" name="Naty" />
-            <CardComponent function="Front-End Developer" name="Naty" />
-            <CardComponent function="Front-End Developer" name="Naty" />
-            <CardComponent function="Front-End Developer" name="Naty" />
-            <CardComponent function="Front-End Developer" name="Naty" />
-            <CardComponent function="Front-End Developer" name="Naty" />
-          </div>
-        </div>
-        <div>
-          <p class="text-4xl">Back-End & IA.</p>
-          <div class="grid grid-cols-2 lg:grid-cols-6">
-            <CardComponent function="Front-End Developer" name="Naty" />
-          </div>
-        </div>
-        <div>
-          <p class="text-4xl">BI & Raspagem.</p>
-          <div class="grid grid-cols-2 lg:grid-cols-6">
-            <CardComponent function="Front-End Developer" name="Naty" />
-          </div>
-        </div>
       </div>
     </main>
 
-    <footer class="bg-bp_neutral-800">
-      <div class="flex place-items-start justify-between px-4 md:px-16 lg:px-40 py-10">
-        <div class="place-items-center space-x-4 hidden lg:flex">
-          <SimboraImg />
-          <p class="font-bold text-2xl">BoraPagar</p>
-        </div>
-        <div class="flex justify-end lg:space-x-16 lg:w-4/6 gap-4">
-          <div class="space-y-3">
-            <p class="font-bold text-2xl">Contato</p>
-            <p class="text-bp_neutral-400 text-sm">+55 21 9999-9999</p>
-            <p class="text-bp_neutral-400 text-sm">contato@borapagar.com</p>
-            <div class="flex space-x-2">
-              <button><v-icon name="fa-instagram" scale="1.5" /></button>
-              <button><v-icon name="fa-discord" scale="1.5" /></button>
-            </div>
+    <footer class="absolute bg-bp_neutral-900 w-full">
+      <div class=" flex place-items-start justify-between px-4 md:px-8 lg:px-16 py-10 space-y-8 ">
+          <div class="flex place-items-center space-x-4">
+              <SimboraImg />
+              <p class="font-bold text-2xl">BoraPagar</p>
           </div>
-          <div class="space-y-3">
-            <p class="font-bold text-2xl">Newsletter</p>
-            <p class="text-bp_neutral-400 text-sm">
-              Cadastro seu e-mail para receber nossas novidades.
-            </p>
-            <div class="relative flex items-center">
-              <v-icon name="md-email-outlined" scale="1.0" class="absolute text-bp_neutral-400" />
-              <input
-                class="w-full bg-bp_neutral-800 border-b-2 border-bp_neutral-400 py-2 text-bp_neutral-50 placeholder:text-bp_neutral-400 text-sm indent-8"
-                type="text"
-                placeholder="Seu email aqui"
-              />
+          <div class="grid grid-cols-1 gap-y-4 md:gap-y-0 md:flex md:space-x-10 w-1/2">
+            <div class="space-y-3">
+              <p class="font-bold text-2xl">Contato</p>
+              <p class="text-bp_neutral-400 text-sm">+55 21 9999-9999</p>
+              <p class="text-bp_neutral-400 text-sm">contato@borapagar.com</p>
+              <div class="flex space-x-2">
+                <button><v-icon name="fa-instagram" scale="1.5" /></button>
+                <button><v-icon name="fa-discord" scale="1.5" /></button>
+              </div>
             </div>
-            <BpButton class="w-40" type="primary" size="small">Enviar</BpButton>
-          </div>
-        </div>
+            <div class="space-y-3 w-2/3">
+              <p class="font-bold text-2xl">Dúvidas</p>
+              <Input class="border-bp_neutral-600 bg-bp_neutral-900 text-neutral-50 placeholder:text-bp_neutral-400" placeholder="Mensagem..." />
+              <div class="relative flex items-center">
+                <v-icon name="md-email-outlined" scale="1.0" class="absolute text-bp_neutral-400" />
+                <input
+                  class="w-full bg-bp_neutral-900 border-b-2 border-bp_neutral-400 py-2 text-bp_neutral-50 placeholder:text-bp_neutral-400 text-sm indent-8"
+                  type="text"
+                  placeholder="Seu email aqui"
+                />
+              </div>
+              <div class="flex justify-end">
+                <BpButton class="w-40 bg-bp_neutral-700 hover:bg-bp_neutral-800" type="primary" size="small">Enviar</BpButton>
+              </div>
+            </div> 
+          </div>      
       </div>
       <div class="border-t border-bp_neutral-700">
         <div class="flex justify-between px-4 md:px-16 lg:px-40 py-4 text-xs text-bp_neutral-400">
@@ -202,11 +229,14 @@ onMounted(() => {
             <p class="">Bora Pagar © Alguns direitos reservados</p>
           </div>
           <div class="flex space-x-10">
-            <p>Termos of Service</p>
-            <p>Privacy Policy</p>
+            <p>Sobre</p>
+            <p>Termos de Uso</p>
+            <p>Política de Privacidade </p>
           </div>
         </div>
       </div>
-    </footer>
+    </footer>      
+    <Image class="relative mt-20" src="/public/images/istockphoto.png" :preview="false"/>
+
   </div>
 </template>
