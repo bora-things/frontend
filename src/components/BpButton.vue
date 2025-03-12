@@ -10,6 +10,8 @@ const sizes = {
 }
 
 const types = {
+  primary:
+    'disabled:bg-[#E2E2E2] bg-bp_primary-400 hover:bg-bp_primary-600 active:bg-bp_primary-800 disabled:cursor-default disabled:bg-[#E2E2E2] disabled:text-[#ABABAB]',
   green:
     'disabled:bg-[#E2E2E2] bg-bp_green-400 hover:bg-bp_green-500 active:bg-bp_green-500 disabled:cursor-default disabled:bg-[#E2E2E2] disabled:text-[#ABABAB]',
   outlined:
