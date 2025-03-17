@@ -9,6 +9,11 @@ const isMenuOpen = ref(false)
 function handleMenuClick() {
   isMenuOpen.value = !isMenuOpen.value
 }
+
+async function handleLogout() {
+  const logoutLink = import.meta.env.VITE_API_URL + '/logout'
+  window.location.href = logoutLink
+}
 </script>
 
 <template>
@@ -73,15 +78,15 @@ function handleMenuClick() {
         <RouterLink class="menu-item" to="/disciplinas">
           <v-icon name="md-menubook-outlined" />
           <span>Disciplinas</span>
-        </RouterLink> 
-      
-        <RouterLink
+        </RouterLink>
+
+        <button
           class="flex items-center gap-4 mt-4 text-bp_danger border-bp_danger menu-item after:bg-bp_danger"
-          to="/"
+          @click="handleLogout"
         >
           <v-icon name="md-logout" />
           <span>Sair</span>
-        </RouterLink>
+        </button>
       </ul>
     </nav>
   </header>

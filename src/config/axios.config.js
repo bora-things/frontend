@@ -5,8 +5,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  withCredentials: true,
-  redirect: "follow"
+  // withCredentials: true,
 })
 
 api.interceptors.response.use(
