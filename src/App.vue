@@ -1,8 +1,8 @@
 <script setup>
 import NavBar from '@/components/NavBar.vue';
 import SimboraChat from '@/components/chat/SimboraChat.vue';
-import {useRoute, RouterView } from 'vue-router';
-import {ref,watch} from 'vue';
+import { ref, watch } from 'vue';
+import { RouterView, useRoute } from 'vue-router';
 
 const route=useRoute();
 const showComponents = ref(route.path !== '/')
@@ -14,7 +14,7 @@ watch(route, (newRoute) => {
 </script>
 
 <template>
-  <div class="min-h-screen h-full bg-bp_neutral-900 text-bp_neutral-50">
+  <div class="min-h-screen h-full bg-bp_neutral-800 text-bp_neutral-50">
     <NavBar v-if="showComponents" />
     <SimboraChat v-if="showComponents"/>
     <RouterView />

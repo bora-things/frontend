@@ -1,0 +1,184 @@
+[
+  {
+    "codigo": "IMD1002",
+    "nome": "ANÁLISE COMBINATÓRIA",
+    "carga_horaria": 30,
+    "semestre": 1,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD1003",
+    "nome": "GEOMETRIA EUCLIDIANA",
+    "carga_horaria": 30,
+    "semestre": 1,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD1004",
+    "nome": "PENSAMENTO COMPUTACIONAL",
+    "carga_horaria": 60,
+    "semestre": 1,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0501",
+    "nome": "BOAS PRÁTICAS DE PROGRAMAÇÃO",
+    "carga_horaria": 30,
+    "semestre": 2,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0546",
+    "nome": "DESENVOLVIMENTO DE SISTEMAS WEB I",
+    "carga_horaria": 60,
+    "semestre": 2,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD0028",
+    "nome": "FUNDAMENTOS MATEMÁTICOS DA COMPUTAÇÃO I",
+    "carga_horaria": 90,
+    "semestre": 2,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD0029",
+    "nome": "ESTRUTURA DE DADOS BÁSICAS I",
+    "carga_horaria": 60,
+    "semestre": 3,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD0040",
+    "nome": "LINGUAGEM DE PROGRAMAÇÃO II",
+    "carga_horaria": 60,
+    "semestre": 3,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD0121",
+    "nome": "ARQUITETURA DE COMPUTADORES",
+    "carga_horaria": 60,
+    "semestre": 3,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0125",
+    "nome": "BANCO DE DADOS",
+    "carga_horaria": 90,
+    "semestre": 4,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0138",
+    "nome": "PROJETO DETALHADO DE SOFTWARE",
+    "carga_horaria": 60,
+    "semestre": 4,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD0036",
+    "nome": "SISTEMAS OPERACIONAIS",
+    "carga_horaria": 60,
+    "semestre": 4,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD0038",
+    "nome": "FUNDAMENTOS MATEMÁTICOS DA COMPUTAÇÃO II",
+    "carga_horaria": 90,
+    "semestre": 5,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD0043",
+    "nome": "REDES DE COMPUTADORES",
+    "carga_horaria": 60,
+    "semestre": 5,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "IMD0039",
+    "nome": "ESTRUTURAS DE DADOS BÁSICAS II",
+    "carga_horaria": 60,
+    "semestre": 5,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0504",
+    "nome": "ANÁLISE E PROJETO ORIENTADO A OBJETOS",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0508",
+    "nome": "PROJETO DE INTERFACES DE USUÁRIO",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0507",
+    "nome": "TESTE DE SOFTWARE I",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0549",
+    "nome": "GRAFOS",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0124",
+    "nome": "PROGRAMAÇÃO CONCORRENTE",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0505",
+    "nome": "LÓGICA APLICADA A ENGENHARIA DE SOFTWARE",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0547",
+    "nome": "DESENVOLVIMENTO DE SISTEMAS WEB II",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0511",
+    "nome": "ENGENHARIA DE REQUISITOS",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0516",
+    "nome": "MÉTODOS FORMAIS DE ENGENHARIA DE SOFTWARE",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0548",
+    "nome": "ENGENHARIA DE LINGUAGENS",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  },
+  {
+    "codigo": "DIM0614",
+    "nome": "PROGRAMAÇÃO DISTRIBUÍDA",
+    "carga_horaria": 60,
+    "semestre": 6,
+    "obrigatorio": true
+  }
+]
