@@ -1,23 +1,42 @@
 <script>
+import { LoadingOutlined } from '@ant-design/icons-vue'
+import { Spin } from 'ant-design-vue'
+import { defineComponent, h, ref } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
-import { getDefaultSubjects } from './InterestedSubjectsController'
+import { useToast } from 'vue-toast-notification'
+import { getDefaultSubjects, saveInterestedSubjects } from './InterestedSubjectsController'
 
-export default {
+export default defineComponent({
   name: 'InterestedSubjectsView',
   components: {
     draggable: VueDraggableNext,
+    Spin
   },
-  data() {
-    return {
-      semesters: {}
+  setup() {
+    const indicator = h(LoadingOutlined, {
+      style: {
+        fontSize: '24px',
+        color:"#ffffff"
+      },
+      spin: true
+    })
+    const semesters = ref({})
+    const loading = ref(false)
+    const toast = useToast()
+
+    const getSubjects = async () => {
+      const subjects = await getDefaultSubjects()
+      semesters.value = groupSemesters(subjects)
     }
-  },
-  async mounted() {
-    const subjects = await getDefaultSubjects()
-    this.semesters = this.groupSemesters(subjects)
-  },
-  methods: {
-    groupSemesters(subjects) {
+
+    const handleSaveInterestedSubjects = async () => {
+      loading.value = true
+      await saveInterestedSubjects()
+      toast.success('Interesses salvos com sucesso')
+      loading.value = false
+    }
+
+    const groupSemesters = (subjects) => {
       return subjects.reduce((acc, subject) => {
         const { semestre } = subject
         if (!acc[semestre]) {
@@ -26,59 +45,103 @@ export default {
         acc[semestre].push(subject)
         return acc
       }, {})
-    },
-    checkPrerequisites(subject, newSemester) {
-      const semesters = Object.keys(this.semesters).sort()
-      const currentSemesterIndex = semesters.indexOf(newSemester)
+    }
+
+    const checkPrerequisites = (subject, newSemester) => {
+      const semestersKeys = Object.keys(semesters.value).sort()
+      const currentSemesterIndex = semestersKeys.indexOf(newSemester)
+
       for (const prereq of subject.pre_requisitos) {
-        for (let i = currentSemesterIndex; i < semesters.length; i++) {
-          if (this.semesters[semesters[i]].some((s) => s.codigo === prereq)) {
-            this.$toast.error(`Matéria ${prereq} é pré-requisito para ${subject.codigo}`)
-            return false
+        let found = false
+        for (let i = 0; i < currentSemesterIndex; i++) {
+          if (semesters.value[semestersKeys[i]].some((s) => s.codigo === prereq)) {
+            found = true
+            break
           }
+        }
+        if (!found) {
+          toast.error(`Matéria ${prereq} é pré-requisito para ${subject.codigo}`)
+          return false
         }
       }
       return true
-    },
-    checkDependencies(subject, newSemester) {
-      const semesters = Object.keys(this.semesters).sort()
-      const currentSemesterIndex = semesters.indexOf(newSemester)
+    }
+
+    const checkDependencies = (subject, newSemester) => {
+      const semestersKeys = Object.keys(semesters.value).sort()
+      const currentSemesterIndex = semestersKeys.indexOf(newSemester)
 
       for (let i = 0; i <= currentSemesterIndex; i++) {
-        for (const s of this.semesters[semesters[i]]) {
+        for (const s of semesters.value[semestersKeys[i]]) {
           if (s.pre_requisitos.includes(subject.codigo)) {
-            this.$toast.error(`Matéria ${subject.codigo} é pré-requisito para ${s.codigo}`)
+            toast.error(`Matéria ${subject.codigo} é pré-requisito para ${s.codigo}`)
             return false
           }
         }
       }
       return true
-    },
-    handleMove(evt) {
-      console.log(evt)
+    }
+    const handleMove = (evt) => {
       const semesterFrom = evt.from.id
       const semesterTo = evt.to.id
       const subjectId = evt.item.id
-      const subject = Object.values(this.semesters).flat().find((s) => s.codigo === subjectId)
-      if (
-        !this.checkPrerequisites(subject, semesterTo) ||
-        !this.checkDependencies(subject, semesterTo)
-      ) {
-        const oldIndex=evt.oldIndex;
-        this.semesters[semesterTo] = this.semesters[semesterTo].filter(
+      const subject = Object.values(semesters.value)
+        .flat()
+        .find((s) => s.codigo === subjectId)
+      if (!checkPrerequisites(subject, semesterTo) || !checkDependencies(subject, semesterTo)) {
+        const oldIndex = evt.oldIndex
+        semesters.value[semesterTo] = semesters.value[semesterTo].filter(
           (s) => s.codigo !== subjectId
         )
-        this.semesters[semesterFrom].splice(oldIndex, 0, subject)
+        semesters.value[semesterFrom].splice(oldIndex, 0, subject)
       }
     }
+    getSubjects()
+
+    const resetSubjects = () => {
+      loading.value = true
+      setTimeout(() => {
+        getSubjects()
+        loading.value = false
+        toast.success('Interesses resetados com sucesso')
+      }, 3000)
+    }
+
+    return {
+      semesters,
+      loading,
+      handleSaveInterestedSubjects,
+      handleMove,
+      indicator,
+      Spin,
+      resetSubjects
+    }
   }
-}
+})
 </script>
 <template>
   <main class="h-full container mx-auto p-6 xl:max-w-7xl">
     <div class="w-full flex items-center justify-between">
       <h1 class="text-4xl mb-5">Interesses</h1>
-      <button class="bg-white text-black px-4 py-2 rounded btn" type="primary">Salvar</button>
+      <div class="flex gap-4 items-center">
+        <Spin v-if="loading" :indicator="indicator" />
+        <button
+          class="text-black px-4 py-2 bg-white rounded disabled:opacity-50 hover:bg-bp_neutral-200 duration-300"
+          :disabled="loading"
+          type="primary"
+          @click="resetSubjects"
+        >
+          Resetar
+        </button>
+        <button
+          class="text-white px-4 py-2 bg-bp_green-100 rounded disabled:opacity-50 hover:bg-bp_green-500 duration-300"
+          type="primary"
+          :disabled="loading"
+          @click="handleSaveInterestedSubjects"
+        >
+          Salvar
+        </button>
+      </div>
     </div>
     <div v-for="(subjects, semester) in semesters" :key="semester" class="mb-8">
       <h2 class="text-2xl font-bold mb-4">Semestre {{ semester }}</h2>
@@ -89,7 +152,6 @@ export default {
         :list="subjects"
         group="subjects"
         @end="handleMove"
-        dropzone="move"
         key="semester"
       >
         <div
