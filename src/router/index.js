@@ -4,6 +4,7 @@ import ConsultSubjectsView from '../pages/ConsultSubjetcs/ConsultSubjectsView.vu
 import DashboardView from '../pages/Dashboard/DashboardView.vue'
 import FriendsView from '../pages/Friends/FriendsView.vue'
 import HomeView from '../pages/Home/HomeView.vue'
+import ProfileView from '@/pages/Profile/ProfileView.vue'
 
 
 const router = createRouter({
@@ -33,6 +34,11 @@ const router = createRouter({
       path: '/amigos',
       name: 'friends',
       component: FriendsView
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView
     }
   ]
 })
