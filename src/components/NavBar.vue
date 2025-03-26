@@ -62,7 +62,7 @@ async function handleLogout() {
 
       <hr class="my-6" />
 
-      <ul class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
         <RouterLink class="menu-item" to="/dashboard">
           <v-icon name="md-home-outlined" />
           <span>Home</span>
@@ -87,7 +87,7 @@ async function handleLogout() {
           <v-icon name="md-logout" />
           <span>Sair</span>
         </button>
-      </ul>
+      </div>
     </nav>
   </header>
 </template>

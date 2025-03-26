@@ -1,42 +1,45 @@
 <script setup>
-import BpButton from '@/components/BpButton.vue';
-import PeriodCard from '@/components/PeriodCard.vue';
-import RadialProgress from '@/components/RadialProgress.vue';
-import SubjectCard from '@/components/SubjectCard.vue';
-import { ref, onMounted } from 'vue';
-import { getSubjects } from './DashboardController';
+import BpButton from '@/components/BpButton.vue'
+import PeriodCard from '@/components/PeriodCard.vue'
+import RadialProgress from '@/components/RadialProgress.vue'
+import SubjectCard from '@/components/SubjectCard.vue'
+import { onMounted, ref } from 'vue'
+import { getSubjects } from './DashboardController'
 
-const subjects = ref([]);
+const subjects = ref([])
 
 onMounted(async () => {
-  subjects.value = await getSubjects();
-});
-
+  subjects.value = await getSubjects()
+})
 </script>
 
 <template>
   <div class="h-full w-full">
     <main class="h-full container mx-auto p-6 xl:max-w-7xl">
       <header class="flex items-center justify-between border-b border-bp_neutral-700 pb-4">
-        <h1 class="title-h1">período-atual · 5º</h1>
-        <span class="title-h1 text-bp_primary-100">210h</span>
+        <h1 class="title-h1">Período Atual· 5º</h1>
+        <span class="title-h1 text-bp_primary-100"
+          >{{ subjects.reduce((acc, item) => acc + item.carga_horaria, 0) }}h</span
+        >
       </header>
 
       <section
         class="max-w-full my-6 grid grid-cols-1 place-items-center sm:place-items-start sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
       >
-        <SubjectCard class="w-full"
-        v-for="subject in subjects"
-        :key="subject.code"
-        :subject="subject"/>
+        <SubjectCard
+          class="w-full"
+          v-for="subject in subjects"
+          :key="subject.code"
+          :subject="subject"
+        />
       </section>
 
       <section class="mt-12 w-full">
         <header class="w-full md:w-3/5 flex items-center justify-between flex-wrap gap-4 :sm:gap-0">
-          <h1 class="title-h1">período</h1>
+          <h1 class="title-h1">Períodos</h1>
           <BpButton>
             <v-icon name="md-add" scale="1.25" />
-            Adicionar Semestre
+            Adicionar Interesse
           </BpButton>
         </header>
 

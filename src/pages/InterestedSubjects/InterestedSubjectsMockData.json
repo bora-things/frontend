@@ -1,0 +1,114 @@
+[
+  {
+    "codigo": "IMD1002",
+    "nome": "ANÁLISE COMBINATÓRIA",
+    "carga_horaria": 30,
+    "semestre": "2025.2",
+    "obrigatorio": true,
+    "pre_requisitos": []
+  },
+  {
+    "codigo": "IMD1003",
+    "nome": "GEOMETRIA EUCLIDIANA",
+    "carga_horaria": 30,
+    "semestre": "2025.2",
+    "obrigatorio": true,
+    "pre_requisitos": []
+  },
+  {
+    "codigo": "IMD1004",
+    "nome": "PENSAMENTO COMPUTACIONAL",
+    "carga_horaria": 60,
+    "semestre": "2025.2",
+    "obrigatorio": true,
+    "pre_requisitos": []
+  },
+  {
+    "codigo": "DIM0501",
+    "nome": "BOAS PRÁTICAS DE PROGRAMAÇÃO",
+    "carga_horaria": 30,
+    "semestre": "2026.1",
+    "obrigatorio": true,
+    "pre_requisitos": ["IMD1004"]
+  },
+  {
+    "codigo": "DIM0546",
+    "nome": "DESENVOLVIMENTO DE SISTEMAS WEB I",
+    "carga_horaria": 60,
+    "semestre": "2026.1",
+    "obrigatorio": true,
+    "pre_requisitos": ["DIM0501"]
+  },
+  {
+    "codigo": "IMD0028",
+    "nome": "FUNDAMENTOS MATEMÁTICOS DA COMPUTAÇÃO I",
+    "carga_horaria": 90,
+    "semestre": "2026.1",
+    "obrigatorio": true,
+    "pre_requisitos": ["IMD1002"]
+  },
+  {
+    "codigo": "IMD0029",
+    "nome": "ESTRUTURA DE DADOS BÁSICAS I",
+    "carga_horaria": 60,
+    "semestre": "2026.2",
+    "obrigatorio": true,
+    "pre_requisitos": ["IMD1004"]
+  },
+  {
+    "codigo": "IMD0040",
+    "nome": "LINGUAGEM DE PROGRAMAÇÃO II",
+    "carga_horaria": 60,
+    "semestre": "2026.2",
+    "obrigatorio": true,
+    "pre_requisitos": ["DIM0501"]
+  },
+  {
+    "codigo": "IMD0121",
+    "nome": "ARQUITETURA DE COMPUTADORES",
+    "carga_horaria": 60,
+    "semestre": "2026.2",
+    "obrigatorio": true,
+    "pre_requisitos": []
+  },
+  {
+    "codigo": "IMD0043",
+    "nome": "REDES DE COMPUTADORES",
+    "carga_horaria": 60,
+    "semestre": "2027.1",
+    "obrigatorio": true,
+    "pre_requisitos": []
+  },
+  {
+    "codigo": "IMD0039",
+    "nome": "ESTRUTURAS DE DADOS BÁSICAS II",
+    "carga_horaria": 60,
+    "semestre": "2027.1",
+    "obrigatorio": true,
+    "pre_requisitos": ["IMD0029"]
+  },
+  {
+    "codigo": "DIM0504",
+    "nome": "ANÁLISE E PROJETO ORIENTADO A OBJETOS",
+    "carga_horaria": 60,
+    "semestre": "2027.2",
+    "obrigatorio": true,
+    "pre_requisitos": ["IMD0040"]
+  },
+  {
+    "codigo": "DIM0508",
+    "nome": "PROJETO DE INTERFACES DE USUÁRIO",
+    "carga_horaria": 60,
+    "semestre": "2027.2",
+    "obrigatorio": true,
+    "pre_requisitos": []
+  },
+  {
+    "codigo": "DIM0507",
+    "nome": "TESTE DE SOFTWARE I",
+    "carga_horaria": 60,
+    "semestre": "2027.2",
+    "obrigatorio": true,
+    "pre_requisitos": ["DIM0501"]
+  }
+]

@@ -1,30 +1,34 @@
 [
-    {
-      "code": "IMD0126",
-      "tipo": "obrigatória",
-      "name": "Matemática Elementar",
-      "docente": "Antonio Igor",
-      "horario": "Terça e Quinta 8:00 - 10:00"
-    },
-    {
-      "code": "IMD0127",
-      "tipo": "optativa",
-      "name": "Programação Básica",
-      "docente": "Antonio Igor",
-      "horario": "Terça e Quinta 8:00 - 10:00"
-    },
-    {
-      "code": "IMD0128",
-      "tipo": "obrigatória",
-      "name": "Algoritmos Avançados",
-      "docente": "Antonio Igor",
-      "horario": "Terça e Quinta 8:00 - 10:00"
-    },
-    {
-      "code": "IMD0129",
-      "tipo": "optativa",
-      "name": "Estruturas de Dados",
-      "docente": "Antonio Igor",
-      "horario": "Segunda e Quinta 8:00 - 10:00"
-    }
-  ]
+  {
+    "code": "IMD0126",
+    "tipo": "obrigatória",
+    "name": "Matemática Elementar",
+    "docente": "Antonio Igor",
+    "horario": "Terça e Quinta 8:00 - 10:00",
+    "carga_horaria": 60
+  },
+  {
+    "code": "IMD0127",
+    "tipo": "optativa",
+    "name": "Programação Básica",
+    "docente": "Antonio Igor",
+    "horario": "Terça e Quinta 8:00 - 10:00",
+    "carga_horaria": 60
+  },
+  {
+    "code": "IMD0128",
+    "tipo": "obrigatória",
+    "name": "Algoritmos Avançados",
+    "docente": "Antonio Igor",
+    "horario": "Terça e Quinta 8:00 - 10:00",
+    "carga_horaria": 60
+  },
+  {
+    "code": "IMD0129",
+    "tipo": "optativa",
+    "name": "Estruturas de Dados",
+    "docente": "Antonio Igor",
+    "horario": "Segunda e Quinta 8:00 - 10:00",
+    "carga_horaria": 60
+  }
+]
