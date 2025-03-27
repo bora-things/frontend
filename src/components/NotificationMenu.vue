@@ -36,12 +36,13 @@ function getNotificationCreateDate(date) {
 
 <template>
   <div class="flex justify-end z-50">
-    <button class="bg-transparent" @click="handleNotificationMenuClick">
+    <button class="relative bg-transparent" @click="handleNotificationMenuClick">
+      <div class="bottom-1 right-0 w-2 h-2 bg-red-500 absolute rounded-full" v-if="notifications.length > 0"></div>
       <v-icon name="md-notifications" scale="1.5" />
     </button>
     <div
       v-if="isNotificationMenuOpen"
-      class="absolute right-3 bg-neutral-700 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto"
+      class="absolute right-3 bg-neutral-700 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto max-h-[70vh] overflow-y-auto custom-scrollbar"
     >
       <div class="border-b border-bp_neutral-500 mb-4 pb-2 flex justify-between items-center">
         <div class="flex items-center gap-2">
@@ -96,7 +97,7 @@ function getNotificationCreateDate(date) {
               <Button
                 type="primary"
                 class="text-white bg-red-500 hover:!bg-red-600 border-none text-xs md:text-sm"
-                @click="handleUpdateNotificationStatus(notification, 'rejected  ')"
+                @click="handleUpdateNotificationStatus(notification, 'rejected')"
               >
                 Recusar
               </Button>
