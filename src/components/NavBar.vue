@@ -16,7 +16,7 @@ const { handleLogout } = useLogout()
 
 <template>
   <header
-    class="w-full h-auto flex justify-between items-center p-6 mb-10 border-b border-bp_neutral-700"
+    class="w-full h-auto flex justify-between items-center p-6  border-b border-bp_neutral-700"
   >
     <div class="flex items-center gap-10">
       <Button
