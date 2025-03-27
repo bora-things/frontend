@@ -13,7 +13,7 @@ function toggleExpansion() {
 <template>
   <article class="w-full">
     <div
-      class="rounded-t-md rounded-b-md bg-bp_neutral-800 cursor-pointer flex items-center justify-between p-6 border-bp_neutral-600"
+      class="rounded-t-md rounded-b-md bg-bp_neutral-700 cursor-pointer flex items-center justify-between p-6 border-bp_neutral-600"
       :class="{ 'border-b rounded-b-none': isExpanded }"
       @click="toggleExpansion"
     >
@@ -33,7 +33,7 @@ function toggleExpansion() {
     </div>
 
     <div
-      class="rounded-b-md bg-bp_neutral-800 flex flex-col gap-4 h-min overflow-hidden transition-[max-height] duration-200 ease-in-out"
+      class="rounded-b-md bg-bp_neutral-700 flex flex-col gap-4 h-min overflow-hidden transition-[max-height] duration-200 ease-in-out"
       :class="{ 'max-h-0': !isExpanded, 'max-h-[40rem]': isExpanded }"
     >
       <BpButton type="outlined" size="small" class="m-4 max-w-max self-end">

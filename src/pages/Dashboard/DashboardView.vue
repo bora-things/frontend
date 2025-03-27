@@ -1,5 +1,4 @@
 <script setup>
-import BpButton from '@/components/BpButton.vue'
 import PeriodCard from '@/components/PeriodCard.vue'
 import RadialProgress from '@/components/RadialProgress.vue'
 import SubjectCard from '@/components/SubjectCard.vue'
@@ -37,10 +36,10 @@ onMounted(async () => {
       <section class="mt-12 w-full">
         <header class="w-full md:w-3/5 flex items-center justify-between flex-wrap gap-4 :sm:gap-0">
           <h1 class="title-h1">Períodos</h1>
-          <BpButton>
+          <RouterLink to="/interesses" class="hover:underline underline-offset-4">
             <v-icon name="md-add" scale="1.25" />
             Adicionar Interesse
-          </BpButton>
+          </RouterLink>
         </header>
 
         <div class="w-full flex flex-col md:flex-row items-start justify-between gap-6 mt-8">
