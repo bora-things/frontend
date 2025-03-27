@@ -82,7 +82,7 @@ onMounted(() => {
           <div class="w-full flex justify-end">
             <Image
               class="max-w-[450px] max-h-[450px]"
-              src="/public/images/ILUSTRACAO_SIMBORA.png"
+              src="/images/ILUSTRACAO_SIMBORA.png"
               :preview="false"
             />
           </div>
@@ -96,9 +96,9 @@ onMounted(() => {
           <div
             class="flex justify-center items-center border border-bp_neutral-700 rounded-2xl w-full h-28 overflow-hidden space-x-4 md:space-x-20 px-4"
           >
-            <Image class="object-contain" src="/public/images/ufrn-logo.png" :preview="false" />
-            <Image class="object-contain" src="/public/images/Vector.png" :preview="false" />
-            <Image class="object-contain" src="/public/images/logoSigaa.png" :preview="false" />
+            <Image class="object-contain" src="/images/ufrn-logo.png" :preview="false" />
+            <Image class="object-contain" src="/images/Vector.png" :preview="false" />
+            <Image class="object-contain" src="/images/logoSigaa.png" :preview="false" />
           </div>
         </div>
       </section>
@@ -258,7 +258,7 @@ onMounted(() => {
         </div>
       </div>
     </footer>
-    <Image class="relative mt-20" src="/public/images/istockphoto.png" :preview="false" />
+    <Image class="relative mt-20" src="/images/istockphoto.png" :preview="false" />
   </div>
 </template>
 

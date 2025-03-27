@@ -11,7 +11,7 @@ const { name, position, description } = props.component;
         <div class="flex justify-between space-x-3 md:space-x-8 border-b border-b-bp_neutral-600 items-center pb-4 mb-4">
           <div class="flex place-items-center space-x-4">
             <div>
-              <Avatar :size="64" src="/public/images/imgPerfil.png"/>
+              <Avatar :size="64" src="/images/imgPerfil.png"/>
             </div>
             <div>
               <p class="font-semibold break-words whitespace-normal">{{ name }}</p>
