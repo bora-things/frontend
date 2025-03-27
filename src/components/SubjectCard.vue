@@ -6,7 +6,7 @@ const { code, tipo, name, docente, horario } = props.subject;
 </script>
 
 <script>
-import { ClockCircleOutlined, UserOutlined} from "@ant-design/icons-vue";
+import { ClockCircleOutlined, UserOutlined } from "@ant-design/icons-vue";
 import { Avatar, Tooltip } from 'ant-design-vue';
 
 export default {
@@ -43,7 +43,7 @@ export default {
 
 <template>
   <div
-    class="w-full bg-bp_neutral-800 rounded-md flex flex-col gap-2 p-4"
+    class="w-full bg-bp_neutral-700 rounded-md flex flex-col gap-2 p-4"
   >
   <div class="flex justify-between items-center">
     <h1 class="text-xl font-bold">{{ code }}</h1>
