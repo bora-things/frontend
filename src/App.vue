@@ -16,7 +16,7 @@ watch(route, (newRoute) => {
 <template>
   <div class="min-h-screen h-full bg-bp_neutral-800 text-bp_neutral-50">
     <NavBar v-if="showComponents" />
-    <SimboraChat v-if="showComponents"/>
+    <SimboraChat />
     <RouterView />
   </div>
 </template>
