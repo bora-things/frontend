@@ -3,12 +3,30 @@
       "id": 1,
       "name": "Natalya",
       "course": "T.I",
-      "period": "3"
+      "period": "3",
+      "owner": "1"
       },
     {
       "id": 2,
-      "name": "Matheus",
+      "name": "Naty",
       "course": "C.C",
-      "period": "5"
-      }
+      "period": "5",
+      "owner": "0"
+      },
+      {
+        "id": 3,
+        "name": "Gabriele",
+        "course": "E.S",
+        "period": "3",
+        "owner": "1"
+        },
+      {
+        "id": 4,
+        "name": "Gabi",
+        "course": "T.I",
+        "period": "5",
+        "owner": "0"
+        }
   ]
+
+  

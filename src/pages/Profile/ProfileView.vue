@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getSubjects } from '../Dashboard/DashboardController';
 import { getProfiles } from './ProfileController';
-import { CalendarOutlined, CustomerServiceOutlined, SolutionOutlined, TeamOutlined, IdcardOutlined, SettingOutlined } from '@ant-design/icons-vue';
+import { CalendarOutlined, CustomerServiceOutlined, SolutionOutlined, TeamOutlined, IdcardOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons-vue';
 import { Avatar } from 'ant-design-vue';
 import SubjectCard from '@/components/SubjectCard.vue';
 import ListItemFriend from '@/components/ListItemFriend.vue';
@@ -14,6 +14,8 @@ const user = ref(null);
 const subjects = ref([]);
 const activeSection = ref('historico');
 const selectedPeriod = ref(1);
+
+const isOwner = ref(false);
 
 const setSection = (section) => {
   activeSection.value = section;
@@ -34,6 +36,9 @@ onMounted(async () => {
   const userId = parseInt(route.params.id);
   user.value = profiles.find((profile) => profile.id === userId);
 
+  const loggedInUserId = 1;
+  isOwner.value = user.value && user.value && user.value.id === loggedInUserId;
+
   subjects.value = await getSubjects();
 });
 
@@ -42,17 +47,19 @@ onMounted(async () => {
 <template>
   <div class="bg-bp_neutral-800 p-4 md:p-10 rounded-2xl m-6 md:m-10">
     <div class="flex items-center space-x-4 md:space-x-10">
-      <Avatar :size="128" src="/public/images/imgPerfil.png" />
+      <Avatar :size="128" src="">
+        <UserOutlined class="text-6xl" />
+      </Avatar>
       <div class="font-bold space-y-2 md:space-y-4">
-        <p class="text-xl md:text-3xl">{{ user.name }}</p>
+        <p class="text-xl md:text-3xl">{{ user?user.name:"..." }}</p>
         <div class="flex gap-6">
           <div class="flex gap-2 items-center">
             <CustomerServiceOutlined class="md:size-5" />
-            <p>{{ user.course }}</p>
+            <p>{{ user?user.course:"..." }}</p>
           </div>
           <div class="flex gap-2 items-center">
             <CalendarOutlined class="md:size-5" />
-            <p>5° periodo</p>
+            <p>{{ user?user.period:"..." }}° periodo</p>
           </div>
         </div>
       </div>
@@ -70,12 +77,12 @@ onMounted(async () => {
             <TeamOutlined /> Amigos
           </div>
         </button>
-        <button @click="setSection('informacoes')" :class="['nav-item', activeSection === 'informacoes' ? 'active-nav' : '']">
+        <button v-if="isOwner" @click="setSection('informacoes')" :class="['nav-item', activeSection === 'informacoes' ? 'active-nav' : '']">
           <div class="flex items-center gap-x-2">
             <IdcardOutlined /> Informações Pessoais
           </div>
         </button>
-        <button @click="setSection('configuracoes')" :class="['nav-item', activeSection === 'configuracoes' ? 'active-nav' : '']">
+        <button v-if="isOwner" @click="setSection('configuracoes')" :class="['nav-item', activeSection === 'configuracoes' ? 'active-nav' : '']">
           <div class="flex items-center gap-x-2">
             <SettingOutlined /> Configurações
           </div>
