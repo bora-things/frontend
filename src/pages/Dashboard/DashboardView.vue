@@ -24,7 +24,7 @@ onMounted(async () => {
   <div class="h-full w-full">
     <main class="h-full container mx-auto p-6 xl:max-w-7xl">
       <header class="flex items-center justify-between border-b border-bp_neutral-700 pb-4">
-        <h1 class="title-h1">Período Atual · {{ lastPeriod.period }}º</h1>
+        <h1 class="title-h1">Período Atual · {{ lastPeriod.periodNumber }}º</h1>
         <span class="title-h1 text-bp_primary-100">
           {{ lastPeriod.subjects?.reduce((acc, item) => acc + item.workload, 0) }} h
         </span>
@@ -52,7 +52,7 @@ onMounted(async () => {
 
         <div class="w-full flex flex-col md:flex-row items-start justify-between gap-6 mt-8">
           <div class="w-full md:w-3/5 flex flex-col gap-6">
-            <PeriodCard v-for="period in periods" :key="period.period" :period="period" />
+            <PeriodCard v-for="period in periods.sort((a,b)=>b.periodNumber-a.periodNumber)" :key="period.periodNumber" :period="period" />
           </div>
 
           <aside class="w-full md:w-2/5 lg:w-1/3">

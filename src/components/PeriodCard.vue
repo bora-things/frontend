@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import BpButton from './BpButton.vue'
 
 const isExpanded = ref(false)
-const icon = ref('md-keyboardarrowleft')
+
+const props = defineProps(['period'])
 
 function toggleExpansion() {
   isExpanded.value = !isExpanded.value
@@ -17,14 +17,14 @@ function toggleExpansion() {
       :class="{ 'border-b rounded-b-none': isExpanded }"
       @click="toggleExpansion"
     >
-      <h3 class="font-bold text-2xl">1º</h3>
+      <h3 class="font-bold text-2xl">{{ period.periodNumber }}º - {{period.schoolYear  }}</h3>
       <div class="flex items-center gap-4">
         <span class="font-bold border border-bp_neutral-600 px-2 py-1 rounded-3xl">
           <v-icon name="md-schedule" />
-          180h
+          {{ period.subjects?.reduce((acc, subject) => acc + subject.workload, 0) }}h
         </span>
         <v-icon
-          :name="icon"
+          name="md-keyboardarrowleft"
           scale="1.5"
           class="transition-transform"
           :class="{ '-rotate-90': isExpanded }"
@@ -36,46 +36,17 @@ function toggleExpansion() {
       class="rounded-b-md bg-bp_neutral-700 flex flex-col gap-4 h-min overflow-hidden transition-[max-height] duration-200 ease-in-out"
       :class="{ 'max-h-0': !isExpanded, 'max-h-[40rem]': isExpanded }"
     >
-      <BpButton type="outlined" size="small" class="m-4 max-w-max self-end">
-        <v-icon name="md-add" scale="1.25" />
-        Adicionar matéria
-      </BpButton>
       <ul class="flex flex-col gap-4 mt-2 m-4">
         <li
-          class="flex items-center justify-between gap-4 border border-bp_neutral-500 rounded-md px-4 py-2"
+          v-for="subject in period.subjects"
+          :key="subject.code"
+          :class="subject.type==='Obrigatória'? 'border-blue-500' : 'border-bp_yellow-100'"
+          class="flex items-center justify-between gap-4 border  rounded-md px-4 py-2"
         >
-          <p class="font-bold">Matemática Elementar (60h) - IMD1001</p>
-          <v-icon name="md-infooutline" />
-        </li>
-        <li
-          class="flex items-center justify-between gap-4 border border-bp_neutral-500 rounded-md px-4 py-2"
-        >
-          <p class="font-bold">Matemática Elementar (60h) - IMD1001</p>
-          <v-icon name="md-infooutline" />
-        </li>
-        <li
-          class="flex items-center justify-between gap-4 border border-bp_neutral-500 rounded-md px-4 py-2"
-        >
-          <p class="font-bold">Matemática Elementar (60h) - IMD1001</p>
-          <v-icon name="md-infooutline" />
-        </li>
-        <li
-          class="flex items-center justify-between gap-4 border border-bp_neutral-500 rounded-md px-4 py-2"
-        >
-          <p class="font-bold">Matemática Elementar (60h) - IMD1001</p>
-          <v-icon name="md-infooutline" />
-        </li>
-        <li
-          class="flex items-center justify-between gap-4 border border-bp_neutral-500 rounded-md px-4 py-2"
-        >
-          <p class="font-bold">Matemática Elementar (60h) - IMD1001</p>
-          <v-icon name="md-infooutline" />
-        </li>
-        <li
-          class="flex items-center justify-between gap-4 border border-bp_neutral-500 rounded-md px-4 py-2"
-        >
-          <p class="font-bold">Matemática Elementar (60h) - IMD1001</p>
-          <v-icon name="md-infooutline" />
+          <p class="font-bold">{{ subject.name }} ({{ subject.workload }}h) - {{ subject.code }}</p>
+          <button class="cursor-pointer">
+            <v-icon name="md-infooutline" />
+          </button>
         </li>
       </ul>
     </div>

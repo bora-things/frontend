@@ -4,7 +4,8 @@
   "course": "Engenharia de Software",
   "periods": [
     {
-      "period": 1,
+      "periodNumber": 1,
+      "schoolYear": "2021.2",
       "subjects": [
         {
           "code": "IMD0126",
@@ -27,7 +28,8 @@
       ]
     },
     {
-      "period": 2,
+      "periodNumber": 2,
+      "schoolYear": "2022.1",
       "subjects": [
         {
           "code": "IMD0128",
@@ -50,7 +52,8 @@
       ]
     },
     {
-      "period": 3,
+      "periodNumber": 3,
+      "schoolYear": "2022.2",
       "subjects": [
         {
           "code": "IMD0130",
@@ -73,7 +76,8 @@
       ]
     },
     {
-      "period": 4,
+      "periodNumber": 4,
+      "schoolYear": "2023.1",
       "subjects": [
         {
           "code": "IMD0132",
