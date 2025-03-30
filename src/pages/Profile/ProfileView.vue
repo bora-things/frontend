@@ -5,7 +5,9 @@ import { getSubjects } from '../Dashboard/DashboardController';
 import { getProfiles } from './ProfileController';
 import { CalendarOutlined, CustomerServiceOutlined, SolutionOutlined, TeamOutlined, IdcardOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons-vue';
 import { Avatar } from 'ant-design-vue';
+
 import SubjectCard from '@/components/SubjectCard.vue';
+import InputBase from '@/components/InputBase.vue';
 import ListItemFriend from '@/components/ListItemFriend.vue';
 
 const route = useRoute();
@@ -14,6 +16,7 @@ const user = ref(null);
 const subjects = ref([]);
 const activeSection = ref('historico');
 const selectedPeriod = ref(1);
+const privacidade = ref(1);
 
 const isOwner = ref(false);
 
@@ -38,6 +41,8 @@ onMounted(async () => {
 
   const loggedInUserId = 1;
   isOwner.value = user.value && user.value && user.value.id === loggedInUserId;
+
+ privacidade.value = parseInt(user.value.privacidade);
 
   subjects.value = await getSubjects();
 });
@@ -128,14 +133,51 @@ onMounted(async () => {
     </div>
 
     <!-- Informações Pessoais -->
-    <div v-if="activeSection === 'informacoes'" class="text-white p-4">
-      <p>Dados</p>
+    <div v-if="activeSection === 'informacoes'" class="text-white p-4 space-y-4">
+    <p class="text-2xl font-bold mb-4">Informações Pessoais</p>
+
+    <div>
+      <label for="nome" class="text-sm font-medium text-gray-300">Nome</label>
+      <InputBase
+        id="nome"
+        placeholder="Digite seu nome"
+      />
     </div>
 
-    <!-- Configurações -->
-    <div v-if="activeSection === 'configuracoes'" class="text-white p-4">
-      <p>configuração</p>
+    <div>
+      <label for="curso" class="text-sm font-medium text-gray-300">Curso</label>
+      <InputBase
+        id="curso"
+        placeholder="Digite o curso"
+      />
     </div>
+
+    <div>
+      <label for="enfase" class="text-sm font-medium text-gray-300">Ênfase</label>
+      <InputBase
+        id="enfase"
+        placeholder="Digite a ênfase"
+      />
+    </div>
+  </div>
+
+    <!-- Configurações -->
+    <div v-if="activeSection === 'configuracoes'" class="text-white p-4 space-y-4">
+    <p class="text-lg font-bold">Configurações</p>
+
+    <div>
+      <label for="privacidade" class="block text-sm font-medium text-gray-300">Privacidade da Conta</label>
+      <select
+        id="privacidade"
+        v-model="privacidade"
+        class="w-full py-4 bg-bp_neutral-800 border border-bp_neutral-700 rounded py-2 px-4 text-bp_neutral-50  placeholder:text-bp_neutral-700"
+      >
+        <option value="1">Pública</option>
+        <option value="0">Privada</option>
+        <option value="2">Somente Amigos</option>
+      </select>
+    </div>
+  </div>
 
   </div>
 </template>
