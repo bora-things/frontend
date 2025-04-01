@@ -1,0 +1,108 @@
+{
+  "id": "1",
+  "name": "João Silva",
+  "course": "Engenharia de Software",
+  "periods": [
+    {
+      "periodNumber": 1,
+      "schoolYear": "2021.2",
+      "subjects": [
+        {
+          "code": "IMD0126",
+          "type": "Obrigatória",
+          "name": "Matemática Elementar",
+          "teacher": "Antonio Igor",
+          "time": "Terça e Quinta 8:00 - 10:00",
+          "workload": 60,
+          "status": "completed"
+        },
+        {
+          "code": "IMD0127",
+          "type": "Optativa",
+          "name": "Programação Básica",
+          "teacher": "Antonio Igor",
+          "time": "Terça e Quinta 8:00 - 10:00",
+          "workload": 60,
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "periodNumber": 2,
+      "schoolYear": "2022.1",
+      "subjects": [
+        {
+          "code": "IMD0128",
+          "type": "Obrigatória",
+          "name": "Algoritmos Avançados",
+          "teacher": "Antonio Igor",
+          "time": "Terça e Quinta 8:00 - 10:00",
+          "workload": 60,
+          "status": "completed"
+        },
+        {
+          "code": "IMD0129",
+          "type": "Optativa",
+          "name": "Estruturas de Dados",
+          "teacher": "Antonio Igor",
+          "time": "Segunda e Quinta 8:00 - 10:00",
+          "workload": 60,
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "periodNumber": 3,
+      "schoolYear": "2022.2",
+      "subjects": [
+        {
+          "code": "IMD0130",
+          "type": "Obrigatória",
+          "name": "Banco de Dados",
+          "teacher": "Antonio Igor",
+          "time": "Segunda e Quarta 10:00 - 12:00",
+          "workload": 60,
+          "status": "completed"
+        },
+        {
+          "code": "IMD0131",
+          "type": "Optativa",
+          "name": "Engenharia de Software I",
+          "teacher": "Antonio Igor",
+          "time": "Terça e Quinta 14:00 - 16:00",
+          "workload": 60,
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "periodNumber": 4,
+      "schoolYear": "2023.1",
+      "subjects": [
+        {
+          "code": "IMD0132",
+          "type": "Obrigatória",
+          "name": "Engenharia de Software II",
+          "teacher": "Antonio Igor",
+          "time": "Segunda e Quarta 8:00 - 10:00",
+          "workload": 60,
+          "status": "in-progress"
+        },
+        {
+          "code": "IMD0133",
+          "type": "Optativa",
+          "name": "Sistemas Operacionais",
+          "teacher": "Antonio Igor",
+          "time": "Terça e Quinta 10:00 - 12:00",
+          "workload": 60,
+          "status": "in-progress"
+        }
+      ]
+    }
+  ],
+  "workload": {
+    "mandatoryPending": 240,
+    "optionalPending": 120,
+    "totalCourse": 960
+  }
+}

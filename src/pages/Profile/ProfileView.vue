@@ -1,14 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { CalendarOutlined, CustomerServiceOutlined, IdcardOutlined, SettingOutlined, SolutionOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons-vue';
+import { Avatar } from 'ant-design-vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getSubjects } from '../Dashboard/DashboardController';
 import { getProfiles } from './ProfileController';
-import { CalendarOutlined, CustomerServiceOutlined, SolutionOutlined, TeamOutlined, IdcardOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons-vue';
-import { Avatar } from 'ant-design-vue';
 
-import SubjectCard from '@/components/SubjectCard.vue';
 import InputBase from '@/components/InputBase.vue';
 import ListItemFriend from '@/components/ListItemFriend.vue';
+import SubjectCard from '@/components/SubjectCard.vue';
 
 const route = useRoute();
 const user = ref(null);
@@ -17,6 +17,7 @@ const subjects = ref([]);
 const activeSection = ref('historico');
 const selectedPeriod = ref(1);
 const privacidade = ref(1);
+const friends= ref([]);
 
 const isOwner = ref(false);
 
@@ -28,17 +29,11 @@ const selectPeriod = (period) => {
   selectedPeriod.value = period;
 };
 
-const allFriends = [
-  { name: 'João Silva', degree: 'Engenharia', period: '3º' },
-  { name: 'Maria Souza', degree: 'Direito', period: '2º' },
-  { name: 'Carlos Lima', degree: 'Medicina', period: '5º' }
-];
-
 onMounted(async () => {
   const profiles = await getProfiles();
   const userId = parseInt(route.params.id);
   user.value = profiles.find((profile) => profile.id === userId);
-
+  friends.value=user.value.friends;
   const loggedInUserId = 1;
   isOwner.value = user.value && user.value && user.value.id === loggedInUserId;
 
@@ -120,13 +115,11 @@ onMounted(async () => {
     <!-- Amigos -->
     <div v-if="activeSection === 'amigos'" class="text-white p-4">
       <p class="text-2xl font-bold mb-4">Amigos</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-y-3">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <ListItemFriend
-        v-for="(friend, index) in allFriends"
+        v-for="(friend, index) in friends"
         v-bind:key="index"
-        :nome="friend.name"
-        :curso="friend.degree"
-        :periodo="friend.period"
+        :friend="friend"
         />
       </div>
       

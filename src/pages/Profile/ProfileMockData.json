@@ -1,40 +1,95 @@
 [
-    {
-      "id": 1,
-      "name": "Natalya",
-      "course": "T.I",
-      "period": "3",
-      "urlImgPerfil": ".",
-      "privacidade": "2",
-      "owner": "1"
-      },
-    {
-      "id": 2,
-      "name": "Naty",
-      "course": "C.C",
-      "period": "5",
-      "urlImgPerfil": ".",
-      "privacidade": "1",
-      "owner": "0"
+  {
+    "id": 1,
+    "name": "Natalya",
+    "course": "T.I",
+    "period": "3",
+    "urlImgPerfil": ".",
+    "privacidade": "2",
+    "owner": "1",
+    "friends": [
+      {
+        "id": 2,
+        "name": "Naty",
+        "course": "C.C",
+        "period": "5"
       },
       {
         "id": 3,
         "name": "Gabriele",
         "course": "E.S",
-        "period": "3",
-        "urlImgPerfil": ".",
-        "privacidade": "1",
-        "owner": "1"
-        },
+        "period": "3"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Naty",
+    "course": "C.C",
+    "period": "5",
+    "urlImgPerfil": ".",
+    "privacidade": "1",
+    "owner": "0",
+    "friends": [
+      {
+        "id": 1,
+        "name": "Natalya",
+        "course": "T.I",
+        "period": "3"
+      },
       {
         "id": 4,
         "name": "Gabi",
         "course": "T.I",
-        "period": "5",
-        "urlImgPerfil": ".",
-        "privacidade": "1",
-        "owner": "0"
-        }
-  ]
+        "period": "5"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Gabriele",
+    "course": "E.S",
+    "period": "3",
+    "urlImgPerfil": ".",
+    "privacidade": "1",
+    "owner": "1",
+    "friends": [
+      {
+        "id": 1,
+        "name": "Natalya",
+        "course": "T.I",
+        "period": "3"
+      },
+      {
+        "id": 4,
+        "name": "Gabi",
+        "course": "T.I",
+        "period": "5"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Gabi",
+    "course": "T.I",
+    "period": "5",
+    "urlImgPerfil": ".",
+    "privacidade": "1",
+    "owner": "0",
+    "friends": [
+      {
+        "id": 2,
+        "name": "Naty",
+        "course": "C.C",
+        "period": "5"
+      },
+      {
+        "id": 3,
+        "name": "Gabriele",
+        "course": "E.S",
+        "period": "3"
+      }
+    ]
+  }
+]
 
-  
