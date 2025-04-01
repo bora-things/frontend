@@ -20,6 +20,80 @@
         "course": "E.S",
         "period": "3"
       }
+    ],
+    "semesters": [
+      {
+        "semester": "2021.2",
+        "period":1,
+        "subjects": [
+          {
+            "code": "IMD0126",
+            "type": "Obrigatória",
+            "name": "Matemática Elementar",
+            "teacher": "Antonio Igor",
+            "time": "Terça e Quinta 8:00 - 10:00",
+            "workload": 60,
+            "status": "completed"
+          },
+          {
+            "code": "IMD0127",
+            "type": "Optativa",
+            "name": "Programação Básica",
+            "teacher": "Antonio Igor",
+            "time": "Terça e Quinta 8:00 - 10:00",
+            "workload": 60,
+            "status": "completed"
+          }
+        ]
+      },
+      {
+        "semester": "2022.1",
+        "period":2,
+        "subjects": [
+          {
+            "code": "IMD0128",
+            "type": "Obrigatória",
+            "name": "Algoritmos Avançados",
+            "teacher": "Antonio Igor",
+            "time": "Terça e Quinta 8:00 - 10:00",
+            "workload": 60,
+            "status": "completed"
+          },
+          {
+            "code": "IMD0129",
+            "type": "Optativa",
+            "name": "Estruturas de Dados",
+            "teacher": "Antonio Igor",
+            "time": "Segunda e Quinta 8:00 - 10:00",
+            "workload": 60,
+            "status": "completed"
+          }
+        ]
+      },
+      {
+        "semester": "2023.1",
+        "period":3,
+        "subjects": [
+          {
+            "code": "IMD0132",
+            "type": "Obrigatória",
+            "name": "Engenharia de Software II",
+            "teacher": "Antonio Igor",
+            "time": "Segunda e Quarta 8:00 - 10:00",
+            "workload": 60,
+            "status": "in-progress"
+          },
+          {
+            "code": "IMD0133",
+            "type": "Optativa",
+            "name": "Sistemas Operacionais",
+            "teacher": "Antonio Igor",
+            "time": "Terça e Quinta 10:00 - 12:00",
+            "workload": 60,
+            "status": "in-progress"
+          }
+        ]
+      }
     ]
   },
   {
@@ -43,13 +117,54 @@
         "course": "T.I",
         "period": "5"
       }
+    ],
+    "semesters": [
+      {
+        "semester": "2021.2",
+        "period":1,
+        "subjects": [
+          {
+            "code": "IMD0134",
+            "type": "Obrigatória",
+            "name": "Cálculo I",
+            "teacher": "Maria Clara",
+            "time": "Segunda e Quarta 10:00 - 12:00",
+            "workload": 60,
+            "status": "completed"
+          },
+          {
+            "code": "IMD0135",
+            "type": "Optativa",
+            "name": "Lógica de Programação",
+            "teacher": "Maria Clara",
+            "time": "Terça e Quinta 14:00 - 16:00",
+            "workload": 60,
+            "status": "completed"
+          }
+        ]
+      },
+      {
+        "semester": "2023.1",
+        "period":2,
+        "subjects": [
+          {
+            "code": "IMD0136",
+            "type": "Obrigatória",
+            "name": "Estruturas de Dados Avançadas",
+            "teacher": "Maria Clara",
+            "time": "Segunda e Quarta 8:00 - 10:00",
+            "workload": 60,
+            "status": "in-progress"
+          }
+        ]
+      }
     ]
   },
   {
     "id": 3,
     "name": "Gabriele",
     "course": "E.S",
-    "period": "3",
+    "period": "1",
     "urlImgPerfil": ".",
     "privacidade": "1",
     "owner": "1",
@@ -66,13 +181,39 @@
         "course": "T.I",
         "period": "5"
       }
+    ],
+    "semesters": [
+      {
+        "semester": "2022.2",
+        "period":1,
+        "subjects": [
+          {
+            "code": "IMD0130",
+            "type": "Obrigatória",
+            "name": "Banco de Dados",
+            "teacher": "Antonio Igor",
+            "time": "Segunda e Quarta 10:00 - 12:00",
+            "workload": 60,
+            "status": "completed"
+          },
+          {
+            "code": "IMD0131",
+            "type": "Optativa",
+            "name": "Engenharia de Software I",
+            "teacher": "Antonio Igor",
+            "time": "Terça e Quinta 14:00 - 16:00",
+            "workload": 60,
+            "status": "completed"
+          }
+        ]
+      }
     ]
   },
   {
     "id": 4,
     "name": "Gabi",
     "course": "T.I",
-    "period": "5",
+    "period": "1",
     "urlImgPerfil": ".",
     "privacidade": "1",
     "owner": "0",
@@ -88,6 +229,32 @@
         "name": "Gabriele",
         "course": "E.S",
         "period": "3"
+      }
+    ],
+    "semesters": [
+      {
+        "semester": "2023.1",
+        "period":1,
+        "subjects": [
+          {
+            "code": "IMD0132",
+            "type": "Obrigatória",
+            "name": "Engenharia de Software II",
+            "teacher": "Antonio Igor",
+            "time": "Segunda e Quarta 8:00 - 10:00",
+            "workload": 60,
+            "status": "in-progress"
+          },
+          {
+            "code": "IMD0133",
+            "type": "Optativa",
+            "name": "Sistemas Operacionais",
+            "teacher": "Antonio Igor",
+            "time": "Terça e Quinta 10:00 - 12:00",
+            "workload": 60,
+            "status": "in-progress"
+          }
+        ]
       }
     ]
   }

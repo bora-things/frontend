@@ -1,4 +1,4 @@
 export async function fetchUser() {
-    const response = await fetch('/src/pages/Dashboard/DashboardMockData.json');
+    const response = await fetch('/src/mocks/UserMockData.json');
     return await response.json();
   }
