@@ -4,6 +4,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ConsultSubjectsView from '../pages/ConsultSubjetcs/ConsultSubjectsView.vue'
 import DashboardView from '../pages/Dashboard/DashboardView.vue'
 import FriendsView from '../pages/Friends/FriendsView.vue'
+import HomeView from '../pages/Home/HomeView.vue'
+import ProfileView from '@/pages/Profile/ProfileView.vue'
 
 
 const router = createRouter({
@@ -28,6 +30,11 @@ const router = createRouter({
       path: '/amigos',
       name: 'friends',
       component: FriendsView
+    },
+    {
+      path: '/perfil/:id',
+      name: 'profile',
+      component: ProfileView
     },
     {
       path:'/interesses',
