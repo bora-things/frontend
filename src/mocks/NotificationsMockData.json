@@ -1,0 +1,98 @@
+[
+    {
+        "id":"1",
+        "name": "João Silva",
+        "course": "Engenharia de Software",
+        "period": "4",
+        "imageUrl": "",
+        "createdAt": "2025-03-26T10:00:00Z"
+    },
+    {
+        "id":"2",
+        "name": "Maria Oliveira",
+        "course": "Ciência da Computação",
+        "period": "3",
+        "imageUrl": "",
+        "createdAt": "2025-03-25T10:15:00Z"
+    },
+    {
+        "id":"3",
+        "name": "Carlos Souza",
+        "course": "Sistemas de Informação",
+        "period": "1",
+        "imageUrl": "",
+        "createdAt": "2025-03-25T09:45:00Z"
+    },
+    {
+        "id":"4",
+        "name": "Ana Pereira",
+        "course": "Engenharia de Computação",
+        "period": "7",
+        "imageUrl": "",
+        "createdAt": "2025-03-25T08:30:00Z"
+    },
+    {
+        "id":"5",
+        "name": "Fernanda Lima",
+        "course": "Análise e Desenvolvimento de Sistemas",
+        "period": "2",
+        "imageUrl": "",
+        "createdAt": "2025-03-24T22:50:00Z"
+    },
+    {
+        "id":"6",
+        "name": "Rafael Costa",
+        "course": "Redes de Computadores",
+        "period": "5",
+        "imageUrl": "",
+        "createdAt": "2025-03-24T18:20:00Z"
+    },
+    {
+        "id":"7",
+        "name": "Beatriz Almeida",
+        "course": "Ciência de Dados",
+        "period": "6",
+        "imageUrl": "",
+        "createdAt": "2025-03-24T16:45:00Z"
+    },
+    {
+        "id":"8",
+        "name": "Lucas Martins",
+        "course": "Engenharia de Software",
+        "period": "8",
+        "imageUrl": "",
+        "createdAt": "2025-03-23T14:00:00Z"
+    },
+    {
+        "id":"9",
+        "name": "Juliana Santos",
+        "course": "Gestão da Tecnologia da Informação",
+        "period": "4",
+        "imageUrl": "",
+        "createdAt": "2025-03-23T12:30:00Z"
+    },
+    {
+        "id":"10",
+        "name": "Thiago Rocha",
+        "course": "Engenharia de Controle e Automação",
+        "period": "3",
+        "imageUrl": "",
+        "createdAt": "2025-03-22T11:15:00Z"
+    },
+    {
+        "id":"11",
+        "name": "Patrícia Ferreira",
+        "course": "Engenharia de Produção",
+        "period": "2",
+        "imageUrl": "",
+        "createdAt": "2025-03-22T09:00:00Z"
+    },
+    {
+        "id":"12",
+        "name": "Gustavo Nascimento",
+        "course": "Sistemas para Internet",
+        "period": "1",
+        "imageUrl": "",
+        "createdAt": "2025-03-21T08:15:00Z"
+    }
+]

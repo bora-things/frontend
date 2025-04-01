@@ -3,7 +3,7 @@
       "name": "Natalya",
       "position": "Dev Front-End",
       "description": "texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/public/images/imgPerfil.png",
+      "imageUrl": "/images/imgPerfil.png",
       "doubts": "duvida q tenho aqui, só uma duvida",
       "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
     },
@@ -11,7 +11,7 @@
       "name": "Matheus",
       "position": "Dev Fullstack",
       "description": "texto texto sdsa sadsd sadasd  asd ds asda dsad asds asd a texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/public/images/imgPerfil.png",
+      "imageUrl": "/images/imgPerfil.png",
       "doubts": "duvida q tenho aqui",
       "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
     },
@@ -19,7 +19,7 @@
       "name": "Daniel",
       "position": "dev",
       "description": "texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/public/images/imgPerfil.png",
+      "imageUrl": "/images/imgPerfil.png",
       "doubts": "duvida q tenho aqui, só uma duvida",
       "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
     },
@@ -27,7 +27,7 @@
       "name": "José",
       "position": "Dev Back-End",
       "description": "Estruturas texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/public/images/imgPerfil.png",
+      "imageUrl": "/images/imgPerfil.png",
       "doubts": "duvida q tenho aqui",
       "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
     },
@@ -35,7 +35,7 @@
       "name": "Isaac",
       "position": "Dev Front-End",
       "description": "texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/public/images/imgPerfil.png",
+      "imageUrl": "/images/imgPerfil.png",
       "doubts": "duvida q tenho aqui",
       "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
     },
@@ -43,7 +43,7 @@
       "name": "Felipe",
       "position": "Dev Front-End",
       "description": "texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/public/images/imgPerfil.png",
+      "imageUrl": "/images/imgPerfil.png",
       "doubts": "duvida q tenho aqui, só uma duvida",
       "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
     }

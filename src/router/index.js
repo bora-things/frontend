@@ -1,3 +1,4 @@
+import InterestedSubjectsView from '@/pages/InterestedSubjects/InterestedSubjectsView.vue'
 import LandingPageView from '@/pages/LandingPage/LandingPageView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import ConsultSubjectsView from '../pages/ConsultSubjetcs/ConsultSubjectsView.vue'
@@ -10,11 +11,6 @@ import ProfileView from '@/pages/Profile/ProfileView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/home',
-      name: 'home',
-      component: HomeView
-    },
     {
       path: '/',
       name: 'landing-page',
@@ -39,6 +35,11 @@ const router = createRouter({
       path: '/perfil/:id',
       name: 'profile',
       component: ProfileView
+    },
+    {
+      path:'/interesses',
+      name:'interests',
+      component:InterestedSubjectsView
     }
   ]
 })

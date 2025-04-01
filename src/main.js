@@ -1,11 +1,13 @@
-import './assets/main.css'
+import 'vue-toast-notification/dist/theme-bootstrap.css';
+import './assets/main.css';
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
 
-import { OhVueIcon, addIcons } from 'oh-vue-icons'
-import * as MdIcons from 'oh-vue-icons/icons/md'
+import { OhVueIcon, addIcons } from 'oh-vue-icons';
+import * as MdIcons from 'oh-vue-icons/icons/md';
+import ToastPlugin from 'vue-toast-notification';
 
 const Md = Object.values({ ...MdIcons })
 addIcons(...Md)
@@ -13,5 +15,8 @@ addIcons(...Md)
 const app = createApp(App)
 
 app.use(router)
+app.use(ToastPlugin,{
+    position:'bottom-right'
+})
 app.component('v-icon', OhVueIcon)
 app.mount('#app')

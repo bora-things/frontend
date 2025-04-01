@@ -1,26 +1,30 @@
 <script setup>
+import BadgeTag from '@/components/BadgeTag.vue'
+import { useLogout } from '@/composables/useLogout'
+import { Button } from 'ant-design-vue'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-
-import BadgeTag from '@/components/BadgeTag.vue'
+import NotificationMenu from './NotificationMenu.vue'
 
 const isMenuOpen = ref(false)
 
 function handleMenuClick() {
   isMenuOpen.value = !isMenuOpen.value
 }
+const { handleLogout } = useLogout()
 </script>
 
 <template>
-  <header class="w-full h-auto">
-    <div class="flex items-center gap-10 mb-10 border-b border-bp_neutral-700 p-6">
-      <button
-        type="button"
-        class="text-bp_neutral-400 w-11 h-11 border border-bp_neutral-700 rounded-md"
+  <header
+    class="w-full h-auto flex justify-between items-center p-6  border-b border-bp_neutral-700"
+  >
+    <div class="flex items-center gap-10">
+      <Button
+        class="text-bp_neutral-400 w-11 h-11 flex items-center justify-center bg-transparent border border-bp_neutral-700 rounded-md"
         @click="handleMenuClick"
       >
         <v-icon name="md-menu-round" scale="1.5" />
-      </button>
+      </Button>
       <div class="flex gap-4 items-center">
         <img
           src="https://images.pexels.com/photos/21085439/pexels-photo-21085439/free-photo-of-preto-e-branco-p-b-olhando-vendo.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
@@ -57,7 +61,7 @@ function handleMenuClick() {
 
       <hr class="my-6" />
 
-      <ul class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
         <RouterLink class="menu-item" to="/dashboard">
           <v-icon name="md-home-outlined" />
           <span>Home</span>
@@ -73,16 +77,21 @@ function handleMenuClick() {
         <RouterLink class="menu-item" to="/disciplinas">
           <v-icon name="md-menubook-outlined" />
           <span>Disciplinas</span>
-        </RouterLink> 
-      
-        <RouterLink
+        </RouterLink>
+        <RouterLink class="menu-item" to="/interesses">
+          <v-icon name="md-class-outlined" />
+          <span>Interesses</span>
+        </RouterLink>
+
+        <button
           class="flex items-center gap-4 mt-4 text-bp_danger border-bp_danger menu-item after:bg-bp_danger"
-          to="/"
+          @click="handleLogout"
         >
           <v-icon name="md-logout" />
           <span>Sair</span>
-        </RouterLink>
-      </ul>
+        </button>
+      </div>
     </nav>
+      <NotificationMenu/>
   </header>
 </template>
