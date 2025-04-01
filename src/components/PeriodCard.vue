@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import ClassInformationModal from "./ClassInformationModal.vue"
 
 const isExpanded = ref(false)
 
@@ -45,7 +46,7 @@ function toggleExpansion() {
         >
           <p class="font-bold">{{ subject.name }} ({{ subject.workload }}h) - {{ subject.code }}</p>
           <button class="cursor-pointer">
-            <v-icon name="md-infooutline" />
+            <ClassInformationModal :subject="subject" />
           </button>
         </li>
       </ul>

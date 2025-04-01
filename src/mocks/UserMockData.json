@@ -6,9 +6,10 @@
     {
       "periodNumber": 1,
       "schoolYear": "2021.2",
-      "subjects": [
+      "classes": [
         {
-          "code": "IMD0126",
+          "id": 1,
+          "idComponent": "IMD0126",
           "type": "Obrigatória",
           "name": "Matemática Elementar",
           "teacher": "Antonio Igor",
@@ -17,7 +18,8 @@
           "status": "completed"
         },
         {
-          "code": "IMD0127",
+          "id": 2,
+          "idComponent": "IMD0127",
           "type": "Optativa",
           "name": "Programação Básica",
           "teacher": "Antonio Igor",
@@ -30,9 +32,10 @@
     {
       "periodNumber": 2,
       "schoolYear": "2022.1",
-      "subjects": [
+      "classes": [
         {
-          "code": "IMD0128",
+          "id": 3,
+          "idComponent": "IMD0128",
           "type": "Obrigatória",
           "name": "Algoritmos Avançados",
           "teacher": "Antonio Igor",
@@ -41,7 +44,8 @@
           "status": "completed"
         },
         {
-          "code": "IMD0129",
+          "id": 4,
+          "idComponent": "IMD0129",
           "type": "Optativa",
           "name": "Estruturas de Dados",
           "teacher": "Antonio Igor",
@@ -54,9 +58,10 @@
     {
       "periodNumber": 3,
       "schoolYear": "2022.2",
-      "subjects": [
+      "classes": [
         {
-          "code": "IMD0130",
+          "id": 5,
+          "idComponent": "IMD0130",
           "type": "Obrigatória",
           "name": "Banco de Dados",
           "teacher": "Antonio Igor",
@@ -65,7 +70,8 @@
           "status": "completed"
         },
         {
-          "code": "IMD0131",
+          "id": 6,
+          "idComponent": "IMD0131",
           "type": "Optativa",
           "name": "Engenharia de Software I",
           "teacher": "Antonio Igor",
@@ -78,9 +84,10 @@
     {
       "periodNumber": 4,
       "schoolYear": "2023.1",
-      "subjects": [
+      "classes": [
         {
-          "code": "IMD0132",
+          "id": 7,
+          "idComponent": "IMD0132",
           "type": "Obrigatória",
           "name": "Engenharia de Software II",
           "teacher": "Antonio Igor",
@@ -89,7 +96,8 @@
           "status": "in-progress"
         },
         {
-          "code": "IMD0133",
+          "id": 8,
+          "idComponent": "IMD0133",
           "type": "Optativa",
           "name": "Sistemas Operacionais",
           "teacher": "Antonio Igor",
