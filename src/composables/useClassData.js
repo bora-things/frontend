@@ -1,9 +1,8 @@
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 export function useClassData({id}) {
   const classData = ref(null)
 
-  console.log(id)
   async function fetchClassData() {
     try {
       const response = await fetch('/src/mocks/ClassMockData.json')
@@ -13,9 +12,6 @@ export function useClassData({id}) {
       console.error('Error fetching class data:', error)
     }
   }
-
-  onMounted(fetchClassData)
-
   return {
     classData,
     fetchClassData
