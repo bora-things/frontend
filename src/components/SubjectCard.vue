@@ -49,7 +49,7 @@ export default {
     <div class="flex justify-between items-center">
       <h1 class="text-xl font-bold">{{ code }}</h1>
       <span class="justify-self-end text-sm px-3 py-1 rounded-2xl font-semibold" :class="typeClass">
-        {{ subject.type }}
+        {{ type }}
       </span>
     </div>
     <div class="flex flex-col gap-2">

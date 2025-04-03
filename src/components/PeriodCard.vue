@@ -22,7 +22,7 @@ function toggleExpansion() {
       <div class="flex items-center gap-4">
         <span class="font-bold border border-bp_neutral-600 px-2 py-1 rounded-3xl">
           <v-icon name="md-schedule" />
-          {{ period.subjects?.reduce((acc, subject) => acc + subject.workload, 0) }}h
+          {{ period.classes.reduce((acc, subject) => acc + subject.workload, 0) }}h
         </span>
         <v-icon
           name="md-keyboardarrowleft"
@@ -39,14 +39,14 @@ function toggleExpansion() {
     >
       <ul class="flex flex-col gap-4 mt-2 m-4">
         <li
-          v-for="subject in period.subjects"
-          :key="subject.code"
-          :class="subject.type==='Obrigatória'? 'border-blue-500' : 'border-bp_yellow-100'"
+          v-for="classData in period.classes"
+          :key="classData.code"
+          :class="classData.type==='Obrigatória'? 'border-blue-500' : 'border-bp_yellow-100'"
           class="flex items-center justify-between gap-4 border  rounded-md px-4 py-2"
         >
-          <p class="font-bold">{{ subject.name }} ({{ subject.workload }}h) - {{ subject.code }}</p>
+          <p class="font-bold">{{ classData.name }} ({{ classData.workload }}h) - {{ classData.code }}</p>
           <button class="cursor-pointer">
-            <ClassInformationModal :subject="subject" />
+            <ClassInformationModal :classDataProps="classData" />
           </button>
         </li>
       </ul>

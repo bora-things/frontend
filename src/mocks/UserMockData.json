@@ -9,7 +9,7 @@
       "classes": [
         {
           "id": 1,
-          "idComponent": "IMD0126",
+          "code": "IMD0126",
           "type": "Obrigatória",
           "name": "Matemática Elementar",
           "teacher": "Antonio Igor",
@@ -19,7 +19,7 @@
         },
         {
           "id": 2,
-          "idComponent": "IMD0127",
+          "code": "IMD0127",
           "type": "Optativa",
           "name": "Programação Básica",
           "teacher": "Antonio Igor",
@@ -35,7 +35,7 @@
       "classes": [
         {
           "id": 3,
-          "idComponent": "IMD0128",
+          "code": "IMD0128",
           "type": "Obrigatória",
           "name": "Algoritmos Avançados",
           "teacher": "Antonio Igor",
@@ -45,7 +45,7 @@
         },
         {
           "id": 4,
-          "idComponent": "IMD0129",
+          "code": "IMD0129",
           "type": "Optativa",
           "name": "Estruturas de Dados",
           "teacher": "Antonio Igor",
@@ -61,7 +61,7 @@
       "classes": [
         {
           "id": 5,
-          "idComponent": "IMD0130",
+          "code": "IMD0130",
           "type": "Obrigatória",
           "name": "Banco de Dados",
           "teacher": "Antonio Igor",
@@ -71,7 +71,7 @@
         },
         {
           "id": 6,
-          "idComponent": "IMD0131",
+          "code": "IMD0131",
           "type": "Optativa",
           "name": "Engenharia de Software I",
           "teacher": "Antonio Igor",
@@ -87,7 +87,7 @@
       "classes": [
         {
           "id": 7,
-          "idComponent": "IMD0132",
+          "code": "IMD0132",
           "type": "Obrigatória",
           "name": "Engenharia de Software II",
           "teacher": "Antonio Igor",
@@ -97,7 +97,7 @@
         },
         {
           "id": 8,
-          "idComponent": "IMD0133",
+          "code": "IMD0133",
           "type": "Optativa",
           "name": "Sistemas Operacionais",
           "teacher": "Antonio Igor",
