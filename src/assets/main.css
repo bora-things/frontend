@@ -36,6 +36,9 @@
   .title-h1 {
     @apply text-2xl md:text-3xl font-bold;
   }
+  .title-h2 {
+    @apply text-xl md:text-2xl font-semibold;
+  }
 
   .menu-item::after {
     content: "";
@@ -85,3 +88,14 @@
   background: #777;
 }
 
+.ant-modal{ 
+  @apply !pb-0
+}
+
+.ant-modal-content {
+  @apply !bg-bp_neutral-800 !text-white !border !border-white !rounded-md !pb-0; 
+}
+
+.ant-modal-close-x {
+  @apply !text-white ;
+}

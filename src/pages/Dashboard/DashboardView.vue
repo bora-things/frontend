@@ -26,7 +26,7 @@ onMounted(async () => {
       <header class="flex items-center justify-between border-b border-bp_neutral-700 pb-4">
         <h1 class="title-h1">Período Atual · {{ lastPeriod.periodNumber }}º</h1>
         <span class="title-h1 text-bp_primary-100">
-          {{ lastPeriod.subjects?.reduce((acc, item) => acc + item.workload, 0) }} h
+          {{ lastPeriod.classes?.reduce((acc, item) => acc + item.workload, 0) }} h
         </span>
       </header>
 
@@ -35,7 +35,7 @@ onMounted(async () => {
       >
         <SubjectCard
           class="w-full"
-          v-for="subject in lastPeriod.subjects"
+          v-for="subject in lastPeriod.classes"
           :key="subject.code"
           :subject="subject"
         />

@@ -6,8 +6,9 @@
     {
       "periodNumber": 1,
       "schoolYear": "2021.2",
-      "subjects": [
+      "classes": [
         {
+          "id": 1,
           "code": "IMD0126",
           "type": "Obrigatória",
           "name": "Matemática Elementar",
@@ -17,6 +18,7 @@
           "status": "completed"
         },
         {
+          "id": 2,
           "code": "IMD0127",
           "type": "Optativa",
           "name": "Programação Básica",
@@ -30,8 +32,9 @@
     {
       "periodNumber": 2,
       "schoolYear": "2022.1",
-      "subjects": [
+      "classes": [
         {
+          "id": 3,
           "code": "IMD0128",
           "type": "Obrigatória",
           "name": "Algoritmos Avançados",
@@ -41,6 +44,7 @@
           "status": "completed"
         },
         {
+          "id": 4,
           "code": "IMD0129",
           "type": "Optativa",
           "name": "Estruturas de Dados",
@@ -54,8 +58,9 @@
     {
       "periodNumber": 3,
       "schoolYear": "2022.2",
-      "subjects": [
+      "classes": [
         {
+          "id": 5,
           "code": "IMD0130",
           "type": "Obrigatória",
           "name": "Banco de Dados",
@@ -65,6 +70,7 @@
           "status": "completed"
         },
         {
+          "id": 6,
           "code": "IMD0131",
           "type": "Optativa",
           "name": "Engenharia de Software I",
@@ -78,8 +84,9 @@
     {
       "periodNumber": 4,
       "schoolYear": "2023.1",
-      "subjects": [
+      "classes": [
         {
+          "id": 7,
           "code": "IMD0132",
           "type": "Obrigatória",
           "name": "Engenharia de Software II",
@@ -89,6 +96,7 @@
           "status": "in-progress"
         },
         {
+          "id": 8,
           "code": "IMD0133",
           "type": "Optativa",
           "name": "Sistemas Operacionais",
