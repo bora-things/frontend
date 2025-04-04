@@ -82,8 +82,88 @@
     {
       "id": "11",
       "name": "NãoExiste",
-      "period": "-1",
+      "period": "1",
       "degree": "Biblioteconomia",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "12",
+      "name": "Natálya Gabriele",
+      "period": "3",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "13",
+      "name": "Natálya Gabriele",
+      "period": "3",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "14",
+      "name": "Dudu",
+      "period": "2",
+      "degree": "Ciência da Computação",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "15",
+      "name": "NãoExiste",
+      "period": "1",
+      "degree": "Biblioteconomia",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "16",
+      "name": "Natálya Gabriele",
+      "period": "3",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "17",
+      "name": "Natálya Gabriele",
+      "period": "3",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "18",
+      "name": "Dudu",
+      "period": "2",
+      "degree": "Ciência da Computação",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "19",
+      "name": "NãoExiste",
+      "period": "1",
+      "degree": "Biblioteconomia",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "20",
+      "name": "Natálya Gabriele",
+      "period": "3",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "21",
+      "name": "Natálya Gabriele",
+      "period": "3",
+      "degree": "TI",
       "of_my_course": 1,
       "favorite": 0
     }

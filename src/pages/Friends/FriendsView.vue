@@ -12,8 +12,7 @@ const searchQuery = ref('');
 const selectTypeFriends = ref('Todos');
 
 function updateCurrentPagination(newValue) {
-  currentPagination.value = newValue
-  console.log(newValue * 10)
+  currentPagination.value = newValue;
 }
 
 onMounted(async () => {
@@ -38,6 +37,12 @@ const filteredFriends = computed(() => {
 
     return matchesTypeFriends && matchesSearchQuery;
   });
+});
+
+const paginatedFriends = computed(() => {
+  const start = currentPagination.value * 14;
+  const end = start + 14;
+  return filteredFriends.value.slice(start, end);
 });
 
 </script>
@@ -73,7 +78,7 @@ const filteredFriends = computed(() => {
 
         <div class="grid grid-cols-1 gap-4 mt-10 lg:grid-cols-2">
           <ListItemFriend
-            v-for="friend in filteredFriends"
+            v-for="friend in paginatedFriends"
             :key="friend.id"
             :friend="friend"
           />
@@ -83,11 +88,9 @@ const filteredFriends = computed(() => {
         <BpPagination
           :current="currentPagination"
           @changeCurrentValue="updateCurrentPagination"
-          :count="10"
+          :count="totalPages"
         />
       </div>
     </main>
   </div>
 </template>
-
-<style scoped></style>

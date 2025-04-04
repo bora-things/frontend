@@ -2,7 +2,7 @@
 import BadgeTag from './BadgeTag.vue';
 
 const props = defineProps(['friend']);
-const { id, name, course, period } = props.friend;
+const { id, name, degree, period } = props.friend;
 
 </script>
 
@@ -22,7 +22,7 @@ const { id, name, course, period } = props.friend;
         <div class="user-subject">
           <span class="inline-flex items-center gap-1">
             <v-icon class="text-bp_primary-100" name="md-school-outlined"></v-icon>
-            {{ course }}</span
+            {{ degree }}</span
           >
           <span class="ml-3 inline-flex items-center gap-1">
             <v-icon class="text-bp_primary-100" name="md-calendartoday-outlined"></v-icon> Período
