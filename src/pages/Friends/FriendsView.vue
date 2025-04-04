@@ -46,6 +46,7 @@ const allFriends = ref([
     degree: 'TI'
   },
   {
+    id:'1',
     name: 'Natálya',
     period: '4',
     degree: 'TI'
@@ -109,9 +110,7 @@ onMounted(() => {
           <ListItemFriend
             v-for="(friend, index) in allFriends"
             v-bind:key="index"
-            :nome="friend.name"
-            :curso="friend.degree"
-            :periodo="friend.period"
+            :friend="friend"
           />
         </div>
       </div>
