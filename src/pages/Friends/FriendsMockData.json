@@ -1,0 +1,90 @@
+[
+    {
+      "id": "1",
+      "name": "Danillo",
+      "period": "5",
+      "degree": "História",
+      "of_my_course": 0,
+      "favorite": 0
+    },
+    {
+      "id": "2",
+      "name": "Alisson",
+      "period": "7",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "3",
+      "name": "CR7 Jales",
+      "period": "4",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "4",
+      "name": "Iñaki Marlon Lourenço",
+      "period": "7",
+      "degree": "Geografia",
+      "of_my_course": 0,
+      "favorite": 0
+    },
+    {
+      "id": "5",
+      "name": "Ían Gabriel",
+      "period": "5",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 1
+    },
+    {
+      "id": "6",
+      "name": "Parabéns",
+      "period": "5",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 1
+    },
+    {
+      "id": "7",
+      "name": "Mary Peace",
+      "period": "4",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 1
+    },
+    {
+      "id": "8",
+      "name": "Tiago",
+      "period": "6",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 1
+    },
+    {
+      "id": "9",
+      "name": "Natálya",
+      "period": "4",
+      "degree": "TI",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "10",
+      "name": "Dudu",
+      "period": "2",
+      "degree": "Ciência da Computação",
+      "of_my_course": 1,
+      "favorite": 0
+    },
+    {
+      "id": "11",
+      "name": "NãoExiste",
+      "period": "-1",
+      "degree": "Biblioteconomia",
+      "of_my_course": 1,
+      "favorite": 0
+    }
+]

@@ -1,8 +1,9 @@
 <script setup>
 import BadgeTag from './BadgeTag.vue';
-const props = defineProps(['friend']);
 
+const props = defineProps(['friend']);
 const { id, name, course, period } = props.friend;
+
 </script>
 
 <template>
