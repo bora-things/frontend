@@ -1,6 +1,7 @@
 <script setup>
-const props = defineProps(['subject'])
-const { code, type, name, teacher, time } = props.subject
+const props = defineProps(['subject', 'interest'])
+const { subject, interest } = props
+const { code, type, name, teacher, time } = subject
 </script>
 
 <script>
@@ -37,16 +38,21 @@ export default {
     },
     typeClass() {
       return this.subject.type === 'Obrigatória'
-      ? 'bg-bp_yellow-200/20 text-bp_yellow-100'
-      : 'bg-blue-500/20 text-blue-500'
+        ? 'bg-bp_yellow-200/20 text-bp_yellow-100'
+        : this.interest?'bg-blue-500/90':'bg-blue-500/20 text-blue-500'
     }
-  },
+  }
 }
 </script>
 
 <template>
-  <div class="w-full bg-bp_neutral-700 rounded-md flex flex-col gap-2 p-4">
-    <div class="flex justify-between items-center">
+  <div
+    :class="[
+      'w-full  rounded-md flex flex-col gap-2 p-4',
+      interest ? 'bg-white/60 text-black' : 'bg-bp_neutral-700'
+    ]"
+  >
+    <div class="flex justify-between items-center ">
       <h1 class="text-xl font-bold">{{ code }}</h1>
       <span class="justify-self-end text-sm px-3 py-1 rounded-2xl font-semibold" :class="typeClass">
         {{ type }}
