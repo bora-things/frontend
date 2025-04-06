@@ -20,7 +20,7 @@ import SubjectCard from '@/components/SubjectCard.vue'
 const route = useRoute()
 const user = ref(null)
 
-const subjects = ref([])
+const classes = ref([])
 const activeSection = ref('historico')
 const selectedSemester = ref({})
 const privacidade = ref(1)
@@ -40,7 +40,7 @@ const selectSemester = (semester) => {
 watch(selectedSemester, (newValue) => {
   const selected = semesters.value.find((semester) => semester.period === newValue.period)
   if (selected) {
-    subjects.value = selected.subjects
+    classes.value = selected.classes
   }
 })
 
@@ -121,12 +121,12 @@ onMounted(async () => {
             'w-10 h-9 rounded-t-2xl font-bold flex items-center justify-center  cursor-pointer',
             selectedSemester.period === semester.period
               ? semester.interesse
-                ? 'bg-blue-500/60'
+                ? 'bg-white/60'
                 : 'bg-neutral-600'
               : semester.interesse
-                ? 'bg-blue-500/40'
+                ? 'bg-white/40'
                 : 'bg-bp_neutral-700',
-            semester.interesse ? 'hover:bg-blue-500/60' : 'hover:bg-bp_neutral-600'
+            semester.interesse ? 'hover:bg-white/60' : 'hover:bg-bp_neutral-600'
           ]"
         >
           {{ semester.period }}
@@ -134,8 +134,7 @@ onMounted(async () => {
       </div>
       <div
         :class="[
-          ' rounded-md  p-4 flex flex-col gap-4',
-          selectedSemester.interesse ? 'bg-blue-500/60' : 'bg-bp_neutral-600'
+          ' rounded-md  p-4 flex flex-col gap-4 bg-bp_neutral-600'
         ]"
       >
         <h2 class="title-h2">
@@ -144,9 +143,9 @@ onMounted(async () => {
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <SubjectCard
-            v-for="subject in subjects"
-            :key="subject.code"
-            :subject="subject"
+            v-for="classs in classes"
+            :key="classs.code"
+            :classSubject="classs"
             :interest="selectedSemester.interesse"
           />
         </div>
