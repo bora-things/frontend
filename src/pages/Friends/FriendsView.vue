@@ -49,34 +49,34 @@ const paginatedFriends = computed(() => {
 
 <template>
   <div class="min-h-screen bg-bp_neutral-900 text-bp_neutral-50">
-    <main class="pl-16 pr-16">
-      <div class="container-search-friends ml-[60px] mr-[60px]">
+    <main class="px-4 md:px-16">
+      <div class="container-search-friends">
         <h2 class="text-3xl font-bold border-b border-bp_neutral-800 pb-6 mb-6">amigos</h2>
-        <div class="flex flex-col lg:flex-row lg:space-x-6">
-          
-          <div class="flex gap-4">
+        <div class="">
+          <div class="flex flex-wrap md:justify-between">
             <InputSearch
             @search="updateSearchQuery"
-            v-model="searchQuery" class="w-full lg:w-2/3 mb-4 lg:mb-0" />
-            
-            <select
-              v-model="selectTypeFriends"
-              name="filter"
-              class="px-4 bg-bp_neutral-800 text-white font-bold rounded-lg border border-bp_neutral-600 border-solid"
-            >
-              <option value="Todos">Todos</option>
-              <option value="same-course">Do meu curso</option>
-              <option value="favorites">Favoritos</option>
-            </select>
+            v-model="searchQuery" class="w-full md:w-2/3 mb-4 lg:mb-0" />
+
+            <div class="">
+              <select
+                v-model="selectTypeFriends"
+                name="filter"
+                class="card-options text-lg"
+                >
+                <option value="Todos">Todos</option>
+                <option value="same-course">Do meu curso</option>
+                <option value="favorites">Favoritos</option>
+              </select>
+            </div>
           </div>
-    
-          <BpButton>
-            <v-icon class="mr-2" name="md-personaddalt1-outlined" scale="1.5"></v-icon>
+          <BpButton class="lg:mt-6">
+            <v-icon class="" name="md-personaddalt1-outlined" scale="1.5"></v-icon>
             Adicionar Amigo
           </BpButton>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 mt-10 lg:grid-cols-2">
+        <div class="grid grid-cols-1 gap-4 mt-6 lg:grid-cols-2">
           <ListItemFriend
             v-for="friend in paginatedFriends"
             :key="friend.id"
