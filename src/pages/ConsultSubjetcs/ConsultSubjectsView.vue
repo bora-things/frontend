@@ -37,6 +37,13 @@ const filteredSubjects = computed(() => {
   });
 });
 
+const clearFilters = () => {
+  searchQuery.value = '';
+  selectedDepartment.value = 'Departamento';
+  selectedDifficulty.value = 'Dificuldade';
+  selectedWorkload.value = 'Horas';
+};
+
 </script>
 
 <template>
@@ -73,6 +80,13 @@ const filteredSubjects = computed(() => {
               <option value="90">90h</option>
             </select>
           </div>
+          <div class="flex justify-end">
+            <button 
+              @click="clearFilters"
+              class="card-options">
+              Limpar Filtros
+            </button>
+        </div>
         </div>
       </div>
       <div class="space-y-4">
