@@ -20,27 +20,27 @@ const difficultyClass = computed(() => {
 </script>
 
 <template>
-  <div class="text-bp_neutral-50 w-full lg:h-24 rounded-lg bg-bp_neutral-800">
-    <div class="flex flex-col md:flex-row md:justify-start md:items-center space-x-6 pr-4">
-      <div class="flex flex-col items-center pl-8">
-        <p class="text-2xl font-semibold">{{ code }}</p>
-        <p class="text-xl">{{ workload }}h</p>
+  <div class="md:flex items-center justify-between text-bp_neutral-50 w-full lg:h-24 rounded-lg bg-bp_neutral-800 p-2 md:p-4">
+    <div class="flex items-center space-x-3 md:space-x-6">
+      <div class="flex flex-col items-center">
+        <p class="text-xl md:text-2xl font-semibold">{{ code }}</p>
+        <p class="text-md md:text-xl">{{ workload }}h</p>
       </div>
-      <div class="hidden md:block w-0.5 h-24 bg-bp_neutral-700"></div>
-      <div class="flex justify-between items-center w-full gap-4">
-        <div class="">
-          <div class="flex items-center space-x-2 lg:space-x-4">
+      <div class="block w-0.5 h-24 bg-bp_neutral-700"></div>
+        <div class="flex justify-between items-center w-full">
+          <div class="">
+            <div class="flex items-center space-x-2 lg:space-x-4">
             <p class="text-base sm:text-lg font-semibold">{{ name }}</p>
-            <div :class="difficultyClass" class="w-2 h-2 sm:w-5 sm:h-5 rounded-full"></div>
+            <div :class="difficultyClass" class="w-4 h-4 sm:w-5 sm:h-5 rounded-full"></div>
           </div>
           <div class="flex items-center space-x-2 lg:space-x-4">
-            <p class="text-2xl sm:text-base">{{ department }}</p>
+            <p class="md:text-2xl sm:text-base">{{ department }}</p>
             <p>|</p>
-            <p class="text-base">{{ course }}</p>
+            <p class="md:text-2xl sm:text-base">{{ course }}</p>
           </div>
         </div>
-        <BpButton size="small" type="outlined"> Detalhes </BpButton>
       </div>
     </div>
+    <BpButton class="w-full md:w-1/6 mt-2" size="small" type="outlined"> Detalhes </BpButton>
   </div>
 </template>

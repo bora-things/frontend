@@ -53,10 +53,10 @@ const paginatedFriends = computed(() => {
       <div class="container-search-friends">
         <h2 class="text-3xl font-bold border-b border-bp_neutral-800 pb-6 mb-6">amigos</h2>
         <div class="">
-          <div class="flex flex-wrap md:justify-between">
+          <div class="flex flex-wrap gap-4 py-4 justify-end md:justify-between">
             <InputSearch
             @search="updateSearchQuery"
-            v-model="searchQuery" class="w-full md:w-2/3 mb-4 lg:mb-0" />
+            v-model="searchQuery" class="w-full lg:w-1/2" />
 
             <div class="">
               <select
@@ -69,11 +69,11 @@ const paginatedFriends = computed(() => {
                 <option value="favorites">Favoritos</option>
               </select>
             </div>
+            <BpButton class="w-full lg:w-1/4">
+              <v-icon class="" name="md-personaddalt1-outlined" scale="1.5"></v-icon>
+              Adicionar Amigo
+            </BpButton>
           </div>
-          <BpButton class="lg:mt-6">
-            <v-icon class="" name="md-personaddalt1-outlined" scale="1.5"></v-icon>
-            Adicionar Amigo
-          </BpButton>
         </div>
 
         <div class="grid grid-cols-1 gap-4 mt-6 lg:grid-cols-2">
