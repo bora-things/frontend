@@ -176,9 +176,11 @@ export default defineComponent({
               </div>
             </div>
           </div>
-          <div class="flex flex-col gap-1 h-fit">
-            <span class="text-sm font-semibold">Amigos também interessados:</span>
-            <div class="flex gap-4 items-center mt-2">
+          <div class="flex flex-col gap-1 mt-2">
+            <span class="text-sm font-semibold" v-if="subject.users.length > 0"
+              >Amigos também interessados:</span
+            >
+            <div class="flex gap-4 items-center">
               <a-avatar-group>
                 <a-tooltip
                   v-for="user in subject.users"

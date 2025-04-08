@@ -134,10 +134,11 @@ onMounted(async () => {
       </div>
       <div
         :class="[
-          ' rounded-md  p-4 flex flex-col gap-4 bg-bp_neutral-600'
+          'rounded-md  p-4 flex flex-col gap-4 ',
+          selectedSemester.interesse ? 'bg-white/60' : 'bg-bp_neutral-600'
         ]"
       >
-        <h2 class="title-h2">
+        <h2 :class="['title-h2', selectedSemester.interesse ? 'text-black' : 'text-white']">
           {{ selectedSemester.semester
           }}{{ selectedSemester.interesse ? ' - Matérias Interessadas' : '' }}
         </h2>
