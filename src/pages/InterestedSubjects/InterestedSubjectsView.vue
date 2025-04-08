@@ -10,6 +10,7 @@ export default defineComponent({
   name: 'InterestedSubjectsView',
   components: {
     draggable: VueDraggableNext,
+    "user-icon": UserOutlined,
     Spin
   },
   setup() {
@@ -188,7 +189,7 @@ export default defineComponent({
                     v-if="!user.avatar"
                     class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-8 h-8"
                   >
-                    <UserOutlined class="text-xl text-white" />
+                    <user-icon class="text-white text-xl"/>
                   </div>
                 </a-tooltip>
 
