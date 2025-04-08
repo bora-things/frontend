@@ -1,129 +1,94 @@
 <script setup>
 import BpButton from '@/components/BpButton.vue'
 import BpPagination from '@/components/BpPagination.vue'
+import InputSearch from '@/components/InputSearch.vue'
 import ListItemFriend from '@/components/ListItemFriend.vue'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { getFriends } from './FriendsController'
 
-const allFriends = ref([
-  {
-    name: 'Danillo',
-    period: '5',
-    degree: 'História'
-  },
-  {
-    name: 'Alisson',
-    period: '7',
-    degree: 'TI'
-  },
-  {
-    name: 'CR7 Jales',
-    period: '4',
-    degree: 'TI'
-  },
-  {
-    name: 'Iñaki Marlon Lourenço',
-    period: '7',
-    degree: 'Geografia'
-  },
-  {
-    name: 'Ían Gabriel',
-    period: '5',
-    degree: 'TI'
-  },
-  {
-    name: 'Parabéns',
-    period: '5',
-    degree: 'TI'
-  },
-  {
-    name: 'Mary Peace',
-    period: '4',
-    degree: 'TI'
-  },
-  {
-    name: 'Tiago',
-    period: '6',
-    degree: 'TI'
-  },
-  {
-    name: 'Natálya',
-    period: '4',
-    degree: 'TI'
-  },
-  {
-    name: 'Dudu',
-    period: '2',
-    degree: 'Ciência da Computação'
-  },
-  {
-    name: 'NãoExiste',
-    period: '-1',
-    degree: 'Biblioteconomia'
-  }
-])
+const friends = ref([])
 const currentPagination = ref(0)
+const searchQuery = ref('')
+const selectTypeFriends = ref('Todos')
+
 function updateCurrentPagination(newValue) {
   currentPagination.value = newValue
-  console.log(newValue * 10)
 }
-onMounted(() => {
-  console.log(currentPagination)
+
+onMounted(async () => {
+  friends.value = await getFriends()
 })
+
+const updateSearchQuery = (query) => {
+  searchQuery.value = query
+}
+
+const filteredFriends = computed(() => {
+  return friends.value.filter((friend) => {
+    const matchesTypeFriends =
+      selectTypeFriends.value === 'Todos' ||
+      (selectTypeFriends.value === 'same-course' && friend.of_my_course === 1) ||
+      (selectTypeFriends.value === 'favorites' && friend.favorite === 1)
+
+    const matchesSearchQuery =
+      !searchQuery.value ||
+      friend.name.toLowerCase().replace(' ', '').includes(searchQuery.value.toLowerCase()) ||
+      friend.id.toString().replace(' ', '').includes(searchQuery.value)
+
+    return matchesTypeFriends && matchesSearchQuery
+  })
+})
+
+const paginatedFriends = computed(() => {
+  const start = currentPagination.value * 14
+  const end = start + 14
+  return filteredFriends.value.slice(start, end)
+})
+
+const handleSearch = () => {
+  updateSearchQuery(searchQuery.value);
+};
 </script>
 
 <template>
   <div class="min-h-screen bg-bp_neutral-900 text-bp_neutral-50">
-    <main class="pl-16 pr-16">
-      <div class="container-search-friends ml-[60px] mr-[60px]">
+    <main class="px-4 md:px-16">
+      <div class="container-search-friends">
         <h2 class="text-3xl font-bold border-b border-bp_neutral-800 pb-6 mb-6">amigos</h2>
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input
-              type="text"
-              name=""
-              class="h-[60px] w-[510px] rounded-l-[10px] bg-bp_neutral-800 text-white border-[1px] border-solid border-bp_neutral-600 hover:bg-gray-700 indent-[5px]"
-              placeholder=""
-            />
-            <button
-              class="h-[60px] w-[60px] rounded-r-[10px] bg-bp_primary-400 text-white font-bold flex justify-center items-center"
-            >
-              <v-icon name="md-search-round" scale="1.5"></v-icon>
-            </button>
-            <select
-              name="filter"
-              class="h-[60px] w-[158px] py-[18px] px-4 bg-bp_neutral-800 text-white font-bold ml-4 rounded-[10px] border-[1px] border-bp_neutral-600 border-solid"
-            >
-              <option value="">Todos</option>
-              <option value="same-course">Do meu curso</option>
-              <option value="favorites">Favoritos</option>
-            </select>
-          </div>
+        <div class="">
+          <div class="flex flex-wrap gap-4 py-4 justify-end md:justify-between">
+            <form @submit.prevent="handleSearch" class="w-full lg:w-1/2">
+              <InputSearch
+                @search="updateSearchQuery"
+                v-model="searchQuery"
+              />
+            </form>
 
-          <BpButton>
-            <v-icon class="mr-2" name="md-personaddalt1-outlined" scale="1.5"></v-icon>
-            Adicionar Amigo
-          </BpButton>
+            <div class="">
+              <select v-model="selectTypeFriends" name="filter" class="card-options text-lg">
+                <option value="Todos">Todos</option>
+                <option value="same-course">Do meu curso</option>
+                <option value="favorites">Favoritos</option>
+              </select>
+            </div>
+            <BpButton class="w-full lg:w-1/4">
+              <v-icon class="" name="md-personaddalt1-outlined" scale="1.5"></v-icon>
+              Adicionar Amigo
+            </BpButton>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 mt-10 lg:grid-cols-2">
-          <ListItemFriend
-            v-for="(friend, index) in allFriends"
-            v-bind:key="index"
-            :nome="friend.name"
-            :curso="friend.degree"
-            :periodo="friend.period"
-          />
+        <div class="grid grid-cols-1 gap-4 mt-6 lg:grid-cols-2">
+          <ListItemFriend v-for="friend in paginatedFriends" :key="friend.id" :friend="friend" />
         </div>
       </div>
       <div class="flex justify-center mt-12 pb-7">
         <BpPagination
           :current="currentPagination"
           @changeCurrentValue="updateCurrentPagination"
-          :count="10"
+          :count="totalPages"
         />
       </div>
     </main>
   </div>
 </template>
-
-<style scoped></style>

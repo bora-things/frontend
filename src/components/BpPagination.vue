@@ -1,6 +1,7 @@
 <script setup>
 import BpButton from '@/components/BpButton.vue'
 import { toRef, defineEmits } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps(['current', 'count', 'onchange'])
 const _current = toRef(props, 'current')
@@ -24,6 +25,11 @@ function handleClick(event) {
 function createArray(length) {
   return Array.from({ length }, (_, index) => index)
 }
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredFriends.value.length / 10);
+});
+
 </script>
 
 <template>
