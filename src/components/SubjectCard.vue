@@ -41,28 +41,32 @@ const hiddenUsersCount = friendsInClass?.length - maxVisible || 0
         <p>{{ time }}</p>
       </div>
     </div>
-    <div class="flex gap-4 items-center mt-2">
-      <a-avatar-group>
-        <a-tooltip
-          v-for="user in visibleUsers"
-          :key="user.id"
-          :title="user.name"
-          placement="top"
-          class="mx-2"
-        >
-          <a-avatar v-if="user.avatar" :src="user.avatar" />
-          <div
-            v-if="!user.avatar"
-            class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-8 h-8"
+    <div class="flex flex-col gap-1">
+      <span class="text-sm font-semibold" v-if="interest">Amigos também interessados:</span>
+      <span class="text-sm font-semibold" v-if="!interest">Amigos na turma:</span>
+      <div class="flex gap-4 items-center ">
+        <a-avatar-group>
+          <a-tooltip
+            v-for="user in visibleUsers"
+            :key="user.id"
+            :title="user.name"
+            placement="top"
+            class="mx-1"
           >
-            <UserOutlined class="text-xl text-white" />
-          </div>
-        </a-tooltip>
+            <a-avatar v-if="user.avatar" :src="user.avatar" />
+            <div
+              v-if="!user.avatar"
+              class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-8 h-8"
+            >
+              <UserOutlined class="text-xl text-white" />
+            </div>
+          </a-tooltip>
 
-        <a-avatar v-if="hiddenUsersCount > 0" style="background-color: #f56a00">
-          +{{ hiddenUsersCount }}
-        </a-avatar>
-      </a-avatar-group>
+          <a-avatar v-if="hiddenUsersCount > 0" style="background-color: #f56a00">
+            +{{ hiddenUsersCount }}
+          </a-avatar>
+        </a-avatar-group>
+      </div>
     </div>
   </div>
 </template>

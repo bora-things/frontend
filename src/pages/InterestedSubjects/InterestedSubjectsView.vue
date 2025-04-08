@@ -10,7 +10,7 @@ export default defineComponent({
   name: 'InterestedSubjectsView',
   components: {
     draggable: VueDraggableNext,
-    "user-icon": UserOutlined,
+    'user-icon': UserOutlined,
     Spin
   },
   setup() {
@@ -159,22 +159,25 @@ export default defineComponent({
           v-for="subject in subjects"
           :key="subject.codigo"
           :id="subject.codigo"
-          class="bg-bp_neutral-700 rounded-md border shadow-lg p-4 cursor -pointer h-[100%]"
+          class="bg-bp_neutral-700 rounded-md border shadow-lg p-4 cursor-pointer h-[100%] flex-col flex justify-between"
         >
-          <div class="flex justify-between items-center mb-2">
-            <h1 class="text-xl font-bold">{{ subject.codigo }}</h1>
-            <span
-              class="justify-self-end text-sm bg-yellow-200 text-yellow-800 px-3 py-1 rounded-2xl font-semibold"
-              >{{ subject.obrigatorio ? 'Obrigatório' : 'Optativa' }}</span
-            >
-          </div>
           <div class="flex flex-col gap-2">
-            <p class="text-lg font-medium">{{ subject.nome }}</p>
-            <div class="flex gap-4 items-center">
-              <p><strong>Carga Horária:</strong> {{ subject.carga_horaria }}h</p>
+            <div class="flex justify-between items-center mb-2">
+              <h1 class="text-xl font-bold">{{ subject.codigo }}</h1>
+              <span
+                class="justify-self-end text-sm bg-yellow-200 text-yellow-800 px-3 py-1 rounded-2xl font-semibold"
+                >{{ subject.obrigatorio ? 'Obrigatório' : 'Optativa' }}</span
+              >
+            </div>
+            <div class="flex flex-col gap-2">
+              <p class="text-lg font-medium">{{ subject.nome }}</p>
+              <div class="flex gap-4 items-center">
+                <p><strong>Carga Horária:</strong> {{ subject.carga_horaria }}h</p>
+              </div>
             </div>
           </div>
-          <div>
+          <div class="flex flex-col gap-1 h-fit">
+            <span class="text-sm font-semibold">Amigos também interessados:</span>
             <div class="flex gap-4 items-center mt-2">
               <a-avatar-group>
                 <a-tooltip
@@ -189,7 +192,7 @@ export default defineComponent({
                     v-if="!user.avatar"
                     class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-8 h-8"
                   >
-                    <user-icon class="text-white text-xl"/>
+                    <user-icon class="text-white text-xl" />
                   </div>
                 </a-tooltip>
 
