@@ -7,11 +7,11 @@ import router from './router';
 
 import Antd from "ant-design-vue";
 import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import * as MdIcons from 'oh-vue-icons/icons/md';
+import * as Icons from 'oh-vue-icons/icons';
 import ToastPlugin from 'vue-toast-notification';
 
-const Md = Object.values({ ...MdIcons })
-addIcons(...Md)
+const icons = Object.values({ ...Icons })
+addIcons(...icons)
 
 const app = createApp(App)
 app.use(Antd);
