@@ -703,7 +703,7 @@
             "workload": 60,
             "status": "not-started",
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
+              { "id": 2, "name": "Naty", "urlImgPerfil": "" }, 
               { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
             ]
           },

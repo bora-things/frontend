@@ -5,7 +5,11 @@
     "carga_horaria": 30,
     "semestre": "2025.2",
     "obrigatorio": true,
-    "pre_requisitos": []
+    "pre_requisitos": [],
+    "users": [
+      { "id": 1, "name": "User A", "avatar": "" },
+      { "id": 2, "name": "User B", "avatar": "" }
+    ]
   },
   {
     "codigo": "IMD1003",
@@ -13,7 +17,11 @@
     "carga_horaria": 30,
     "semestre": "2025.2",
     "obrigatorio": true,
-    "pre_requisitos": []
+    "pre_requisitos": [],
+    "users": [
+      { "id": 3, "name": "User C", "avatar": "" },
+      { "id": 4, "name": "User D", "avatar": "" }
+    ]
   },
   {
     "codigo": "IMD1004",
@@ -21,7 +29,11 @@
     "carga_horaria": 60,
     "semestre": "2025.2",
     "obrigatorio": true,
-    "pre_requisitos": []
+    "pre_requisitos": [],
+    "users": [
+      { "id": 5, "name": "User E", "avatar": "" },
+      { "id": 6, "name": "User F", "avatar": "" }
+    ]
   },
   {
     "codigo": "DIM0501",
@@ -29,7 +41,11 @@
     "carga_horaria": 30,
     "semestre": "2026.1",
     "obrigatorio": true,
-    "pre_requisitos": ["IMD1004"]
+    "pre_requisitos": ["IMD1004"],
+    "users": [
+      { "id": 7, "name": "User G", "avatar": "" },
+      { "id": 8, "name": "User H", "avatar": "" }
+    ]
   },
   {
     "codigo": "DIM0546",
@@ -37,7 +53,11 @@
     "carga_horaria": 60,
     "semestre": "2026.1",
     "obrigatorio": true,
-    "pre_requisitos": ["DIM0501"]
+    "pre_requisitos": ["DIM0501"],
+    "users": [
+      { "id": 9, "name": "User I", "avatar": "" },
+      { "id": 10, "name": "User J", "avatar": "" }
+    ]
   },
   {
     "codigo": "IMD0028",
@@ -45,7 +65,8 @@
     "carga_horaria": 90,
     "semestre": "2026.1",
     "obrigatorio": true,
-    "pre_requisitos": ["IMD1002"]
+    "pre_requisitos": ["IMD1002"],
+    "users": []
   },
   {
     "codigo": "IMD0029",
@@ -53,7 +74,8 @@
     "carga_horaria": 60,
     "semestre": "2026.2",
     "obrigatorio": true,
-    "pre_requisitos": ["IMD1004"]
+    "pre_requisitos": ["IMD1004"],
+    "users": []
   },
   {
     "codigo": "IMD0040",
@@ -61,7 +83,8 @@
     "carga_horaria": 60,
     "semestre": "2026.2",
     "obrigatorio": true,
-    "pre_requisitos": ["DIM0501"]
+    "pre_requisitos": ["DIM0501"],
+    "users": []
   },
   {
     "codigo": "IMD0121",
@@ -69,7 +92,8 @@
     "carga_horaria": 60,
     "semestre": "2026.2",
     "obrigatorio": true,
-    "pre_requisitos": []
+    "pre_requisitos": [],
+    "users": []
   },
   {
     "codigo": "IMD0043",
@@ -77,7 +101,8 @@
     "carga_horaria": 60,
     "semestre": "2027.1",
     "obrigatorio": true,
-    "pre_requisitos": []
+    "pre_requisitos": [],
+    "users": []
   },
   {
     "codigo": "IMD0039",
@@ -85,7 +110,8 @@
     "carga_horaria": 60,
     "semestre": "2027.1",
     "obrigatorio": true,
-    "pre_requisitos": ["IMD0029"]
+    "pre_requisitos": ["IMD0029"],
+    "users": []
   },
   {
     "codigo": "DIM0504",
@@ -93,7 +119,8 @@
     "carga_horaria": 60,
     "semestre": "2027.2",
     "obrigatorio": true,
-    "pre_requisitos": ["IMD0040"]
+    "pre_requisitos": ["IMD0040"],
+    "users": []
   },
   {
     "codigo": "DIM0508",
@@ -101,7 +128,8 @@
     "carga_horaria": 60,
     "semestre": "2027.2",
     "obrigatorio": true,
-    "pre_requisitos": []
+    "pre_requisitos": [],
+    "users": []
   },
   {
     "codigo": "DIM0507",
@@ -109,6 +137,7 @@
     "carga_horaria": 60,
     "semestre": "2027.2",
     "obrigatorio": true,
-    "pre_requisitos": ["DIM0501"]
+    "pre_requisitos": ["DIM0501"],
+    "users": []
   }
 ]
