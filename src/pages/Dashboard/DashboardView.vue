@@ -37,7 +37,7 @@ onMounted(async () => {
           class="w-full"
           v-for="subject in lastPeriod.classes"
           :key="subject.code"
-          :subject="subject"
+          :classSubject="subject"
         />
       </section>
 

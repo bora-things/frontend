@@ -1,5 +1,5 @@
 <script>
-import { LoadingOutlined } from '@ant-design/icons-vue'
+import { LoadingOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Spin } from 'ant-design-vue'
 import { defineComponent, h, ref } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
@@ -16,7 +16,7 @@ export default defineComponent({
     const indicator = h(LoadingOutlined, {
       style: {
         fontSize: '24px',
-        color:"#ffffff"
+        color: '#ffffff'
       },
       spin: true
     })
@@ -171,6 +171,31 @@ export default defineComponent({
             <p class="text-lg font-medium">{{ subject.nome }}</p>
             <div class="flex gap-4 items-center">
               <p><strong>Carga Horária:</strong> {{ subject.carga_horaria }}h</p>
+            </div>
+          </div>
+          <div>
+            <div class="flex gap-4 items-center mt-2">
+              <a-avatar-group>
+                <a-tooltip
+                  v-for="user in subject.users"
+                  :key="user.id"
+                  :title="user.name"
+                  placement="top"
+                  class="mx-2"
+                >
+                  <a-avatar v-if="user.avatar" :src="user.avatar" />
+                  <div
+                    v-if="!user.avatar"
+                    class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-8 h-8"
+                  >
+                    <UserOutlined class="text-xl text-white" />
+                  </div>
+                </a-tooltip>
+
+                <a-avatar v-if="hiddenUsersCount > 0" style="background-color: #f56a00">
+                  +{{ hiddenUsersCount }}
+                </a-avatar>
+              </a-avatar-group>
             </div>
           </div>
         </div>
