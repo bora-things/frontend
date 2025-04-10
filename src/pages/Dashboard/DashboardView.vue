@@ -2,10 +2,10 @@
 import PeriodCard from '@/components/PeriodCard.vue'
 import RadialProgress from '@/components/RadialProgress.vue'
 import SubjectCard from '@/components/SubjectCard.vue'
-import { useUser } from '@/composables/useUser'
+import { useDashboardUser } from '@/services/useDashboardUser'
 import { onMounted, ref } from 'vue'
 
-const { user, fetchUser } = useUser()
+const { user, fetchUser } = useDashboardUser()
 const periods = ref([])
 const workload = ref({})
 const lastPeriod = ref({})

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useClassData } from '@/composables/useClassData'
+import { useClassData } from '@/services/useClassData'
 import { ref } from 'vue'
 
 const props = defineProps(['classDataProps'])
