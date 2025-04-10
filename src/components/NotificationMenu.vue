@@ -1,5 +1,5 @@
 <script setup>
-import { useNotifications } from '@/composables/useNotifications'
+import { useNotifications } from '@/services/useNotifications'
 import { Button } from 'ant-design-vue'
 import { ref } from 'vue'
 
