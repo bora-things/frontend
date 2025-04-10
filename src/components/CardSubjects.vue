@@ -1,6 +1,6 @@
 <script setup>
-import { computed } from 'vue'
-import BpButton from './BpButton.vue'
+import { computed } from 'vue';
+import BpButton from './BpButton.vue';
 
 const props = defineProps(['subject']);
 const { code, workload, name, department, course, difficulty } = props.subject;

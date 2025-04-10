@@ -20,12 +20,12 @@ import SubjectCard from '@/components/SubjectCard.vue'
 const route = useRoute()
 const user = ref(null)
 
-const subjects = ref([])
+const classes = ref([])
 const activeSection = ref('historico')
-const selectedSemester = ref(1)
+const selectedSemester = ref({})
 const privacidade = ref(1)
 const friends = ref([])
-const semesters=ref([])
+const semesters = ref([])
 
 const isOwner = ref(false)
 
@@ -33,26 +33,24 @@ const setSection = (section) => {
   activeSection.value = section
 }
 
-const selectSemester = (period) => {
-  selectedSemester.value = period
+const selectSemester = (semester) => {
+  selectedSemester.value = semester
 }
 
 watch(selectedSemester, (newValue) => {
-  const selected = user.value.semesters.find((semester) => semester.period === newValue)
+  const selected = semesters.value.find((semester) => semester.period === newValue.period)
   if (selected) {
-    subjects.value = selected.subjects
+    classes.value = selected.classes
   }
 })
-
-
 
 onMounted(async () => {
   const profiles = await getProfiles()
   const userId = parseInt(route.params.id)
   user.value = profiles.find((profile) => profile.id === userId)
   friends.value = user.value.friends
-  semesters.value= user.value.semesters
-  subjects.value = user.value.semesters[0].subjects
+  semesters.value = user.value.semesters
+  selectSemester(semesters.value[0])
   const loggedInUserId = 1
   isOwner.value = user.value && user.value && user.value.id === loggedInUserId
 
@@ -113,26 +111,45 @@ onMounted(async () => {
     </div>
 
     <!-- Histórico -->
-    <div v-if="activeSection === 'historico'" class="space-y-0">
+    <div v-if="activeSection === 'historico' && selectSemester" class="space-y-0">
       <div class="flex gap-1 ml-6">
         <div
           v-for="semester in semesters"
           :key="semester"
-          @click="selectSemester(semester.period)"
+          @click="selectSemester(semester)"
           :class="[
-            'w-10 h-9 rounded-t-2xl font-bold flex items-center justify-center hover:bg-bp_neutral-700 cursor-pointer',
-            selectedSemester === semester.period
-              ? 'bg-white text-black hover:bg-bp_neutral-300'
-              : 'bg-bp_neutral-600 text-white'
+            'w-10 h-9 rounded-t-2xl font-bold flex items-center justify-center  cursor-pointer',
+            selectedSemester.period === semester.period
+              ? semester.interesse
+                ? 'bg-white/60'
+                : 'bg-neutral-600'
+              : semester.interesse
+                ? 'bg-white/40'
+                : 'bg-bp_neutral-700',
+            semester.interesse ? 'hover:bg-white/60' : 'hover:bg-bp_neutral-600'
           ]"
         >
           {{ semester.period }}
         </div>
       </div>
       <div
-        class="bg-bp_neutral-100 rounded-md grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4"
+        :class="[
+          'rounded-md  p-4 flex flex-col gap-4 ',
+          selectedSemester.interesse ? 'bg-white/60' : 'bg-bp_neutral-600'
+        ]"
       >
-        <SubjectCard v-for="subject in subjects" :key="subject.code" :subject="subject" />
+        <h2 :class="['title-h2', selectedSemester.interesse ? 'text-black' : 'text-white']">
+          {{ selectedSemester.semester
+          }}{{ selectedSemester.interesse ? ' - Matérias Interessadas' : '' }}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <SubjectCard
+            v-for="classs in classes"
+            :key="classs.code"
+            :classSubject="classs"
+            :interest="selectedSemester.interesse"
+          />
+        </div>
       </div>
     </div>
 
@@ -185,3 +202,14 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    semester() {
+      // Ensure semester is defined before accessing properties
+      return this.selectedSemester || {}
+    }
+  }
+}
+</script>

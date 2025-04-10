@@ -1,5 +1,5 @@
 <script>
-import { LoadingOutlined } from '@ant-design/icons-vue'
+import { LoadingOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Spin } from 'ant-design-vue'
 import { defineComponent, h, ref } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
@@ -10,13 +10,14 @@ export default defineComponent({
   name: 'InterestedSubjectsView',
   components: {
     draggable: VueDraggableNext,
+    'user-icon': UserOutlined,
     Spin
   },
   setup() {
     const indicator = h(LoadingOutlined, {
       style: {
         fontSize: '24px',
-        color:"#ffffff"
+        color: '#ffffff'
       },
       spin: true
     })
@@ -158,19 +159,49 @@ export default defineComponent({
           v-for="subject in subjects"
           :key="subject.codigo"
           :id="subject.codigo"
-          class="bg-bp_neutral-700 rounded-md border shadow-lg p-4 cursor -pointer h-[100%]"
+          class="bg-bp_neutral-700 rounded-md border shadow-lg p-4 cursor-pointer h-[100%] flex-col flex justify-between"
         >
-          <div class="flex justify-between items-center mb-2">
-            <h1 class="text-xl font-bold">{{ subject.codigo }}</h1>
-            <span
-              class="justify-self-end text-sm bg-yellow-200 text-yellow-800 px-3 py-1 rounded-2xl font-semibold"
-              >{{ subject.obrigatorio ? 'Obrigatório' : 'Optativa' }}</span
-            >
-          </div>
           <div class="flex flex-col gap-2">
-            <p class="text-lg font-medium">{{ subject.nome }}</p>
+            <div class="flex justify-between items-center mb-2">
+              <h1 class="text-xl font-bold">{{ subject.codigo }}</h1>
+              <span
+                class="justify-self-end text-sm bg-yellow-200 text-yellow-800 px-3 py-1 rounded-2xl font-semibold"
+                >{{ subject.obrigatorio ? 'Obrigatório' : 'Optativa' }}</span
+              >
+            </div>
+            <div class="flex flex-col gap-2">
+              <p class="text-lg font-medium">{{ subject.nome }}</p>
+              <div class="flex gap-4 items-center">
+                <p><strong>Carga Horária:</strong> {{ subject.carga_horaria }}h</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1 mt-2">
+            <span class="text-sm font-semibold" v-if="subject.users.length > 0"
+              >Amigos também interessados:</span
+            >
             <div class="flex gap-4 items-center">
-              <p><strong>Carga Horária:</strong> {{ subject.carga_horaria }}h</p>
+              <a-avatar-group>
+                <a-tooltip
+                  v-for="user in subject.users"
+                  :key="user.id"
+                  :title="user.name"
+                  placement="top"
+                  class="mx-2"
+                >
+                  <a-avatar v-if="user.avatar" :src="user.avatar" />
+                  <div
+                    v-if="!user.avatar"
+                    class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-8 h-8"
+                  >
+                    <user-icon class="text-white text-xl" />
+                  </div>
+                </a-tooltip>
+
+                <a-avatar v-if="hiddenUsersCount > 0" style="background-color: #f56a00">
+                  +{{ hiddenUsersCount }}
+                </a-avatar>
+              </a-avatar-group>
             </div>
           </div>
         </div>
