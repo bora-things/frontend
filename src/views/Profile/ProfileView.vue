@@ -1,19 +1,8 @@
 <script setup>
-import {
-  CalendarOutlined,
-  CustomerServiceOutlined,
-  IdcardOutlined,
-  SettingOutlined,
-  SolutionOutlined,
-  TeamOutlined,
-  UserOutlined
-} from '@ant-design/icons-vue'
-import { Avatar } from 'ant-design-vue'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getProfiles } from './ProfileController'
 
-import InputBase from '@/components/InputBase.vue'
 import ListItemFriend from '@/components/ListItemFriend.vue'
 import SubjectCard from '@/components/SubjectCard.vue'
 
@@ -61,18 +50,20 @@ onMounted(async () => {
 <template>
   <div class="bg-bp_neutral-800 p-4 md:p-10 rounded-2xl m-6 md:m-10">
     <div class="flex items-center space-x-4 md:space-x-10">
-      <Avatar :size="128" src="">
-        <UserOutlined class="text-6xl" />
-      </Avatar>
+      <div class="avatar ">
+        <div class="rounded-full p-4 bg-bp_neutral-600">
+          <v-icon name="fa-user-alt" scale="4" ></v-icon>
+        </div>
+      </div>
       <div class="font-bold space-y-2 md:space-y-4">
         <p class="text-xl md:text-3xl">{{ user ? user.name : '...' }}</p>
         <div class="flex gap-6">
           <div class="flex gap-2 items-center">
-            <CustomerServiceOutlined class="md:size-5" />
+            <v-icon name="io-school-sharp" />
             <p>{{ user ? user.course : '...' }}</p>
           </div>
           <div class="flex gap-2 items-center">
-            <CalendarOutlined class="md:size-5" />
+            <v-icon name="bi-calendar-event" />
             <p>{{ user ? user.period : '...' }}° periodo</p>
           </div>
         </div>
@@ -85,27 +76,20 @@ onMounted(async () => {
           @click="setSection('historico')"
           :class="['nav-item', activeSection === 'historico' ? 'active-nav' : '']"
         >
-          <div class="flex items-center gap-x-2"><SolutionOutlined /> Histórico</div>
+          <div class="flex items-center gap-x-2"><v-icon name="hi-solid-document-text" scale="1.3" /> Histórico</div>
         </button>
         <button
           @click="setSection('amigos')"
           :class="['nav-item', activeSection === 'amigos' ? 'active-nav' : '']"
         >
-          <div class="flex items-center gap-x-2"><TeamOutlined /> Amigos</div>
-        </button>
-        <button
-          v-if="isOwner"
-          @click="setSection('informacoes')"
-          :class="['nav-item', activeSection === 'informacoes' ? 'active-nav' : '']"
-        >
-          <div class="flex items-center gap-x-2"><IdcardOutlined /> Informações Pessoais</div>
+          <div class="flex items-center gap-x-2"><v-icon name="fa-user-friends" scale="1.5" /> Amigos</div>
         </button>
         <button
           v-if="isOwner"
           @click="setSection('configuracoes')"
           :class="['nav-item', activeSection === 'configuracoes' ? 'active-nav' : '']"
         >
-          <div class="flex items-center gap-x-2"><SettingOutlined /> Configurações</div>
+          <div class="flex items-center gap-x-2"><v-icon name="bi-gear-fill" scale="1.3" /> Configurações</div>
         </button>
       </div>
     </div>
@@ -158,26 +142,6 @@ onMounted(async () => {
       <p class="text-2xl font-bold mb-4">Amigos</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <ListItemFriend v-for="(friend, index) in friends" v-bind:key="index" :friend="friend" />
-      </div>
-    </div>
-
-    <!-- Informações Pessoais -->
-    <div v-if="activeSection === 'informacoes'" class="text-white p-4 space-y-4">
-      <p class="text-2xl font-bold mb-4">Informações Pessoais</p>
-
-      <div>
-        <label for="nome" class="text-sm font-medium text-gray-300">Nome</label>
-        <InputBase id="nome" placeholder="Digite seu nome" />
-      </div>
-
-      <div>
-        <label for="curso" class="text-sm font-medium text-gray-300">Curso</label>
-        <InputBase id="curso" placeholder="Digite o curso" />
-      </div>
-
-      <div>
-        <label for="enfase" class="text-sm font-medium text-gray-300">Ênfase</label>
-        <InputBase id="enfase" placeholder="Digite a ênfase" />
       </div>
     </div>
 

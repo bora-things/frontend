@@ -1,10 +1,10 @@
-import InterestedSubjectsView from '@/pages/InterestedSubjects/InterestedSubjectsView.vue'
-import LandingPageView from '@/pages/LandingPage/LandingPageView.vue'
-import ProfileView from '@/pages/Profile/ProfileView.vue'
+import InterestedSubjectsView from '@/views/InterestedSubjects/InterestedSubjectsView.vue'
+import LandingPageView from '@/views/LandingPage/LandingPageView.vue'
+import ProfileView from '@/views/Profile/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import ConsultSubjectsView from '../pages/ConsultSubjetcs/ConsultSubjectsView.vue'
-import DashboardView from '../pages/Dashboard/DashboardView.vue'
-import FriendsView from '../pages/Friends/FriendsView.vue'
+import ConsultSubjectsView from '../views/ConsultSubjetcs/ConsultSubjectsView.vue'
+import DashboardView from '../views/Dashboard/DashboardView.vue'
+import FriendsView from '../views/Friends/FriendsView.vue'
 
 
 const router = createRouter({

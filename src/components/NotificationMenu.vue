@@ -1,6 +1,5 @@
 <script setup>
 import { useNotifications } from '@/services/useNotifications'
-import { Button } from 'ant-design-vue'
 import { ref } from 'vue'
 
 const isNotificationMenuOpen = ref(false)
@@ -42,7 +41,7 @@ function getNotificationCreateDate(date) {
     </button>
     <div
       v-if="isNotificationMenuOpen"
-      class="absolute right-3 bg-neutral-700 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto max-h-[70vh] overflow-y-auto custom-scrollbar"
+      class="absolute right-3 bg-bp_neutral-700 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto max-h-[70vh] overflow-y-auto custom-scrollbar"
     >
       <div class="border-b border-bp_neutral-500 mb-4 pb-2 flex justify-between items-center">
         <div class="flex items-center gap-2">
@@ -87,20 +86,18 @@ function getNotificationCreateDate(date) {
               <p class="text-xs md:text-sm">{{ notification.period }}º Período</p>
             </div>
             <div class="flex gap-2 ml-auto">
-              <Button
-                type="primary"
-                class="text-white bg-green-500 hover:!bg-green-600 border-none text-xs md:text-sm"
+              <button
+                class="btn btn-ghost text-white bg-green-500 hover:!bg-green-600 border-none text-xs md:text-sm"
                 @click="handleUpdateNotificationStatus(notification, 'accepted')"
               >
                 Aceitar
-              </Button>
-              <Button
-                type="primary"
-                class="text-white bg-red-500 hover:!bg-red-600 border-none text-xs md:text-sm"
+              </button>
+              <button
+                class="btn btn-ghost text-white bg-red-500 hover:!bg-red-600 border-none text-xs md:text-sm"
                 @click="handleUpdateNotificationStatus(notification, 'rejected')"
               >
                 Recusar
-              </Button>
+              </button>
             </div>
           </div>
         </li>

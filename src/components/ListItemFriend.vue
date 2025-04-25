@@ -1,9 +1,7 @@
 <script setup>
-import BadgeTag from './BadgeTag.vue';
 
-const props = defineProps(['friend']);
-const { id, name, degree, period } = props.friend;
-
+const props = defineProps(['friend'])
+const { id, name, degree, period } = props.friend
 </script>
 
 <template>
@@ -17,7 +15,7 @@ const { id, name, degree, period } = props.friend;
         src="https://images.pexels.com/photos/21085439/pexels-photo-21085439/free-photo-of-preto-e-branco-p-b-olhando-vendo.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
         alt="foto do amigo"
       />
-      <div class="user-data ">
+      <div class="user-data">
         <div class="text-xl font-bold pb-2">{{ name }}</div>
         <div class="flex gap-2">
           <span class="inline-flex items-center gap-1">
@@ -32,6 +30,6 @@ const { id, name, degree, period } = props.friend;
       </div>
     </div>
 
-    <BadgeTag type="secondary" size="small">8 minutos atrás</BadgeTag>
+    <span class="badge bg-bp_neutral-300 border-none">8 minutos atrás</span>
   </a>
 </template>

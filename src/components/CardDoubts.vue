@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons-vue';
 
 const props = defineProps(['doubt']);
 const { doubts, descriptionDoubts } = props.doubt;
@@ -24,7 +23,7 @@ const toggleQuestion = () => {
         <p class="text-lg">{{ doubts }}</p>
       </div>
       <div>
-        <PlusCircleOutlined class="text-4xl cursor-pointer" @click="toggleQuestion" />
+         <v-icon name="bi-plus-circle" scale="2" class="cursor-pointer" @click="toggleQuestion" />
       </div>
     </div>
   </div>
@@ -40,7 +39,7 @@ const toggleQuestion = () => {
         <p class="text-lg">{{ doubts }}</p>
       </div>
       <div>
-        <MinusCircleOutlined class="text-4xl cursor-pointer" @click="toggleQuestion" />
+        <v-icon name="hi-minus-circle" scale="2" class="cursor-pointer" @click="toggleQuestion" />
       </div>
     </div>
     <div>

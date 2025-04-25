@@ -1,12 +1,8 @@
 <script setup>
-import BpButton from '@/components/BpButton.vue'
 import CardComponent from '@/components/CardComponent.vue'
 import CardDoubts from '@/components/CardDoubts.vue'
 import SimboraImg from '@/components/SimboraImg.vue'
-import { ArrowDownOutlined } from '@ant-design/icons-vue'
-import { Image, Input } from 'ant-design-vue'
 import { addIcons } from 'oh-vue-icons'
-import { FaDiscord, FaInstagram } from 'oh-vue-icons/icons/fa'
 import { onMounted, ref } from 'vue'
 import { getComponents, getDoubts } from './LandingPageController'
 
@@ -18,7 +14,6 @@ onMounted(async () => {
   doubts.value = await getDoubts()
 })
 
-addIcons(FaInstagram, FaDiscord)
 
 function handleLoginClick() {
   const authLink = import.meta.env.VITE_API_URL + '/oauth2/authorization/sigaa'
@@ -64,7 +59,12 @@ onMounted(() => {
         <a class="nav-item" href="#criadores">Criadores</a>
       </div>
       <div>
-        <BpButton class="px-6" type="green" size="small" @click="handleLoginClick"> Entrar </BpButton>
+        <button
+          class="btn btn-ghost px-6 bg-bp_green-400 hover:bg-bp_green-500 text-white active:bg-bp_green-500 disabled:cursor-default disabled:bg-[#E2E2E2] disabled:text-[#ABABAB]"
+          @click="handleLoginClick"
+        >
+          Entrar
+        </button>
       </div>
     </header>
     <main class="h-full mx-auto bg-bp_neutral-800">
@@ -77,10 +77,14 @@ onMounted(() => {
             <p class="text-bp_neutral-400">
               Gerencie seu curso, acompanhe seus resultados e se divirta no processo
             </p>
-            <BpButton class="px-6" type="green" size="small"> Comece Agora </BpButton>
+            <button
+              class="btn btn-ghost px-6 bg-bp_green-400 hover:bg-bp_green-500 text-white active:bg-bp_green-500 disabled:cursor-default disabled:bg-[#E2E2E2] disabled:text-[#ABABAB]"
+            >
+              Comece Agora
+            </button>
           </div>
           <div class="w-full flex justify-end">
-            <Image
+            <img
               class="max-w-[450px] max-h-[450px]"
               src="/images/ILUSTRACAO_SIMBORA.png"
               :preview="false"
@@ -96,9 +100,9 @@ onMounted(() => {
           <div
             class="flex justify-center items-center border border-bp_neutral-700 rounded-2xl w-full h-28 overflow-hidden space-x-4 md:space-x-20 px-4"
           >
-            <Image class="object-contain" src="/images/ufrn-logo.png" :preview="false" />
-            <Image class="object-contain" src="/images/Vector.png" :preview="false" />
-            <Image class="object-contain" src="/images/logoSigaa.png" :preview="false" />
+            <img class="object-contain" src="/images/ufrn-logo.png" :preview="false" />
+            <img class="object-contain" src="/images/Vector.png" :preview="false" />
+            <img class="object-contain" src="/images/logoSigaa.png" :preview="false" />
           </div>
         </div>
       </section>
@@ -111,7 +115,7 @@ onMounted(() => {
           <h1 class="mb-6">
             Com o <span class="text-bp_green-400">Bora Pagar</span> Você Consegue...
           </h1>
-          <ArrowDownOutlined class="text-bp_neutral-700" />
+          <v-icon name="hi-solid-arrow-down" scale="2.3" class="text-bp_neutral-700" />
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 md:gap-x-6 gap-y-3 md:gap-y-6 mt-20">
@@ -222,8 +226,8 @@ onMounted(() => {
           </div>
           <div class="space-y-3 w-2/3">
             <p class="font-bold text-2xl">Dúvidas</p>
-            <Input
-              class="border-bp_neutral-600 bg-bp_neutral-900 text-neutral-50 placeholder:text-bp_neutral-400"
+            <input
+              class="input input-bordered border-bp_neutral-600 bg-bp_neutral-900 text-neutral-50 placeholder:text-bp_neutral-400"
               placeholder="Mensagem..."
             />
             <div class="relative flex items-center">
@@ -235,12 +239,11 @@ onMounted(() => {
               />
             </div>
             <div class="flex justify-end">
-              <BpButton
-                class="w-40 bg-bp_neutral-700 hover:bg-bp_neutral-800"
-                type="primary"
-                size="small"
-                >Enviar</BpButton
+              <button
+                class="btn btn-ghost disabled:bg-[#E2E2E2] bg-bp_primary-400 hover:bg-bp_primary-600 active:bg-bp_primary-800 disabled:cursor-default disabled:bg-[#E2E2E2] disabled:text-[#ABABAB]"
               >
+                Enviar
+              </button>
             </div>
           </div>
         </div>

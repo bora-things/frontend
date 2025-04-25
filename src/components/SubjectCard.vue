@@ -1,5 +1,4 @@
 <script setup>
-import { ClockCircleOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 const props = defineProps(['classSubject', 'interest'])
 const { code, type, name, teacher, time, friendsInClass } = props.classSubject
@@ -33,11 +32,11 @@ const hiddenUsersCount = friendsInClass?.length - maxVisible || 0
     <div class="flex flex-col gap-2">
       <p>{{ name }}</p>
       <div v-if="!interest" class="flex gap-4 items-center">
-        <UserOutlined />
+        <v-icon name="fa-user-alt" class="text-white text-4xl" />
         <p>{{ teacher }}</p>
       </div>
       <div v-if="!interest" class="flex gap-4 items-center">
-        <ClockCircleOutlined />
+        <v-icon name="fa-regular-clock" />
         <p>{{ time }}</p>
       </div>
     </div>

@@ -4,7 +4,6 @@ import axios from 'axios'
 
 import ChatMessage from './ChatMessage.vue'
 import SimboraImg from '../SimboraImg.vue'
-import BpButton from '../BpButton.vue'
 
 const isChatOpened = ref(false)
 const messages = ref([])
@@ -181,15 +180,15 @@ async function sendMessage() {
             @keypress="handleKeyPress"
           >
           </textarea>
-          <BpButton
+          <button
             size="small"
-            class="w-10 p-0"
+            class="w-10 p-0 bg-blue-500 btn border-none text-white flex items-center justify-center"
             style="border-radius: 9999px !important"
             @click="sendMessage"
             :disabled="isAwaitingSimbora"
           >
-            <v-icon name="md-send" />
-          </BpButton>
+            <v-icon name="md-send"/>
+        </button>
         </div>
       </main>
     </div>

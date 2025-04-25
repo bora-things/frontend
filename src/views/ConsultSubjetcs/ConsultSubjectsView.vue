@@ -52,6 +52,7 @@ const clearFilters = () => {
       <p class="text-bp_neutral-50 text-3xl font-bold">consultar-disciplinas</p>
       <hr class="border-bp_neutral-700" />
       <div class="flex flex-col lg:flex-row lg:space-x-6">
+        
         <InputSearch
         @search="updateSearchQuery"
         v-model="searchQuery" class="w-full lg:w-2/3 mb-4 lg:mb-0" />

@@ -1,5 +1,4 @@
 <script setup>
-import BpButton from '@/components/BpButton.vue'
 import BpPagination from '@/components/BpPagination.vue'
 import InputSearch from '@/components/InputSearch.vue'
 import ListItemFriend from '@/components/ListItemFriend.vue'
@@ -71,10 +70,10 @@ const handleSearch = () => {
                 <option value="favorites">Favoritos</option>
               </select>
             </div>
-            <BpButton class="w-full lg:w-1/4">
+            <button class="btn btn-ghost py-2 bg-blue-500 w-full lg:w-1/4">
               <v-icon class="" name="md-personaddalt1-outlined" scale="1.5"></v-icon>
               Adicionar Amigo
-            </BpButton>
+            </button>
           </div>
         </div>
 

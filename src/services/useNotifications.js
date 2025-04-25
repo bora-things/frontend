@@ -5,7 +5,7 @@ export function useNotifications() {
 
   async function fetchNotifications() {
     try {
-      const response = await fetch('/src/mocks/NotificationsMockData.json')
+      const response = await fetch('/src/assets/mocks/NotificationsMockData.json')
       const data = await response.json()
       notifications.value = data
     } catch (error) {

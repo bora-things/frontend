@@ -5,7 +5,7 @@ export function useDashboardUser() {
 
   async function fetchUser() {
     try {
-      const response = await fetch('/src/mocks/UserMockData.json') // Caminho do mock
+      const response = await fetch('/src/assets/mocks/UserMockData.json') // Caminho do mock
       const data = await response.json()
       user.value = data
     } catch (error) {

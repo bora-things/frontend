@@ -1,8 +1,5 @@
 <script setup>
-import BadgeTag from '@/components/BadgeTag.vue'
-import { LoadingOutlined, UserOutlined, DoubleLeftOutlined } from '@ant-design/icons-vue'
 import { useLogout } from '@/services/useLogout'
-import { Button } from 'ant-design-vue'
 import { ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUser } from '@/services/useUser.js'
@@ -23,18 +20,18 @@ const { handleLogout } = useLogout()
     class="w-full h-auto flex justify-between items-center p-6 border-b border-bp_neutral-700"
   >
     <div class="flex items-center gap-10">
-      <Button
-        class="text-bp_neutral-400 w-11 h-11 flex items-center justify-center bg-transparent border border-bp_neutral-700 rounded-md"
+      <button
+        class="btn btn-ghost text-bp_neutral-400 w-11 h-11 flex items-center justify-center bg-transparent border border-bp_neutral-700 rounded-md"
         @click="handleMenuClick"
       >
         <v-icon name="md-menu-round" scale="1.5" />
-      </Button>
+      </button>
       <div class="flex gap-4 items-center">
         <h4 class="text-xl font-bold">Bora Pagar</h4>
       </div>
     </div>
     <nav
-      class="w-11/12 md:w-auto bg-neutral-950 z-[99] border-r-2 border-bp_neutral-700 fixed top-0 h-full transition-all ease-in-out duration-300"
+      class="w-11/12 md:w-auto bg-bp_neutral-950 z-[99] border-r-2 border-bp_neutral-700 fixed top-0 h-full transition-all ease-in-out duration-300"
       :class="{
         '-left-full': !isMenuOpen,
         'left-0': isMenuOpen
@@ -45,7 +42,7 @@ const { handleLogout } = useLogout()
           @click="handleMenuClick"
           class="absolute top-2 text-lg right-0 translate-x-1/2 bg-white text-black w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-bp_neutral-700 hover:text-white transition-all ease-in-out duration-300"
         >
-          <DoubleLeftOutlined />
+           <v-icon name="fa-angle-double-left" scale="1.5" />
         </div>
         <div class="flex items-center justify-between">
           <div class="flex gap-3 items-center">
@@ -60,7 +57,7 @@ const { handleLogout } = useLogout()
                 v-else
                 class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-12 h-12"
               >
-                <UserOutlined class="text-white text-4xl" />
+                <v-icon name="fa-user-alt" class="text-white text-4xl" />
               </div>
               <div class="flex flex-col">
                 <span class="font-bold text-lg leading-none">{{ capitalizeText(user.name) }}</span>
@@ -75,11 +72,11 @@ const { handleLogout } = useLogout()
         </div>
         <div class="flex items-center gap-6 text-sm mt-7">
           <template v-if="user" class="flex flex-col">
-            <a-badge class="bg-bp_neutral-700 p-2 text-white rounded-lg">{{
+            <span class="badge bg-bp_neutral-700 p-2 text-white rounded-lg">{{
               capitalizeText(user.course_name)
-            }}</a-badge>
-            <a-badge class="bg-bp_neutral-700 p-2 text-white rounded-lg"
-              >{{ user.period }}º Período</a-badge
+            }}</span>
+            <span class="badge bg-bp_neutral-700 p-2 text-white rounded-lg"
+              >{{ user.period }}º Período</span
             >
           </template>
           <template v-else>
