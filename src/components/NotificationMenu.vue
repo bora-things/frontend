@@ -1,13 +1,30 @@
 <script setup>
-import { useNotifications } from '@/services/useNotifications'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const isNotificationMenuOpen = ref(false)
-const { notifications, handleUpdateNotificationStatus } = useNotifications()
 
 function handleNotificationMenuClick() {
   isNotificationMenuOpen.value = !isNotificationMenuOpen.value
 }
+
+const notifications = ref([])
+
+async function fetchNotifications() {
+  try {
+    const response = await fetch('/src/assets/mocks/NotificationsMockData.json')
+    const data = await response.json()
+    notifications.value = data
+  } catch (error) {
+    console.error('Error fetching notifications:', error)
+  }
+}
+
+async function handleUpdateNotificationStatus(notification, status) {
+  //Irá realizar um update no status da notificação
+  notifications.value = notifications.value.filter((item) => item.id !== notification.id)
+}
+
+onMounted(fetchNotifications)
 
 function getNotificationCreateDate(date) {
   const now = new Date()
@@ -36,7 +53,10 @@ function getNotificationCreateDate(date) {
 <template>
   <div class="flex justify-end z-50">
     <button class="relative bg-transparent" @click="handleNotificationMenuClick">
-      <div class="bottom-1 right-0 w-2 h-2 bg-red-500 absolute rounded-full" v-if="notifications.length > 0"></div>
+      <div
+        class="bottom-1 right-0 w-2 h-2 bg-red-500 absolute rounded-full"
+        v-if="notifications.length > 0"
+      ></div>
       <v-icon name="md-notifications" scale="1.5" />
     </button>
     <div

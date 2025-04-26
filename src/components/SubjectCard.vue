@@ -44,7 +44,8 @@ const hiddenUsersCount = friendsInClass?.length - maxVisible || 0
       <span class="text-sm font-semibold" v-if="interest">Amigos também interessados:</span>
       <span class="text-sm font-semibold" v-if="!interest">Amigos na turma:</span>
       <div class="flex gap-4 items-center ">
-        <a-avatar-group>
+        <!-- Trocar isso para usar daisy -->
+        <!-- <a-avatar-group>
           <a-tooltip
             v-for="user in visibleUsers"
             :key="user.id"
@@ -64,7 +65,7 @@ const hiddenUsersCount = friendsInClass?.length - maxVisible || 0
           <a-avatar v-if="hiddenUsersCount > 0" style="background-color: #f56a00">
             +{{ hiddenUsersCount }}
           </a-avatar>
-        </a-avatar-group>
+        </a-avatar-group> -->
       </div>
     </div>
   </div>

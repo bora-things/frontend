@@ -2,10 +2,20 @@
 import PeriodCard from '@/components/PeriodCard.vue'
 import RadialProgress from '@/components/RadialProgress.vue'
 import SubjectCard from '@/components/SubjectCard.vue'
-import { useDashboardUser } from '@/services/useDashboardUser'
 import { onMounted, ref } from 'vue'
 
-const { user, fetchUser } = useDashboardUser()
+const user = ref(null)
+
+async function fetchUser() {
+  try {
+    const response = await fetch('/src/assets/mocks/UserMockData.json') // Caminho do mock
+    const data = await response.json()
+    user.value = data
+  } catch (error) {
+    console.error('Erro ao buscar dados do usuário:', error)
+  }
+}
+
 const periods = ref([])
 const workload = ref({})
 const lastPeriod = ref({})
@@ -52,7 +62,11 @@ onMounted(async () => {
 
         <div class="w-full flex flex-col md:flex-row items-start justify-between gap-6 mt-8">
           <div class="w-full md:w-3/5 flex flex-col gap-6">
-            <PeriodCard v-for="period in periods.sort((a,b)=>b.periodNumber-a.periodNumber)" :key="period.periodNumber" :period="period" />
+            <PeriodCard
+              v-for="period in periods.sort((a, b) => b.periodNumber - a.periodNumber)"
+              :key="period.periodNumber"
+              :period="period"
+            />
           </div>
 
           <aside class="w-full md:w-2/5 lg:w-1/3">
@@ -64,8 +78,10 @@ onMounted(async () => {
 
               <RadialProgress
                 :progress="
-                  ((100 * workload.mandatoryPending + workload.optionalPending) /
-                  workload.totalCourse).toFixed(1)
+                  (
+                    (100 * workload.mandatoryPending + workload.optionalPending) /
+                    workload.totalCourse
+                  ).toFixed(1)
                 "
               />
 

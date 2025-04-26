@@ -1,18 +1,35 @@
 <script setup>
-import { useLogout } from '@/services/useLogout'
-import { ref, watch } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useUser } from '@/services/useUser.js'
-import NotificationMenu from './NotificationMenu.vue'
+import api from '@/config/axios.config'
 import { capitalizeText } from '@/utils/capitalizeText.js'
+import { onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import NotificationMenu from './NotificationMenu.vue'
 const isMenuOpen = ref(false)
 
 function handleMenuClick() {
   isMenuOpen.value = !isMenuOpen.value
 }
-const { user, fetchUser } = useUser()
-const { handleLogout } = useLogout()
 
+async function handleLogout() {
+  const logoutLink = import.meta.env.VITE_API_URL + '/logout'
+  window.location.href = logoutLink
+}
+
+const user = ref(null)
+
+async function fetchUser() {
+  try {
+    const response = await api.get('/api/students/me') 
+    const data = await response.data
+    user.value = data
+  } catch (error) {
+    console.error('Erro ao buscar dados do usuário:', error)
+  }
+}
+
+onMounted(() => {
+  fetchUser()
+})
 </script>
 
 <template>
@@ -42,7 +59,7 @@ const { handleLogout } = useLogout()
           @click="handleMenuClick"
           class="absolute top-2 text-lg right-0 translate-x-1/2 bg-white text-black w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-bp_neutral-700 hover:text-white transition-all ease-in-out duration-300"
         >
-           <v-icon name="fa-angle-double-left" scale="1.5" />
+          <v-icon name="fa-angle-double-left" scale="1.5" />
         </div>
         <div class="flex items-center justify-between">
           <div class="flex gap-3 items-center">
