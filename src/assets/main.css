@@ -27,7 +27,7 @@
     background-color: #22c55e; /* bp_green-400 */
   }
   .card-options {
-    @apply bg-bp_neutral-800 text-bp_neutral-50  border border-bp_neutral-600 rounded-md p-2;
+    @apply bg-transparent text-bp_neutral-50  border border-bp_neutral-600 rounded-md py-1 px-2;
   }
 
   .card-profile {
