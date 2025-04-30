@@ -1,5 +1,5 @@
 <script>
-import { h, ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import { useToast } from 'vue-toast-notification'
 import { getDefaultSubjects, saveInterestedSubjects } from './InterestedSubjectsController'

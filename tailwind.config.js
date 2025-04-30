@@ -10,6 +10,10 @@ export default {
   theme: {
     extend: {
       colors: {
+        "bp_white":{
+          50:"#FFFFFF",
+          100:"#FEFEFE",
+        },
         "bp_primary": {
           400: "#42A1FF", // Main Color
           50: "#E3F1FF",
@@ -44,11 +48,14 @@ export default {
         "bp_green": {
           100: "#6AE156",
           400: "#33D160",
-          500: "#24A148"
+          500: "#01D600"
         },
         "bp_yellow": {
           100: "#D9B655",
           200: "#A38D50"
+        },
+        "bp_red":{
+          200:"#F80052"
         },
         "vtd-primary": colors.sky, // Light mode Datepicker color
         "vtd-secondary": {

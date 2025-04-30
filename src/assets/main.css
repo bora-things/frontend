@@ -89,6 +89,11 @@
   background: #777;
 }
 
+::-webkit-scrollbar-button {
+  height: 0;
+  width: 0
+}
+
 .ant-modal{ 
   @apply !pb-0
 }
