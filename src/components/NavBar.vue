@@ -4,23 +4,13 @@ import { capitalizeText } from '@/utils/capitalizeText.js'
 import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import NotificationMenu from './NotificationMenu.vue'
-import CardAd from '@/components/CardAd.vue'
-import PersonalizedCalendar from '@/components/PersonalizedCalendar.vue'
+import CardAd from './CardAd.vue'
+import PersonalizedCalendar from './PersonalizedCalendar.vue'
 
 const isMenuOpen = ref(false)
-const isCalendarOpen = ref(false)
-const isCardAdOpen = ref(false)
 
 function handleMenuClick() {
   isMenuOpen.value = !isMenuOpen.value
-}
-
-function handleCalendarClick() {
-  isCalendarOpen.value = !isCalendarOpen.value
-}
-
-function handleCardAdClick() {
-  isCardAdOpen.value = !isCardAdOpen.value
 }
 
 async function handleLogout() {
@@ -59,20 +49,12 @@ onMounted(() => {
       <div class="flex gap-4 items-center">
         <h4 class="text-xl font-bold">Bora Pagar</h4>
       </div>
-      <div class="bg-bp_neutral-900 px-4 py-2 rounded-3xl space-x-2">
-        <v-icon class="bg-bp_neutral-800 rounded-full p-2" 
-          name="md-notificationsnone-outlined" scale="1.8"
-          @click="handleCardAdClick"
-          ></v-icon>
-        <v-icon class="bg-bp_neutral-800 rounded-full p-2" 
-          name="md-groupadd-outlined" scale="1.8"
-          
-          ></v-icon>
-        <v-icon class="bg-bp_neutral-800 rounded-full p-2" 
-          name="md-calendartoday-round" scale="1.8"
-          @click="handleCalendarClick"
-        ></v-icon>
-        <PersonalizedCalendar v-if="isCalendarOpen"/>
+      <div class="relative z-50">
+        <div class="flex bg-bp_neutral-900 px-4 py-2 rounded-3xl gap-2 items-center">
+          <CardAd/>
+          <NotificationMenu/>
+          <PersonalizedCalendar/>
+        </div>
       </div>
     </div>
     <nav
@@ -164,6 +146,5 @@ onMounted(() => {
         </div>
       </div>
     </nav>
-    <NotificationMenu />
   </header>
 </template>
