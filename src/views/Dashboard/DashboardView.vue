@@ -4,6 +4,7 @@ import SubjectCard from '@/components/SubjectCard.vue'
 import SubjectCardEC from '@/components/SubjectCardEC.vue'
 import api from '@/config/axios.config'
 import { computed, onMounted, ref, watch } from 'vue'
+import { VueDraggableNext } from 'vue-draggable-next'
 
 const classes = ref(null)
 const selectedClasses = ref([])
@@ -41,6 +42,15 @@ const selectedPeriod = ref('')
 const componentType = ref('TODAS')
 
 function selectPeriod(period) {
+  if (period == 'new') {
+    selectedClasses.value = []
+    const lastPeriod = periods.value[periods.value.length - 1]
+    const newPeriod = lastPeriod.periodo == 1 ? 2 : 1
+    const newYear = lastPeriod.periodo == 2 ? Number(lastPeriod.ano) + 1 : lastPeriod.ano
+    periods.value.push({ ano: newYear, periodo: newPeriod })
+    selectedPeriod.value = newYear + '-' + newPeriod
+    return
+  }
   selectedPeriod.value = period
   const periodClasses = classes.value[period]
   selectedClasses.value = periodClasses ? periodClasses.map((item) => ({ ...item })) : []
@@ -73,11 +83,6 @@ async function fetchClasses() {
 onMounted(async () => {
   await fetchClasses()
 })
-
-const clearFilters = () => {
-  searchQuery.value = ''
-  selectedPeriod.value = 'Periodo'
-}
 
 const selectedPeriodWorkload = computed(() =>
   selectedClasses.value.reduce(
@@ -115,8 +120,11 @@ function toggleComponentType(type) {
       <header class="flex items-center justify-between pb-4">
         <div class="flex flex-col items-start">
           <div class="flex flex-col">
-            <span class="text-sm text-vtd-secondary-100">Escolha seu periodo</span>
-            <select @change="selectPeriod($event.target.value)" class="bg-bp_neutral-800 title-h1">
+            <select
+              @change="selectPeriod($event.target.value)"
+              v-model="selectedPeriod"
+              class="bg-bp_neutral-800 title-h1"
+            >
               <option
                 v-for="(period, index) in periods"
                 :key="index"
@@ -125,6 +133,7 @@ function toggleComponentType(type) {
               >
                 {{ index + 1 }}º Período
               </option>
+              <option value="new" class="text-vtd-secondary-100">Novo Período</option>
             </select>
           </div>
           <span class="text-vtd-secondary-100">{{ selectedPeriod.replace('-', '.') }}</span>
@@ -140,7 +149,11 @@ function toggleComponentType(type) {
         </div>
       </header>
 
-      <section class="grid md:grid-cols-3 bg-[#2F2F2F] rounded-md gap-4 p-4" :key="selectedPeriod">
+      <section
+        v-if="selectedClasses.length > 0"
+        class="grid md:grid-cols-3 bg-[#1F1F1F] rounded-md gap-4 p-4"
+        :key="selectedPeriod"
+      >
         <SubjectCard
           v-for="item in selectedClasses"
           :key="item.code"
@@ -148,7 +161,27 @@ function toggleComponentType(type) {
           :classSubject="item"
         />
       </section>
-      <div class="flex flex-col  mt-6">
+      <VueDraggableNext
+        v-else
+        id="subjects"
+        :animation="800"
+        class="grid md:grid-cols-3 bg-[#1F1F1F] rounded-md gap-4 p-4"
+        group="subjects"
+        @end="handleMove"
+        key="semester"
+      >
+        <div
+          v-for="item in [1, 2, 3]"
+          class="bg-bp_grayscale-800 w-full h-[160px] rounded-md flex flex-col items-center gap-4 p-4 text-vtd-secondary-100 border border-dashed border-[3px] border-bp_grayscale-600"
+        >
+          <v-icon name="bi-plus-circle" scale="2.6" class="text-bp_grayscale-600"></v-icon>
+          <div class="flex flex-col gap-2 items-center font-medium">
+            <span>ARRASTE PARA ADICIONAR</span>
+            <span>NOVAS MATÉRIAS</span>
+          </div>
+        </div>
+      </VueDraggableNext>
+      <div class="flex flex-col mt-6">
         <div class="flex items-center justify-between lg:flex-row gap-3 p-2">
           <div class="flex flex-col md:flex-row md:justify-between items-center gap-5">
             <p class="title-h1">Estrutura Curricular</p>
@@ -185,8 +218,13 @@ function toggleComponentType(type) {
           </div>
         </div>
 
-        <section
-          class="max-w-full my-6 grid grid-cols-1 place-items-center sm:place-items-start sm:grid-cols-2 lg:grid-cols-3 gap-2 bg-[#2F2F2F] p-4"
+        <VueDraggableNext
+          id="subjects"
+          :animation="800"
+          class="grid md:grid-cols-3 bg-[#1F1F1F] rounded-md gap-4 p-4"
+          group="subjects"
+          @end="handleMove"
+          key="semester"
         >
           <SubjectCardEC
             class="w-full"
@@ -194,7 +232,7 @@ function toggleComponentType(type) {
             :key="component.code"
             :component="component"
           />
-        </section>
+        </VueDraggableNext>
       </div>
     </main>
   </div>

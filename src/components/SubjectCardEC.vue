@@ -1,13 +1,6 @@
 <script setup>
 const props = defineProps(['component'])
 
-const formatUserName = (name) => {
-  const nameParts = name.split(' ')
-  const firstName = name.split(' ')[0]
-  const lastName = name.split(' ')[nameParts.length - 1]
-
-  return `${firstName} ${lastName}`
-}
 </script>
 
 <template>
