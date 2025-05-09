@@ -16,12 +16,17 @@ const formatUserName = (name) => {
 </script>
 
 <template>
-  <div class="bg-[#020202] w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100">
-    <p>{{ component.nome }}</p>
+  <div
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100"
+  >
+    <p class="font-sans font-medium">{{ component.nome }}</p>
     <div class="flex justify-between items-end">
       <div>
         <div v-if="visibleUsers.length > 0" class="flex gap-2 items-center">
-          <div v-for="friend in visibleUsers" className="tooltip tooltip-info rounded-full tooltip-bottom ">
+          <div
+            v-for="friend in visibleUsers"
+            className="tooltip tooltip-info rounded-full tooltip-bottom "
+          >
             <div className="tooltip-content text-xs ">
               <div className="text-white">
                 <span>{{ formatUserName(friend.name) }}</span>
@@ -32,30 +37,29 @@ const formatUserName = (name) => {
             </div>
           </div>
           <div
-          v-if="hiddenUsersCount > 0"
+            v-if="hiddenUsersCount > 0"
             class="w-10 h-10 rounded-full bg-[#fdfdfd] flex items-center justify-center text-black"
           >
             +{{ hiddenUsersCount }}
           </div>
         </div>
-        <div v-else class="border p-2 rounded-box text-xs border-dotted border-white">
-          <span>SEM AMIGOS AQUI {{ ':(' }}</span>
-        </div>
       </div>
-      <div class="flex flex-col gap-2 items-end ">
-        <span class="badge bg-transparent border text-vtd-secondary-100">{{
-          component.codigo
-        }}</span>
+      <div class="flex flex-col gap-2 items-end">
+        <span
+          class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+          >{{ component.codigo }}</span
+        >
         <div class="flex gap-2">
           <span
             :class="[
-              'badge border-none text-vtd-secondary-100',
-              component.obrigatoria ? 'bg-bp_green-600' : 'bg-sky-600'
+              'font-sans badge text-vtd-secondary-100 bg-transparent border',
+              component.obrigatoria ? 'border-bp_green-600' : 'border-sky-600'
             ]"
             >{{ component.obrigatoria ? 'OBRIGATÓRIO' : 'OPTATIVO' }}</span
           >
-          <span class="badge bg-transparent border text-vtd-secondary-100"
-            >{{ component['carga-horaria-total'] }}h</span
+          <span
+            class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100">
+            {{ component['carga-horaria-total'] }}H</span
           >
         </div>
       </div>

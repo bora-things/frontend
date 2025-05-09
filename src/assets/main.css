@@ -4,9 +4,10 @@
 @plugin daisyui;
 
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   scroll-behavior: smooth
 }
+
 
 @layer components {
   .menu-item {

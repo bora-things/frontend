@@ -1,5 +1,4 @@
 <script setup>
-import InputSearch from '@/components/InputSearch.vue'
 import SubjectCard from '@/components/SubjectCard.vue'
 import SubjectCardEC from '@/components/SubjectCardEC.vue'
 import api from '@/config/axios.config'
@@ -9,6 +8,7 @@ import { VueDraggableNext } from 'vue-draggable-next'
 const classes = ref(null)
 const selectedClasses = ref([])
 const periods = ref([])
+const interestedClasses = ref([])
 const components = ref([
   {
     nome: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
@@ -19,23 +19,29 @@ const components = ref([
   {
     nome: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
     'carga-horaria-total': 90,
-    codigo: 'IMD0024',
+    codigo: 'IMD0025',
     obrigatoria: true
   },
   {
     nome: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
     'carga-horaria-total': 90,
-    codigo: 'IMD0024',
+    codigo: 'IMD0026',
     obrigatoria: true
   },
   {
     nome: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
     'carga-horaria-total': 90,
-    codigo: 'IMD0024',
+    codigo: 'IMD0027',
     obrigatoria: true
   }
 ])
 const componentsFiltered = ref([...components.value])
+
+watch(components, (newValue) => {
+  componentsFiltered.value = newValue
+})
+
+
 const searchQuery = ref('')
 const selectedPeriod = ref('')
 
@@ -80,16 +86,48 @@ async function fetchClasses() {
   }
 }
 
+function onDragEnd(event) {
+  const draggedItemCode = event.item.id
+  const fromSection = event.from.id
+  const toSection = event.to.id
+
+  if (fromSection == 'components' && toSection == 'interested-classes') {
+    const draggedComponent = componentsFiltered.value.find((item) => item.codigo === draggedItemCode)
+    if (draggedComponent) {
+      interestedClasses.value.push(draggedComponent)
+      components.value = components.value.filter(
+        (item) => item.codigo !== draggedItemCode
+      )
+    }
+  } else if (fromSection == 'interested-classes' && toSection == 'components') {
+    const draggedComponent = interestedClasses.value.find((item) => item.codigo === draggedItemCode)
+    if (draggedComponent) {
+      components.value.push(draggedComponent)
+      interestedClasses.value = components.value.filter(
+        (item) => item.codigo !== draggedItemCode
+      )
+    }
+  }
+}
+
 onMounted(async () => {
   await fetchClasses()
 })
 
-const selectedPeriodWorkload = computed(() =>
-  selectedClasses.value.reduce(
-    (acc, item) => acc + (item.component?.['carga-horaria-total'] || 0),
-    0
-  )
-)
+const selectedPeriodWorkload = computed(() => {
+  if (!selectedClasses.value.length) {
+
+    return interestedClasses.value.reduce(
+      (acc, item) => acc + (item['carga-horaria-total'] || 0),
+      0
+    )
+  } else {
+    return selectedClasses.value.reduce(
+      (acc, item) => acc + (item['carga-horaria-total'] || 0),
+      0
+    )
+  }
+})
 
 watch(
   () => componentType.value,
@@ -115,125 +153,181 @@ function toggleComponentType(type) {
 </script>
 
 <template>
-  <div class="h-full w-full">
-    <main class="h-full container mx-auto p-6 xl:max-w-7xl">
-      <header class="flex items-center justify-between pb-4">
-        <div class="flex flex-col items-start">
-          <div class="flex flex-col">
-            <select
-              @change="selectPeriod($event.target.value)"
-              v-model="selectedPeriod"
-              class="bg-bp_neutral-800 title-h1"
+  <main class="h-full container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
+    <header class="flex items-center justify-between pb-4">
+      <div class="flex flex-col items-start">
+        <div class="flex flex-col">
+          <div className="dropdown dropdown-hover">
+            <div
+              tabIndex="{0}"
+              role="button"
+              className=" m-1 title-h1 p-0 flex items-center gap-2 "
             >
-              <option
+              {{
+                periods.findIndex(
+                  (item) =>
+                    item.ano == selectedPeriod.split('-')[0] &&
+                    item.periodo == selectedPeriod.split('-')[1]
+                ) + 1
+              }}º Período
+              <v-icon name="bi-chevron-down" scale="1.2"></v-icon>
+            </div>
+            <ul
+              tabIndex="{0}"
+              className="title-h2 dropdown-content menu bg-bp_grayscale-600 rounded-box z-1 w-52 p-2 shadow-sm gap-1"
+            >
+              <li
+                :class="[
+                  'hover:bg-bp_grayscale-700 p-2 rounded-md cursor-pointer',
+                  selectedPeriod == `${period.ano}-${period.periodo}` ? 'bg-bp_grayscale-700' : ''
+                ]"
                 v-for="(period, index) in periods"
                 :key="index"
-                :value="`${period.ano}-${period.periodo}`"
-                class="text-vtd-secondary-100"
+                @click="selectPeriod(`${period.ano}-${period.periodo}`)"
               >
                 {{ index + 1 }}º Período
-              </option>
-              <option value="new" class="text-vtd-secondary-100">Novo Período</option>
-            </select>
+              </li>
+              <li
+                class="hover:bg-bp_grayscale-700 p-2 rounded-md cursor-pointer"
+                @click="selectPeriod('new')"
+              >
+                Novo Período
+              </li>
+            </ul>
           </div>
-          <span class="text-vtd-secondary-100">{{ selectedPeriod.replace('-', '.') }}</span>
         </div>
+        <span class="font-sans text-vtd-secondary-100">{{ selectedPeriod.replace('-', '.') }}</span>
+      </div>
 
-        <div className="tooltip">
-          <div className="tooltip-content text-xl tooltip-error tooltip-bottom">
-            <div className="text-white ">
-              <span>Limite alcançado</span>
-            </div>
+      <div className="tooltip">
+        <div className="tooltip-content text-xl tooltip-error tooltip-bottom">
+          <div className="text-white ">
+            <span>Limite alcançado</span>
           </div>
-          <span class="title-h2"> {{ selectedPeriodWorkload }}h </span>
         </div>
-      </header>
+        <span class="title-h2"> {{ selectedPeriodWorkload }}h </span>
+      </div>
+    </header>
 
-      <section
-        v-if="selectedClasses.length > 0"
-        class="grid md:grid-cols-3 bg-[#1F1F1F] rounded-md gap-4 p-4"
-        :key="selectedPeriod"
+    <section
+      v-if="selectedClasses.length > 0"
+      class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
+      :key="selectedPeriod"
+    >
+      <SubjectCard
+        v-for="item in selectedClasses"
+        :key="item.code"
+        class="w-full"
+        :classSubject="item"
+      />
+    </section>
+    <VueDraggableNext
+      v-else
+      id="interested-classes"
+      :animation="800"
+      class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
+      :list="interestedClasses"
+      group="subjects"
+      key="semester"
+    >
+      <div
+        v-if="interestedClasses.length == 0"
+        v-for="_ in [1, 2, 3]"
+        class="bg-bp_grayscale-800 w-full h-[160px] rounded-md flex flex-col items-center gap-4 p-4 text-vtd-secondary-100 border border-dashed border-[3px] border-bp_grayscale-500"
       >
-        <SubjectCard
-          v-for="item in selectedClasses"
-          :key="item.code"
-          class="w-full"
-          :classSubject="item"
-        />
-      </section>
-      <VueDraggableNext
+        <v-icon name="bi-plus-circle" scale="2.6" class="text-bp_grayscale-500"></v-icon>
+        <div class="flex flex-col items-center">
+          <span class="font-span font-medium">ARRASTE PARA ADICIONAR</span>
+          <span class="font-span font-medium">NOVAS MATÉRIAS</span>
+        </div>
+      </div>
+      <SubjectCardEC
         v-else
-        id="subjects"
+        v-for="component in interestedClasses"
+        :key="component.codigo"
+        class="w-full"
+        :component="component"
+        :period="selectedPeriod"
+      />
+    </VueDraggableNext>
+    <hr class="my-6 border-bp_grayscale-700" />
+    <div class="flex flex-col flex-1">
+      <div class="flex items-center justify-between w-full lg:flex-row gap-3">
+        <div class="flex flex-col md:flex-row md:justify-between items-center gap-5">
+          <p class="text-3xl font-bold">Disciplinas</p>
+        </div>
+        <div
+          class="flex justify-between items-center space-x-4 p-2 rounded-xl bg-bp_neutral-700 w-[80%]"
+        >
+          <label
+            className="input bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 p-2 w-[50%]"
+          >
+            <input
+              type="search"
+              placeholder="Buscar com IA"
+              class="text-bp_grayscale-400 font-sans"
+            />
+            <v-icon
+              name="bi-stars"
+              scale="1.2"
+              class="hover:animate-twinkle cursor-pointer"
+            ></v-icon>
+          </label>
+          <div
+            class="flex items-center space-x-2 bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md p-2"
+          >
+            <label
+              className="bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 w-[60%] pr-2"
+            >
+              <input
+                type="search"
+                placeholder="Buscar por código"
+                class="pl-2 text-sm py-1 text-bp_grayscale-400 rounded-3xl bg-transparent font-sans focus:outline-none"
+              />
+              <v-icon
+                name="bi-search"
+                class="hover:scale-[1.1] cursor-pointer duration-300"
+              ></v-icon>
+            </label>
+            <button
+              :class="[
+                'badge text-white py-2 bg-transparent rounded-xl border border-bp_green-600',
+                componentType === 'OBRIGATORIO' ? 'bg-bp_green-600' : ''
+              ]"
+              @click="toggleComponentType('OBRIGATORIO')"
+            >
+              Obrigatório
+            </button>
+            <button
+              :class="[
+                'badge text-white py-2 bg-transparent rounded-xl border border-bp_primary-600',
+                componentType === 'OPTATIVO' ? 'bg-bp_primary-600' : ''
+              ]"
+              @click="toggleComponentType('OPTATIVO')"
+            >
+              Optativo
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <VueDraggableNext
+        id="components"
         :animation="800"
-        class="grid md:grid-cols-3 bg-[#1F1F1F] rounded-md gap-4 p-4"
+        :list="componentsFiltered"
+        class="grid md:grid-cols-3 md:grid-rows-3 bg-bp_grayscale-600 rounded-md gap-4 p-4 flex-1"
         group="subjects"
-        @end="handleMove"
+        @end="onDragEnd"
         key="semester"
       >
-        <div
-          v-for="item in [1, 2, 3]"
-          class="bg-bp_grayscale-800 w-full h-[160px] rounded-md flex flex-col items-center gap-4 p-4 text-vtd-secondary-100 border border-dashed border-[3px] border-bp_grayscale-600"
-        >
-          <v-icon name="bi-plus-circle" scale="2.6" class="text-bp_grayscale-600"></v-icon>
-          <div class="flex flex-col gap-2 items-center font-medium">
-            <span>ARRASTE PARA ADICIONAR</span>
-            <span>NOVAS MATÉRIAS</span>
-          </div>
-        </div>
+        <SubjectCardEC
+          class="w-full"
+          v-for="component in componentsFiltered"
+          :key="component.code"
+          :component="component"
+          :period="selectedPeriod"
+        />
       </VueDraggableNext>
-      <div class="flex flex-col mt-6">
-        <div class="flex items-center justify-between lg:flex-row gap-3 p-2">
-          <div class="flex flex-col md:flex-row md:justify-between items-center gap-5">
-            <p class="title-h1">Estrutura Curricular</p>
-            <InputSearch
-              @search="updateSearchQuery"
-              v-model="searchQuery"
-              class=""
-              placeholder="Pesquisar matérias"
-            />
-          </div>
-          <div class="flex justify-end space-x-4 p-2 rounded-xl bg-bp_neutral-700 w-fit h-fit">
-            <div class="flex items-center space-x-2">
-              <button
-                :class="[
-                  'card-options rounded-xl border border-bp_green-600',
-                  componentType === 'OBRIGATORIO' ? 'bg-bp_green-600' : ''
-                ]"
-                @click="toggleComponentType('OBRIGATORIO')"
-              >
-                Obrigatório
-              </button>
-            </div>
-            <div class="flex items-center space-x-2">
-              <button
-                :class="[
-                  'card-options rounded-xl border border-bp_primary-500',
-                  componentType === 'OPTATIVO' ? 'bg-bp_primary-500' : ''
-                ]"
-                @click="toggleComponentType('OPTATIVO')"
-              >
-                Optativo
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <VueDraggableNext
-          id="subjects"
-          :animation="800"
-          class="grid md:grid-cols-3 bg-[#1F1F1F] rounded-md gap-4 p-4"
-          group="subjects"
-          @end="handleMove"
-          key="semester"
-        >
-          <SubjectCardEC
-            class="w-full"
-            v-for="component in componentsFiltered"
-            :key="component.code"
-            :component="component"
-          />
-        </VueDraggableNext>
-      </div>
-    </main>
-  </div>
+    </div>
+  </main>
 </template>

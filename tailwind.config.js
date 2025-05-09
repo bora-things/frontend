@@ -9,9 +9,15 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
       colors: {
         "bp_grayscale":{
-          600:"#505050",
+          400:"#999999",
+          500:"#505050",
+          600:"#1F1F1F",
+          700:"#323232",
           800:"#1A1A1A"
         },
         "bp_primary": {
@@ -71,8 +77,17 @@ export default {
       },
       fontSize: {
         xxs: '0.5rem',
-      }
       },
+      keyframes: {
+        twinkle: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.5', transform: 'scale(1.2)' },
+        },
+      },
+      animation: {
+        twinkle: 'twinkle 1.2s ease-in-out infinite',
+      },
+    }
     },
   plugins: [
     daisyui
