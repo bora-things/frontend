@@ -37,23 +37,34 @@ onMounted(() => {
 
 <template>
   <header
-    class="w-full h-auto flex justify-between items-center p-6 border-b border-bp_neutral-700"
+    class="w-full h-auto flex items-center p-6 border-b border-bp_neutral-700 gap-2"
   >
-  <button
+    <button
         class="btn btn-ghost text-bp_neutral-400 w-11 h-11 flex items-center justify-center bg-transparent border border-bp_neutral-700 rounded-md"
         @click="handleMenuClick"
       >
         <v-icon name="md-menu-round" scale="1.5" />
-      </button>
-    <div class="flex justify-between items-center gap-10 rounded-xl ">
+    </button>
+
+    <div class="flex justify-between items-center w-full xl:max-w-7xl mx-auto pr-8">
       <div class="flex gap-4 items-center">
-        <h4 class="text-xl font-bold">Bora Pagar</h4>
+        <h4 class="text-xl font-bold">Boa Tarde, Natálya</h4>
       </div>
-      <div class="relative z-50">
-        <div class="flex bg-bp_neutral-900 px-4 py-2 rounded-3xl gap-2 items-center">
-          <CardAd/>
-          <NotificationMenu/>
-          <PersonalizedCalendar/>
+
+      <div class="flex items-center">
+        <div>
+          <button class="flex items-center bg-bp_neutral-800 border-2 border-bp_green-500 rounded-lg shadow shadow-bp_green-100 py-1 px-2">
+            <v-icon name="gi-diamonds" scale="1.2"/>Fale com o Simbora</button>
+        </div>
+        <div class="relative z-50">
+          <div class="flex px-4 py-2 rounded-3xl gap-2 items-center">
+            <CardAd/>
+            <NotificationMenu/>
+            <PersonalizedCalendar/>
+          </div>
+        </div>
+        <div>
+
         </div>
       </div>
     </div>

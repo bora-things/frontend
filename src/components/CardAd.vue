@@ -26,17 +26,17 @@ onMounted(() => {
 
 <template>
     <div class="flex justify-end">
-        <button class="relative bg-transparent" @click="handleCardAdClick">
+        <button class="relative bg-bp_neutral-800 border border-bp_neutral-600 rounded-full w-12 h-12" @click="handleCardAdClick">
         <div
-            class="top-1 right-0 w-2 h-2 bg-bp_green-100 absolute rounded-full"
+            class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"
         ></div>
-        <v-icon class="bg-bp_neutral-800 rounded-full p-2" 
+        <v-icon class="p-1" 
             name="md-notificationsnone-outlined" scale="1.8"
             ></v-icon>
         </button>
         <div 
         v-if="isCardAdOpen" 
-        class="absolute right-3 bg-bp_neutral-700 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
+        class="absolute right-3 bg-bp_neutral-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
         >
             <header class="flex justify-between items-center mb-4">
                 <p class="title-h1">Anúncios</p>
@@ -55,8 +55,8 @@ onMounted(() => {
                 :key="advertisement.id"
                 class="text-white mb-2 flex flex-col"
                 >
-                <div class="flex items-center gap-2">
-                    <div class="bg-bp_neutral-900 rounded-xl border border-bp_neutral-600 p-2">
+                <div class="flex items-center gap-3">
+                    <div class="bg-bp_neutral-900 rounded-xl p-2">
                         <v-icon name="md-notificationsnone-outlined" scale="1.5"></v-icon>
                     </div>
                     <div>

@@ -52,19 +52,19 @@ function getNotificationCreateDate(date) {
 
 <template>
   <div class="flex justify-end">
-    <button class="relative bg-transparent" @click="handleNotificationMenuClick">
+    <button class="relative bg-bp_neutral-800 border border-bp_neutral-600 rounded-full w-12 h-12" @click="handleNotificationMenuClick">
       <div
-        class="top-1 right-0 w-2 h-2 bg-bp_green-100 absolute rounded-full"
+        class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"
         v-if="notifications.length > 0"
       ></div>
-      <v-icon class="bg-bp_neutral-800 rounded-full p-2" 
-          name="md-groupadd-outlined" scale="1.8"
+      <v-icon class="p-2" 
+          name="md-groupadd-outlined" scale="2"
           
           ></v-icon>
     </button>
     <div
       v-if="isNotificationMenuOpen"
-      class="absolute right-3 bg-bp_neutral-700 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
+      class="absolute right-3 bg-bp_neutral-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
       <div class="border-b border-bp_neutral-500 mb-4 pb-2 flex justify-between items-center">
         <div class="flex items-center gap-2">

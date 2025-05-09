@@ -23,25 +23,25 @@ async function fetchEnrollmentDates() {
 
 <template>
 <div class="flex justify-end">
-    <button class="relative bg-transparent" @click="handleCalendarClick">
+    <button class="relative bg-bp_neutral-800 border border-bp_neutral-600 rounded-full w-12 h-12" @click="handleCalendarClick">
         <div
-            class="top-1 right-0 w-2 h-2 bg-bp_green-100 absolute rounded-full"
+            class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"
         ></div>
-        <v-icon class="bg-bp_neutral-800 rounded-full p-2" 
-            name="md-calendartoday-round" scale="1.8"
+        <v-icon class="p-2" 
+            name="md-calendartoday-round" scale="2"
             ></v-icon>
     </button>
 
     <div 
     v-if="isCalendarOpen"
-    class="absolute right-3 bg-bp_neutral-700 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
+    class="absolute right-3 bg-bp_neutral-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
     <div class="flex justify-end">
         <button class="" @click="isCalendarOpen = false">
           <v-icon name="md-close" scale="1" />
         </button>
     </div>
-        <calendar-date class="text-lg cally bg-bp_neutral-700">
+        <calendar-date class="text-lg cally bg-bp_neutral-800">
             <svg aria-label="Previous" class="fill-current size-4" slot="previous" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M15.75 19.5 8.25 12l7.5-7.5"></path></svg>
             <svg aria-label="Next" class="fill-current size-4" slot="next" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg>
             <calendar-month></calendar-month>
