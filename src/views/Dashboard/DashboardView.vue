@@ -6,6 +6,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 
 const classes = ref(null)
+const loading = ref(true)
 const selectedClasses = ref([])
 const periods = ref([])
 const interestedClasses = ref([])
@@ -40,7 +41,6 @@ const componentsFiltered = ref([...components.value])
 watch(components, (newValue) => {
   componentsFiltered.value = newValue
 })
-
 
 const searchQuery = ref('')
 const selectedPeriod = ref('')
@@ -83,30 +83,8 @@ async function fetchClasses() {
     selectPeriod(periods.value[0].ano + '-' + periods.value[0].periodo)
   } catch (error) {
     console.error('Erro ao buscar dados do usuário:', error)
-  }
-}
-
-function onDragEnd(event) {
-  const draggedItemCode = event.item.id
-  const fromSection = event.from.id
-  const toSection = event.to.id
-
-  if (fromSection == 'components' && toSection == 'interested-classes') {
-    const draggedComponent = componentsFiltered.value.find((item) => item.codigo === draggedItemCode)
-    if (draggedComponent) {
-      interestedClasses.value.push(draggedComponent)
-      components.value = components.value.filter(
-        (item) => item.codigo !== draggedItemCode
-      )
-    }
-  } else if (fromSection == 'interested-classes' && toSection == 'components') {
-    const draggedComponent = interestedClasses.value.find((item) => item.codigo === draggedItemCode)
-    if (draggedComponent) {
-      components.value.push(draggedComponent)
-      interestedClasses.value = components.value.filter(
-        (item) => item.codigo !== draggedItemCode
-      )
-    }
+  } finally {
+    loading.value = false
   }
 }
 
@@ -116,14 +94,13 @@ onMounted(async () => {
 
 const selectedPeriodWorkload = computed(() => {
   if (!selectedClasses.value.length) {
-
     return interestedClasses.value.reduce(
       (acc, item) => acc + (item['carga-horaria-total'] || 0),
       0
     )
   } else {
     return selectedClasses.value.reduce(
-      (acc, item) => acc + (item['carga-horaria-total'] || 0),
+      (acc, item) => acc + (item.component['carga-horaria-total'] || 0),
       0
     )
   }
@@ -132,7 +109,6 @@ const selectedPeriodWorkload = computed(() => {
 watch(
   () => componentType.value,
   (newValue) => {
-    console.log(components.value)
     if (newValue === 'OBRIGATORIO') {
       componentsFiltered.value = components.value.filter((item) => item.obrigatoria)
     } else if (newValue === 'OPTATIVO') {
@@ -149,6 +125,11 @@ function toggleComponentType(type) {
   } else {
     componentType.value = type // Define o tipo selecionado
   }
+}
+
+function onDragEnd(event) {
+  console.log(componentsFiltered.value)
+  console.log(interestedClasses.value)
 }
 </script>
 
@@ -209,6 +190,9 @@ function toggleComponentType(type) {
       </div>
     </header>
 
+    <div v-if="loading" class="flex items-center justify-center h-full w-full">
+      <span class="loading loading-spinner loading-lg text-bp_primary-600"></span>
+    </div>
     <section
       v-if="selectedClasses.length > 0"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
@@ -216,7 +200,7 @@ function toggleComponentType(type) {
     >
       <SubjectCard
         v-for="item in selectedClasses"
-        :key="item.code"
+        :key="item['id-turma']"
         class="w-full"
         :classSubject="item"
       />
@@ -227,8 +211,9 @@ function toggleComponentType(type) {
       :animation="800"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
       :list="interestedClasses"
+      @end="onDragEnd"
       group="subjects"
-      key="semester"
+      :key="interestedClasses.map(item => item.codigo).join(',')"
     >
       <div
         v-if="interestedClasses.length == 0"
@@ -323,7 +308,7 @@ function toggleComponentType(type) {
         <SubjectCardEC
           class="w-full"
           v-for="component in componentsFiltered"
-          :key="component.code"
+          :key="component.codigo"
           :component="component"
           :period="selectedPeriod"
         />
