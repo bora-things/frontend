@@ -1,8 +1,5 @@
 {
-    "enrollment_start": "2025-03-10",
-    "enrollment_end": "2025-03-20",
-    "re_enrollment_start": "2025-06-01",
-    "re_enrollment_end": "2025-06-10",
-    "extra_enrollment_start": "2025-07-15",
-    "extra_enrollment_end": "2025-07-25"
+  "enrollment": ["2025-04-01", "2025-04-02", "2025-04-03", "2025-04-04"],
+  "reEnrollment": ["2025-04-19", "2025-04-20", "2025-04-21", "2025-04-22"],
+  "extraEnrollment": ["2025-04-29", "2025-04-30"]
 }
