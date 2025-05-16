@@ -4,6 +4,7 @@ import SubjectCardEC from '@/components/SubjectCardEC.vue'
 import api from '@/config/axios.config'
 import { computed, onMounted, ref, watch } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
+import { handleAddInterestedSubject, handleRemoveInterestedSubject } from './DashboardController'
 
 const classes = ref(null)
 const loading = ref(true)
@@ -128,8 +129,18 @@ function toggleComponentType(type) {
 }
 
 function onDragEnd(event) {
-  console.log(componentsFiltered.value)
-  console.log(interestedClasses.value)
+  const fromSection = event.from.id
+  const item = event.item
+  if (!item.id) return
+  if (fromSection === 'interested-classes') {
+    handleRemoveInterestedSubject(item.id)
+  } else {
+    handleAddInterestedSubject({
+      subjectCode: item.id,
+      period: selectedPeriod.value.split('-')[1],
+      year: selectedPeriod.value.split('-')[0]
+    })
+  }
 }
 </script>
 
@@ -211,9 +222,9 @@ function onDragEnd(event) {
       :animation="800"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
       :list="interestedClasses"
-      @end="onDragEnd"
+      @start="onDragEnd"
       group="subjects"
-      :key="interestedClasses.map(item => item.codigo).join(',')"
+      :key="interestedClasses.map((item) => item.codigo).join(',')"
     >
       <div
         v-if="interestedClasses.length == 0"
