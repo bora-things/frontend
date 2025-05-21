@@ -1,151 +1,222 @@
 <script setup>
-import SubjectCard from '@/components/SubjectCard.vue'
-import SubjectCardEC from '@/components/SubjectCardEC.vue'
-import api from '@/config/axios.config'
-import { computed, onMounted, ref, watch } from 'vue'
-import { VueDraggableNext } from 'vue-draggable-next'
-import { handleAddInterestedSubject, handleRemoveInterestedSubject } from './DashboardController'
+import SubjectCard from "@/components/SubjectCard.vue";
+import SubjectCardEC from "@/components/SubjectCardEC.vue";
+import api from "@/config/axios.config";
+import { computed, onMounted, ref, watch } from "vue";
+import { VueDraggableNext } from "vue-draggable-next";
+import {
+  handleAddInterestedSubjectRequest,
+  handleRemoveInterestedSubjectRequest,
+  handleInterestedSubjectsRequest,
+} from "./DashboardController.js";
 
-const classes = ref(null)
-const loading = ref(true)
-const selectedClasses = ref([])
-const periods = ref([])
-const interestedClasses = ref([])
 const components = ref([
   {
-    nome: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
-    'carga-horaria-total': 90,
-    codigo: 'IMD0024',
-    obrigatoria: true
+    nome: "CÁLCULO DIFERENCIAL E INTEGRAL I",
+    "carga-horaria-total": 90,
+    "co-requisites": null,
+    "pre-requisites": null,
+    codigo: "IMD0046",
+    blockComponents: null,
+    departamento: null,
+    "tipo-atividade-descricao": null,
+    "disciplina-obrigatoria": true,
+    ementa: null,
+    equivalentes: null,
+    "id-componente": 1,
+    "id-matriz-curricular": null,
+    "id-tipo-atividade": null,
+    "id-tipo-componente": null,
+    "id-unidade": null,
   },
-  {
-    nome: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
-    'carga-horaria-total': 90,
-    codigo: 'IMD0025',
-    obrigatoria: true
-  },
-  {
-    nome: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
-    'carga-horaria-total': 90,
-    codigo: 'IMD0026',
-    obrigatoria: true
-  },
-  {
-    nome: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
-    'carga-horaria-total': 90,
-    codigo: 'IMD0027',
-    obrigatoria: true
+]);
+
+const classes = ref(null);
+const loading = ref(true);
+const selectedClasses = ref([]);
+const periods = ref([]);
+const interestedClasses = ref([]);
+const componentsFiltered = ref([...components.value]);
+const searchQuery = ref("");
+const selectedPeriod = ref("");
+
+const componentType = ref("TODAS");
+
+const selectedPeriodWorkload = computed(() => {
+  if (!periodClasses.value.length) {
+    return periodInterestedClasses.value.reduce(
+      (acc, item) => acc + (item.component["carga-horaria-total"] || 0),
+      0
+    );
+  } else {
+    return periodClasses.value.reduce(
+      (acc, item) => acc + (item.component["carga-horaria-total"] || 0),
+      0
+    );
   }
-])
-const componentsFiltered = ref([...components.value])
+});
+
+const periodClasses = computed(() => {
+  if (!selectedPeriod.value) return [];
+  const periodKey = selectedPeriod.value;
+  return classes.value[periodKey] || [];
+});
+
+const periodInterestedClasses = computed(() => {
+  if (!selectedPeriod.value) return [];
+  const periodKey = selectedPeriod.value;
+  return interestedClasses.value[periodKey] || [];
+});
 
 watch(components, (newValue) => {
-  componentsFiltered.value = newValue
-})
-
-const searchQuery = ref('')
-const selectedPeriod = ref('')
-
-const componentType = ref('TODAS')
+  componentsFiltered.value = newValue;
+});
 
 function selectPeriod(period) {
-  if (period == 'new') {
-    selectedClasses.value = []
-    const lastPeriod = periods.value[periods.value.length - 1]
-    const newPeriod = lastPeriod.periodo == 1 ? 2 : 1
-    const newYear = lastPeriod.periodo == 2 ? Number(lastPeriod.ano) + 1 : lastPeriod.ano
-    periods.value.push({ ano: newYear, periodo: newPeriod })
-    selectedPeriod.value = newYear + '-' + newPeriod
-    return
+  if (period == "new") {
+    const lastPeriod = periods.value[periods.value.length - 1];
+    const newPeriod = lastPeriod.periodo == 1 ? 2 : 1;
+    const newYear = lastPeriod.periodo == 2 ? Number(lastPeriod.ano) + 1 : lastPeriod.ano;
+    periods.value.push({ ano: newYear, periodo: newPeriod });
+    selectedPeriod.value = newYear + "-" + newPeriod;
+    interestedClasses.value[selectedPeriod.value] = [];
+    return;
   }
-  selectedPeriod.value = period
-  const periodClasses = classes.value[period]
-  selectedClasses.value = periodClasses ? periodClasses.map((item) => ({ ...item })) : []
+  selectedPeriod.value = period;
 }
 
 async function fetchClasses() {
   try {
-    const response = await api.get('/api/classrooms/me')
-    const data = response.data
+    const response = await api.get("/api/classrooms/me");
+    const data = response.data.filter((item) => item.component);
     const classesGroupedByPeriod = data.reduce((acc, item) => {
-      const { ano, periodo } = item
-      const periodKey = `${ano}-${periodo}`
+      const { ano, periodo } = item;
+      const periodKey = `${ano}-${periodo}`;
       if (!acc[periodKey]) {
-        acc[periodKey] = []
+        acc[periodKey] = [];
       }
-      acc[periodKey].push(item)
-      return acc
-    }, {})
-    classes.value = classesGroupedByPeriod
-    periods.value = Object.keys(classesGroupedByPeriod).map((key) => {
-      const [ano, periodo] = key.split('-')
-      return { ano, periodo }
-    })
-    selectPeriod(periods.value[0].ano + '-' + periods.value[0].periodo)
+      acc[periodKey].push(item);
+      return acc;
+    }, {});
+    classes.value = classesGroupedByPeriod;
   } catch (error) {
-    console.error('Erro ao buscar dados do usuário:', error)
+    console.error("Erro ao buscar dados do usuário:", error);
   } finally {
-    loading.value = false
+    loading.value = false;
+  }
+}
+
+function setPeriods() {
+  const classesPeriods = Object.keys(classes.value).map((key) => {
+    const [ano, periodo] = key.split("-");
+    return { ano, periodo };
+  });
+  const interestedPeriods = Object.keys(interestedClasses.value).map((key) => {
+    const [ano, periodo] = key.split("-");
+    return { ano, periodo };
+  });
+
+  const allPeriods = [...classesPeriods, ...interestedPeriods];
+  periods.value = allPeriods;
+}
+
+async function fetchInterestedClasses() {
+  try {
+    const data = await handleInterestedSubjectsRequest();
+    interestedClasses.value = data.reduce((acc, item) => {
+      const { year, period } = item;
+      const periodKey = `${year}-${period}`;
+      if (!acc[periodKey]) {
+        acc[periodKey] = [];
+      }
+      acc[periodKey].push(item);
+      return acc;
+    }, {});
+  } catch (error) {
+    console.error("Erro ao buscar disciplinas de interesse:", error);
   }
 }
 
 onMounted(async () => {
-  await fetchClasses()
-})
-
-const selectedPeriodWorkload = computed(() => {
-  if (!selectedClasses.value.length) {
-    return interestedClasses.value.reduce(
-      (acc, item) => acc + (item['carga-horaria-total'] || 0),
-      0
-    )
-  } else {
-    return selectedClasses.value.reduce(
-      (acc, item) => acc + (item.component['carga-horaria-total'] || 0),
-      0
-    )
-  }
-})
+  await Promise.all([fetchClasses(), fetchInterestedClasses()]);
+  await setPeriods();
+  selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
+});
 
 watch(
   () => componentType.value,
   (newValue) => {
-    if (newValue === 'OBRIGATORIO') {
-      componentsFiltered.value = components.value.filter((item) => item.obrigatoria)
-    } else if (newValue === 'OPTATIVO') {
-      componentsFiltered.value = components.value.filter((item) => !item.obrigatoria)
+    if (newValue === "OBRIGATORIO") {
+      componentsFiltered.value = components.value.filter((item) => item.obrigatoria);
+    } else if (newValue === "OPTATIVO") {
+      componentsFiltered.value = components.value.filter((item) => !item.obrigatoria);
     } else {
-      componentsFiltered.value = components
+      componentsFiltered.value = components;
     }
   }
-)
+);
 
 function toggleComponentType(type) {
   if (componentType.value === type) {
-    componentType.value = 'TODAS' // Reseta para "TODAS" se o mesmo botão for clicado novamente
+    componentType.value = "TODAS"; // Reseta para "TODAS" se o mesmo botão for clicado novamente
   } else {
-    componentType.value = type // Define o tipo selecionado
+    componentType.value = type; // Define o tipo selecionado
   }
 }
 
-function onDragEnd(event) {
-  const fromSection = event.from.id
-  const item = event.item
-  if (!item.id) return
-  if (fromSection === 'interested-classes') {
-    handleRemoveInterestedSubject(item.id)
-  } else {
-    handleAddInterestedSubject({
-      subjectCode: item.id,
-      period: selectedPeriod.value.split('-')[1],
-      year: selectedPeriod.value.split('-')[0]
-    })
+async function handleRemoveInterestedSubject(component) {
+  await handleRemoveInterestedSubjectRequest(component.codigo);
+  interestedClasses.value[selectedPeriod.value] = interestedClasses.value[
+    selectedPeriod.value
+  ].filter((item) => item.component.codigo != component.codigo);
+  if (!interestedClasses.value[selectedPeriod.value].length) {
+    delete interestedClasses.value[selectedPeriod.value];
+    const period = selectedPeriod.value.split("-")[1] == 1 ? 2 : 1;
+    const year =
+      selectedPeriod.value.split("-")[1] == 1
+        ? selectedPeriod.value.split("-")[0] - 1
+        : selectedPeriod.value.split("-")[0];
+    selectedPeriod.value = year + "-" + period;
+    setPeriods();
+    selectPeriod(selectedPeriod.value);
   }
+}
+
+async function handleAddInterestedSubject(component) {
+  interestedClasses.value[selectedPeriod.value] = [
+    ...(interestedClasses.value[selectedPeriod.value] || []),
+    {
+      component,
+      disabled: true,
+      "id-turma": component.codigo,
+      interest_id: component.codigo,
+    },
+  ];
+
+  await handleAddInterestedSubjectRequest({
+    subjectCode: component.codigo,
+    period: selectedPeriod.value.split("-")[1],
+    year: selectedPeriod.value.split("-")[0],
+  });
+}
+
+async function onDragEnd(event) {
+  const fromSection = event.from.id;
+  const item = event.item;
+  if (!item.id) return;
+  const component = components.value.find((component) => component.codigo === item.id);
+  if (!component) return;
+  if (fromSection === "interested-classes") {
+    await handleRemoveInterestedSubject(component);
+  } else {
+    await handleAddInterestedSubject(component);
+  }
+  fetchInterestedClasses();
 }
 </script>
 
 <template>
-  <main class="h-full container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
+  <main class="container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
     <header class="flex items-center justify-between pb-4">
       <div class="flex flex-col items-start">
         <div class="flex flex-col">
@@ -158,8 +229,8 @@ function onDragEnd(event) {
               {{
                 periods.findIndex(
                   (item) =>
-                    item.ano == selectedPeriod.split('-')[0] &&
-                    item.periodo == selectedPeriod.split('-')[1]
+                    item.ano == selectedPeriod.split("-")[0] &&
+                    item.periodo == selectedPeriod.split("-")[1]
                 ) + 1
               }}º Período
               <v-icon name="bi-chevron-down" scale="1.2"></v-icon>
@@ -171,7 +242,9 @@ function onDragEnd(event) {
               <li
                 :class="[
                   'hover:bg-bp_grayscale-700 p-2 rounded-md cursor-pointer',
-                  selectedPeriod == `${period.ano}-${period.periodo}` ? 'bg-bp_grayscale-700' : ''
+                  selectedPeriod == `${period.ano}-${period.periodo}`
+                    ? 'bg-bp_grayscale-700'
+                    : '',
                 ]"
                 v-for="(period, index) in periods"
                 :key="index"
@@ -188,7 +261,9 @@ function onDragEnd(event) {
             </ul>
           </div>
         </div>
-        <span class="font-sans text-vtd-secondary-100">{{ selectedPeriod.replace('-', '.') }}</span>
+        <span class="font-sans text-vtd-secondary-100">{{
+          selectedPeriod.replace("-", ".")
+        }}</span>
       </div>
 
       <div className="tooltip">
@@ -201,34 +276,42 @@ function onDragEnd(event) {
       </div>
     </header>
 
-    <div v-if="loading" class="flex items-center justify-center h-full w-full">
-      <span class="loading loading-spinner loading-lg text-bp_primary-600"></span>
+    <div
+      v-if="loading"
+      class="flex items-center bg-bp_grayscale-600 p-4 justify-center h-[15vh] w-full rounded-md"
+    >
+      <span class="loading loading-spinner loading-lg text-white"></span>
     </div>
     <section
-      v-if="selectedClasses.length > 0"
+      v-if="!loading && periodClasses.length > 0"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
       :key="selectedPeriod"
     >
       <SubjectCard
-        v-for="item in selectedClasses"
+        v-for="item in periodClasses"
         :key="item['id-turma']"
         class="w-full"
         :classSubject="item"
       />
     </section>
     <VueDraggableNext
-      v-else
+      v-else-if="!loading && periodClasses.length === 0"
       id="interested-classes"
       :animation="800"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
-      :list="interestedClasses"
-      @start="onDragEnd"
+      @end="onDragEnd"
       group="subjects"
-      :key="interestedClasses.map((item) => item.codigo).join(',')"
+      :key="periodInterestedClasses.map((item) => item.interest_id).join(',')"
     >
+      <SubjectCard
+        v-for="item in periodInterestedClasses"
+        :key="item.interest_id"
+        class="w-full"
+        :classSubject="item"
+        :disabled="item.disabled"
+      />
       <div
-        v-if="interestedClasses.length == 0"
-        v-for="_ in [1, 2, 3]"
+        v-for="_ in [1]"
         class="bg-bp_grayscale-800 w-full h-[160px] rounded-md flex flex-col items-center gap-4 p-4 text-vtd-secondary-100 border border-dashed border-[3px] border-bp_grayscale-500"
       >
         <v-icon name="bi-plus-circle" scale="2.6" class="text-bp_grayscale-500"></v-icon>
@@ -237,14 +320,6 @@ function onDragEnd(event) {
           <span class="font-span font-medium">NOVAS MATÉRIAS</span>
         </div>
       </div>
-      <SubjectCardEC
-        v-else
-        v-for="component in interestedClasses"
-        :key="component.codigo"
-        class="w-full"
-        :component="component"
-        :period="selectedPeriod"
-      />
     </VueDraggableNext>
     <hr class="my-6 border-bp_grayscale-700" />
     <div class="flex flex-col flex-1">
@@ -288,7 +363,7 @@ function onDragEnd(event) {
             <button
               :class="[
                 'badge text-white py-2 bg-transparent rounded-xl border border-bp_green-600',
-                componentType === 'OBRIGATORIO' ? 'bg-bp_green-600' : ''
+                componentType === 'OBRIGATORIO' ? 'bg-bp_green-600' : '',
               ]"
               @click="toggleComponentType('OBRIGATORIO')"
             >
@@ -297,7 +372,7 @@ function onDragEnd(event) {
             <button
               :class="[
                 'badge text-white py-2 bg-transparent rounded-xl border border-bp_primary-600',
-                componentType === 'OPTATIVO' ? 'bg-bp_primary-600' : ''
+                componentType === 'OPTATIVO' ? 'bg-bp_primary-600' : '',
               ]"
               @click="toggleComponentType('OPTATIVO')"
             >

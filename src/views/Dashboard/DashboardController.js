@@ -1,6 +1,6 @@
 import api from '@/config/axios.config';
 
-export async function handleRemoveInterestedSubject(subjectId) {
+export async function handleRemoveInterestedSubjectRequest(subjectId) {
   try {
     await api.delete(`/api/users/interests/${subjectId}`)
   } catch (error) {
@@ -8,7 +8,7 @@ export async function handleRemoveInterestedSubject(subjectId) {
   }
 }
 
-export async function handleAddInterestedSubject({ subjectCode, year, period }) {
+export async function handleAddInterestedSubjectRequest({ subjectCode, year, period }) {
   try {
     const formData = {
       subjectCode,
@@ -21,7 +21,7 @@ export async function handleAddInterestedSubject({ subjectCode, year, period }) 
   }
 }
 
-export async function getInterestedSubjects() {
+export async function handleInterestedSubjectsRequest() {
   try {
     const response = await api.get('/api/users/interests');
     return response.data;

@@ -83,9 +83,14 @@ export default {
           '0%, 100%': { opacity: '1', transform: 'scale(1)' },
           '50%': { opacity: '0.5', transform: 'scale(1.2)' },
         },
+        blinkOpacity: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.4' },
+        },
       },
       animation: {
         twinkle: 'twinkle 1.2s ease-in-out infinite',
+        blinkOpacity: 'blinkOpacity 1.6s ease-in-out infinite',
       },
     }
     },
