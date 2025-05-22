@@ -30,8 +30,23 @@ async function fetchUser() {
   }
 }
 
+const greeting = ref('')
+
+function setGreeting() {
+  const hour = new Date().getHours()
+
+  if (hour >= 5 && hour < 12) {
+    greeting.value = 'Bom dia'
+  } else if (hour >= 12 && hour < 18) {
+    greeting.value = 'Boa tarde'
+  } else {
+    greeting.value = 'Boa noite'
+  }
+}
+
 onMounted(() => {
   fetchUser()
+  setGreeting()
 })
 </script>
 
@@ -48,10 +63,10 @@ onMounted(() => {
 
     <div class="flex justify-between items-center w-full xl:max-w-7xl mx-auto pr-8">
       <div class="flex gap-4 items-center">
-        <h4 class="text-xl font-bold">Boa Tarde, Natálya</h4>
+        <h4 class="text-xl font-bold">{{ greeting }}, {{ capitalizeText(user.name) }}</h4>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center md:gap-5">
         <div>
           <button class="flex items-center bg-bp_neutral-800 border-2 border-bp_green-500 rounded-lg shadow shadow-bp_green-100 py-1 px-2">
             <v-icon name="gi-diamonds" scale="1.2"/>Fale com o Simbora</button>
@@ -63,8 +78,14 @@ onMounted(() => {
             <PersonalizedCalendar/>
           </div>
         </div>
-        <div>
 
+        <div>
+          <img
+                v-if="user.image_url"
+                :src="user.image_url"
+                alt=""
+                class="h-12 w-12 rounded-full"
+              />
         </div>
       </div>
     </div>
