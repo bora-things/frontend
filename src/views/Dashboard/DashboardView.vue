@@ -4,43 +4,67 @@ import SubjectCardEC from "@/components/SubjectCardEC.vue";
 import api from "@/config/axios.config";
 import { computed, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
+import { useToast } from "vue-toast-notification";
+
 import {
   handleAddInterestedSubjectRequest,
-  handleRemoveInterestedSubjectRequest,
   handleInterestedSubjectsRequest,
+  handleRemoveInterestedSubjectRequest,
 } from "./DashboardController.js";
 
 const components = ref([
   {
-    nome: "CÁLCULO DIFERENCIAL E INTEGRAL I",
-    "carga-horaria-total": 90,
-    "co-requisites": null,
-    "pre-requisites": null,
-    codigo: "IMD0046",
-    blockComponents: null,
-    departamento: null,
-    "tipo-atividade-descricao": null,
-    "disciplina-obrigatoria": true,
-    ementa: null,
-    equivalentes: null,
-    "id-componente": 1,
-    "id-matriz-curricular": null,
-    "id-tipo-atividade": null,
-    "id-tipo-componente": null,
-    "id-unidade": null,
+    interest_id: "IMD0043 ",
+    year: "",
+    period: "",
+    friends: [],
+    component: {
+      nome: "REDES DE COMPUTADORES ",
+      "carga-horaria-total": 90,
+      "co-requisites": null,
+      "pre-requisites": null,
+      codigo: "IMD0043",
+      blockComponents: null,
+      departamento: null,
+      "tipo-atividade-descricao": null,
+      "disciplina-obrigatoria": true,
+      ementa: null,
+      equivalentes: null,
+      "id-componente": 1,
+      "id-matriz-curricular": null,
+      "id-tipo-atividade": null,
+      "id-tipo-componente": null,
+      "id-unidade": null,
+    },
   },
 ]);
-
+const toast = useToast();
 const classes = ref(null);
 const loading = ref(true);
-const selectedClasses = ref([]);
 const periods = ref([]);
 const interestedClasses = ref([]);
-const componentsFiltered = ref([...components.value]);
 const searchQuery = ref("");
 const selectedPeriod = ref("");
 
 const componentType = ref("TODAS");
+
+const componentsFiltered = computed(() => {
+  let filtered = components.value;
+  if (componentType.value === "OBRIGATORIO") {
+    filtered = filtered.filter((item) => item.obrigatoria);
+  } else if (componentType.value === "OPTATIVO") {
+    filtered = filtered.filter((item) => !item.obrigatoria);
+  }
+  if (searchQuery.value && searchQuery.value.trim() !== "") {
+    const query = searchQuery.value.trim().toLowerCase();
+    filtered = filtered.filter(
+      (item) =>
+        (item.nome && item.nome.toLowerCase().includes(query)) ||
+        (item.codigo && item.codigo.toLowerCase().includes(query))
+    );
+  }
+  return filtered;
+});
 
 const selectedPeriodWorkload = computed(() => {
   if (!periodClasses.value.length) {
@@ -66,10 +90,6 @@ const periodInterestedClasses = computed(() => {
   if (!selectedPeriod.value) return [];
   const periodKey = selectedPeriod.value;
   return interestedClasses.value[periodKey] || [];
-});
-
-watch(components, (newValue) => {
-  componentsFiltered.value = newValue;
 });
 
 function selectPeriod(period) {
@@ -139,7 +159,7 @@ async function fetchInterestedClasses() {
 
 onMounted(async () => {
   await Promise.all([fetchClasses(), fetchInterestedClasses()]);
-  await setPeriods();
+  setPeriods();
   selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
 });
 
@@ -164,11 +184,11 @@ function toggleComponentType(type) {
   }
 }
 
-async function handleRemoveInterestedSubject(component) {
-  await handleRemoveInterestedSubjectRequest(component.codigo);
-  interestedClasses.value[selectedPeriod.value] = interestedClasses.value[
-    selectedPeriod.value
-  ].filter((item) => item.component.codigo != component.codigo);
+async function handleRemoveInterestedSubject(event) {
+  const toSection = event.to.id;
+  if (toSection !== "components") return;
+  const component = event.item;
+  await handleRemoveInterestedSubjectRequest(component.id);
   if (!interestedClasses.value[selectedPeriod.value].length) {
     delete interestedClasses.value[selectedPeriod.value];
     const period = selectedPeriod.value.split("-")[1] == 1 ? 2 : 1;
@@ -182,39 +202,30 @@ async function handleRemoveInterestedSubject(component) {
   }
 }
 
-async function handleAddInterestedSubject(component) {
-  interestedClasses.value[selectedPeriod.value] = [
-    ...(interestedClasses.value[selectedPeriod.value] || []),
-    {
-      component,
-      disabled: true,
-      "id-turma": component.codigo,
-      interest_id: component.codigo,
-    },
-  ];
+function handleAddInterestedSubject(event) {
+  const component = event.item;
 
-  await handleAddInterestedSubjectRequest({
-    subjectCode: component.codigo,
+  handleAddInterestedSubjectRequest({
+    subjectCode: component.id,
     period: selectedPeriod.value.split("-")[1],
     year: selectedPeriod.value.split("-")[0],
   });
 }
 
-async function onDragEnd(event) {
+async function onMove(event) {
+  const toSection = event.to.id;
   const fromSection = event.from.id;
-  const item = event.item;
-  if (!item.id) return;
-  const component = components.value.find((component) => component.codigo === item.id);
-  if (!component) return;
-  if (fromSection === "interested-classes") {
-    await handleRemoveInterestedSubject(component);
-  } else {
-    await handleAddInterestedSubject(component);
+  if (toSection == fromSection) return false; // Impede o movimento dentro da mesma seção
+  if (toSection === "interested-classes") {
+    return handleAddInterestedSubject(event); // Permite mover apenas se não estiver desabilitado
+  }
+  if (toSection === "components") {
+    return await handleRemoveInterestedSubject(event); // Permite mover apenas se não estiver desabilitado
   }
   fetchInterestedClasses();
+  return true;
 }
 </script>
-
 <template>
   <main class="container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
     <header class="flex items-center justify-between pb-4">
@@ -299,9 +310,14 @@ async function onDragEnd(event) {
       id="interested-classes"
       :animation="800"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
-      @end="onDragEnd"
+      :list="interestedClasses[selectedPeriod]"
+      :move="onMove"
       group="subjects"
-      :key="periodInterestedClasses.map((item) => item.interest_id).join(',')"
+      :key="
+        (interestedClasses[selectedPeriod] || [])
+          .map((item) => item.interest_id)
+          .join(',')
+      "
     >
       <SubjectCard
         v-for="item in periodInterestedClasses"
@@ -385,17 +401,18 @@ async function onDragEnd(event) {
       <VueDraggableNext
         id="components"
         :animation="800"
-        :list="componentsFiltered"
+        :list="components"
         class="grid md:grid-cols-3 md:grid-rows-3 bg-bp_grayscale-600 rounded-md gap-4 p-4 flex-1"
         group="subjects"
-        @end="onDragEnd"
-        key="semester"
+        :move="onMove"
+        @add="handleRemoveInterestedSubject"
+        @remove="handleAddInterestedSubject"
       >
         <SubjectCardEC
           class="w-full"
-          v-for="component in componentsFiltered"
-          :key="component.codigo"
-          :component="component"
+          v-for="classe in componentsFiltered"
+          :key="classe.component.codigo"
+          :component="classe.component"
           :period="selectedPeriod"
         />
       </VueDraggableNext>

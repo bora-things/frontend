@@ -1,10 +1,12 @@
 import api from '@/config/axios.config';
+import { useToast } from 'vue-toast-notification';
 
+const toast = useToast();
 export async function handleRemoveInterestedSubjectRequest(subjectId) {
   try {
     await api.delete(`/api/users/interests/${subjectId}`)
   } catch (error) {
-    console.error('Error removing interested subject:', error)
+    toast.error(error.response.data.message || "Erro ao ao adicionar disciplina interessada");
   }
 }
 
@@ -17,7 +19,7 @@ export async function handleAddInterestedSubjectRequest({ subjectCode, year, per
     }
     await api.post(`/api/users/interests`, formData);
   } catch (error) {
-    console.error('Error adding interested subject:', error)
+    toast.error(error.response.data.message || "Erro ao ao adicionar disciplina interessada");
   }
 }
 
