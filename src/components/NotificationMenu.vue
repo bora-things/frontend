@@ -51,25 +51,24 @@ function getNotificationCreateDate(date) {
 </script>
 
 <template>
-  <div class="flex justify-end z-50">
-    <button class="relative bg-transparent" @click="handleNotificationMenuClick">
+  <div class="flex justify-end">
+    <button class="relative bg-bp_neutral-800 border border-bp_neutral-600 rounded-full w-12 h-12" @click="handleNotificationMenuClick">
       <div
-        class="bottom-1 right-0 w-2 h-2 bg-red-500 absolute rounded-full"
+        class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"
         v-if="notifications.length > 0"
       ></div>
-      <v-icon name="md-notifications" scale="1.5" />
+      <v-icon class="p-2" 
+          name="md-groupadd-outlined" scale="2"
+          
+          ></v-icon>
     </button>
     <div
       v-if="isNotificationMenuOpen"
-      class="absolute right-3 bg-bp_neutral-700 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-auto max-h-[70vh] overflow-y-auto custom-scrollbar"
+      class="absolute right-3 bg-bp_neutral-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
       <div class="border-b border-bp_neutral-500 mb-4 pb-2 flex justify-between items-center">
         <div class="flex items-center gap-2">
-          <h4 class="text-sm md:text-base">Notificações</h4>
-          <span
-            class="w-5 h-5 text-xs flex items-center justify-center rounded-full bg-white text-black"
-            >{{ notifications.length }}</span
-          >
+          <h4 class="text-sm md:text-base">Pedidos de amizade</h4>
         </div>
         <button @click="isNotificationMenuOpen = false">
           <v-icon name="md-close" scale="1" />
