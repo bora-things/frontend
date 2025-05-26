@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ConsultSubjectsView from '../views/ConsultSubjetcs/ConsultSubjectsView.vue'
 import DashboardView from '../views/Dashboard/DashboardView.vue'
 import FriendsView from '../views/Friends/FriendsView.vue'
+import SubjectSyllabusView from '@/views/SubjectSyllabus/SubjectSyllabusView.vue'
 
 
 const router = createRouter({
@@ -39,6 +40,11 @@ const router = createRouter({
       path:'/interesses',
       name:'interests',
       component:InterestedSubjectsView
+    },
+    {
+      path:'/ementa',
+      name:'ementa',
+      component: SubjectSyllabusView
     }
   ]
 })
