@@ -1,72 +1,85 @@
 <script setup>
+const props = defineProps(["classSubject", "interest", "disabled"]);
+const { ano, "id-turma": IdTurma, periodo, component, friends } = props.classSubject;
 
-const props = defineProps(['classSubject', 'interest'])
-const { code, type, name, teacher, time, friendsInClass } = props.classSubject
+const maxVisible = 4;
+const visibleUsers = friends?.slice(0, maxVisible) || [];
+const hiddenUsersCount = friends?.length > 4 ? friends.length - maxVisible : 0;
 
-const maxVisible = 4
-const visibleUsers = friendsInClass?.slice(0, maxVisible) || []
-const hiddenUsersCount = friendsInClass?.length - maxVisible || 0
+const formatUserName = (name) => {
+  const nameParts = name.split(" ");
+  const firstName = name.split(" ")[0];
+  const lastName = name.split(" ")[nameParts.length - 1];
+
+  return `${firstName} ${lastName}`;
+};
 </script>
 
 <template>
   <div
-    :class="[
-      'w-full rounded-md flex flex-col gap-2 p-4',
-      interest ? 'bg-white/60 text-black' : 'bg-bp_neutral-700'
-    ]"
+    :id="component.codigo"
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100"
+    :class="{
+      'bg-bp_grayscale-800 border-bp_grayscale-500': !disabled,
+      'bg-bp_grayscale-700 border-bp_grayscale-500 animate-blinkOpacity': disabled,
+    }"
   >
-    <div class="flex justify-between items-center">
-      <h1 class="text-xl font-bold">{{ code }}</h1>
-      <span
-        v-if="!interest"
-        class="justify-self-end text-sm px-3 py-1 rounded-2xl font-semibold"
-        :class="[
-          type === 'Obrigatória'
-            ? 'bg-bp_yellow-200/20 text-bp_yellow-100'
-            : 'bg-blue-200/50 text-blue-100'
-        ]"
-      >
-        {{ type }}
-      </span>
-    </div>
-    <div class="flex flex-col gap-2">
-      <p>{{ name }}</p>
-      <div v-if="!interest" class="flex gap-4 items-center">
-        <v-icon name="fa-user-alt" class="text-white text-4xl" />
-        <p>{{ teacher }}</p>
-      </div>
-      <div v-if="!interest" class="flex gap-4 items-center">
-        <v-icon name="fa-regular-clock" />
-        <p>{{ time }}</p>
-      </div>
-    </div>
-    <div class="flex flex-col gap-1">
-      <span class="text-sm font-semibold" v-if="interest">Amigos também interessados:</span>
-      <span class="text-sm font-semibold" v-if="!interest">Amigos na turma:</span>
-      <div class="flex gap-4 items-center ">
-        <!-- Trocar isso para usar daisy -->
-        <!-- <a-avatar-group>
-          <a-tooltip
-            v-for="user in visibleUsers"
-            :key="user.id"
-            :title="user.name"
-            placement="top"
-            class="mx-1"
+    <p class="font-sans font-medium">{{ component.nome }}</p>
+    <div class="flex justify-between items-end">
+      <div>
+        <div v-if="visibleUsers.length > 0" class="flex gap-2 items-center">
+          <div
+            v-for="friend in visibleUsers"
+            className="tooltip tooltip-info rounded-full tooltip-bottom "
           >
-            <a-avatar v-if="user.avatar" :src="user.avatar" />
-            <div
-              v-if="!user.avatar"
-              class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-8 h-8"
-            >
-              <UserOutlined class="text-xl text-white" />
+            <div className="tooltip-content text-xs ">
+              <div className="text-white">
+                <span>{{ formatUserName(friend.name) }}</span>
+              </div>
             </div>
-          </a-tooltip>
-
-          <a-avatar v-if="hiddenUsersCount > 0" style="background-color: #f56a00">
+            <div :key="friend.id">
+              <img
+                v-if="friend.imageUrl"
+                class="w-10 h-10 rounded-full"
+                :src="friend.imageUrl"
+              />
+              <div v-else class="w-10 h-10 rounded-full flex items-center justify-center">
+                <v-icon name="io-person-circle-sharp" class="text-white" scale="2.2" />
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="hiddenUsersCount > 0"
+            class="w-10 h-10 rounded-full bg-[#fdfdfd] flex items-center justify-center text-black"
+          >
             +{{ hiddenUsersCount }}
-          </a-avatar>
-        </a-avatar-group> -->
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 items-end">
+        <span
+          class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+          >{{ component.codigo }}</span
+        >
+        <div class="flex gap-2">
+          <span
+            :class="[
+              'font-sans badge text-vtd-secondary-100 bg-transparent border',
+              component.obrigatoria ? 'border-bp_green-600' : 'border-sky-600',
+            ]"
+            >{{ component.obrigatoria ? "OBRIGATÓRIO" : "OPTATIVO" }}</span
+          >
+          <span
+            class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+          >
+            {{ component["carga-horaria-total"] }}H</span
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Removido blink-opacity, agora usando Tailwind */
+</style>
