@@ -16,28 +16,10 @@ const classes = ref(null);
 const loading = ref(true);
 const periods = ref([]);
 const interestedClasses = ref([]);
-const searchQuery = ref("");
 const selectedPeriod = ref("");
 
 const componentType = ref("TODAS");
-
-const componentsFiltered = computed(() => {
-  let filtered = components.value;
-  if (componentType.value === "OBRIGATORIO") {
-    filtered = filtered.filter((item) => item.obrigatoria);
-  } else if (componentType.value === "OPTATIVO") {
-    filtered = filtered.filter((item) => !item.obrigatoria);
-  }
-  if (searchQuery.value && searchQuery.value.trim() !== "") {
-    const query = searchQuery.value.trim().toLowerCase();
-    filtered = filtered.filter(
-      (item) =>
-        (item.nome && item.nome.toLowerCase().includes(query)) ||
-        (item.codigo && item.codigo.toLowerCase().includes(query))
-    );
-  }
-  return filtered;
-});
+const page = ref(0);
 
 const selectedPeriodWorkload = computed(() => {
   if (!periodClasses.value.length) {
@@ -99,23 +81,6 @@ async function fetchClasses() {
   }
 }
 
-async function fetchComponents() {
-  try {
-    const response = await api.get(
-      "/api/students/me/possible-subjects?page=2&size=10,asc"
-    );
-    components.value = response.data.map((item) => ({
-      year: null,
-      period: null,
-      "id-turma": item.codigo,
-      component: item,
-      friends: [],
-    }));
-  } catch (error) {
-    console.error("Erro ao buscar componentes:", error);
-  }
-}
-
 function setPeriods() {
   const classesPeriods = Object.keys(classes.value).map((key) => {
     const [ano, periodo] = key.split("-");
@@ -147,8 +112,32 @@ async function fetchInterestedClasses() {
   }
 }
 
+async function fetchComponents() {
+  try {
+    const response = await api.get(
+      `/api/students/me/possible-subjects?page=${page.value}&size=9`
+    );
+    components.value = response.data.map((item) => ({
+      year: null,
+      period: null,
+      "id-turma": item.codigo,
+      component: item,
+      friends: [],
+    }));
+  } catch (error) {
+    console.error("Erro ao buscar componentes:", error);
+  }
+}
+
+watch(
+  () => page.value,
+  () => {
+    fetchComponents();
+  }
+);
+
 onMounted(async () => {
-  await Promise.all([fetchClasses(), fetchComponents(), fetchInterestedClasses()]);
+  await Promise.all([fetchClasses(), fetchInterestedClasses(), fetchComponents()]);
   setPeriods();
   selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
 });
@@ -186,8 +175,6 @@ async function handleRemoveInterestedSubject(event) {
 
 function handleAddInterestedSubject(event) {
   const component = event.item;
-  console.log(event);
-
   handleAddInterestedSubjectRequest({
     subjectCode: component.id,
     period: selectedPeriod.value.split("-")[1],
@@ -322,12 +309,13 @@ async function onMove(event) {
     </VueDraggableNext>
     <hr class="my-6 border-bp_grayscale-700" />
     <DashboardViewSubjects
-      :components="componentsFiltered"
+      :components="components"
       :selected-period="selectedPeriod"
       :component-type="componentType"
       :handle-add-interested-subject="handleAddInterestedSubject"
       :handle-remove-interested-subject="handleRemoveInterestedSubject"
       :on-move="onMove"
+      v-model:page="page"
     />
   </main>
 </template>

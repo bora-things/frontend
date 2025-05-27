@@ -24,29 +24,23 @@ const props = defineProps({
     type: Function,
     required: true,
   },
-  componentType: {
-    type: String,
-    default: "OBRIGATORIO",
+  page: {
+    type: Number,
+    required: true,
   },
 });
 
-const componentTypeLocal = ref(props.componentType);
+const emit = defineEmits(["update:page"]);
+
+const componentType = ref("TODAS");
 const searchQuery = ref("");
 const codeQuery = ref("");
 
-function toggleComponentType(type) {
-  if (componentType.value === type) {
-    componentType.value = "TODAS"; // Reseta para "TODAS" se o mesmo botão for clicado novamente
-  } else {
-    componentType.value = type; // Define o tipo selecionado
-  }
-}
-
 const componentsFiltered = computed(() => {
   let filtered = props.components;
-  if (componentTypeLocal.value === "OBRIGATORIO") {
+  if (componentType.value === "OBRIGATORIO") {
     filtered = filtered.filter((item) => item.component?.obrigatoria);
-  } else if (componentTypeLocal.value === "OPTATIVO") {
+  } else if (componentType.value === "OPTATIVO") {
     filtered = filtered.filter((item) => !item.component?.obrigatoria);
   }
   if (searchQuery.value && searchQuery.value.trim() !== "") {
@@ -67,11 +61,18 @@ const componentsFiltered = computed(() => {
   return filtered;
 });
 
+function handleFoward() {
+  emit("update:page", props.page + 1);
+}
+function handleBack() {
+  emit("update:page", props.page > 0 ? props.page - 1 : 0);
+}
+
 function toggleComponentType(type) {
-  if (componentTypeLocal.value === type) {
-    componentTypeLocal.value = "TODAS";
+  if (componentType.value === type) {
+    componentType.value = "TODAS";
   } else {
-    componentTypeLocal.value = type;
+    componentType.value = type;
   }
 }
 
@@ -129,7 +130,7 @@ function handleCodeInput(e) {
           <button
             :class="[
               'badge text-white py-2 bg-transparent rounded-xl border border-bp_green-600',
-              componentTypeLocal === 'OBRIGATORIO' ? 'bg-bp_green-600' : '',
+              componentType === 'OBRIGATORIO' ? 'bg-bp_green-600' : '',
             ]"
             @click="() => toggleComponentType('OBRIGATORIO')"
           >
@@ -138,7 +139,7 @@ function handleCodeInput(e) {
           <button
             :class="[
               'badge text-white py-2 bg-transparent rounded-xl border border-bp_primary-600',
-              componentTypeLocal === 'OPTATIVO' ? 'bg-bp_primary-600' : '',
+              componentType === 'OPTATIVO' ? 'bg-bp_primary-600' : '',
             ]"
             @click="() => toggleComponentType('OPTATIVO')"
           >
@@ -147,29 +148,62 @@ function handleCodeInput(e) {
         </div>
       </div>
     </div>
-
-    <VueDraggableNext
-      id="components"
-      :animation="800"
-      :list="components"
-      class="grid md:grid-cols-3 md:grid-rows-3 bg-bp_grayscale-600 rounded-md gap-4 p-4 flex-1"
-      group="subjects"
-      :move="onMove"
-      @add="handleRemoveInterestedSubject"
-      @remove="handleAddInterestedSubject"
+    <div
+      class="flex flex-col items-center bg-bp_grayscale-600 rounded-md gap-4 p-4 flex-1"
     >
-      <SubjectCardEC
-        class="w-full"
-        v-for="classe in componentsFiltered"
-        :key="classe.component.codigo"
-        :component="classe.component"
-        :period="selectedPeriod"
-      />
-    </VueDraggableNext>
+      <div class="join bg-transparent text-gray-300">
+        <button class="join-item btn btn-ghost" :disabled="page == 0" @click="handleBack">
+          {{ "<" }}
+        </button>
+        <button
+          class="join-item btn btn-ghost"
+          v-if="page > 0"
+          :class="page === page - 1 ? 'bg-bp_primary-600 text-white' : ''"
+          @click="emit('update:page', page - 1)"
+        >
+          {{ page }}
+        </button>
+        <button class="join-item btn btn-ghost bg-bp_primary-600 text-white">
+          {{ page + 1 }}
+        </button>
+        <button
+          class="join-item btn btn-ghost"
+          :class="page === page + 1 ? 'bg-bp_primary-600 text-white' : ''"
+          @click="emit('update:page', page + 1)"
+        >
+          {{ page + 2 }}
+        </button>
+        <button
+          class="join-item btn btn-ghost"
+          :class="page === page + 2 ? 'bg-bp_primary-600 text-white' : ''"
+          @click="emit('update:page', page + 2)"
+        >
+          {{ page + 3 }}
+        </button>
+        <button class="join-item btn btn-ghost" @click="handleFoward">{{ ">" }}</button>
+      </div>
+      <VueDraggableNext
+        id="components"
+        :animation="800"
+        :list="components"
+        class="grid md:grid-cols-3 grid-rows-3 gap-4"
+        group="subjects"
+        :move="onMove"
+        @add="handleRemoveInterestedSubject"
+        @remove="handleAddInterestedSubject"
+      >
+        <SubjectCardEC
+          class="w-full"
+          v-for="classe in componentsFiltered"
+          :key="classe.component.codigo"
+          :component="classe.component"
+          :period="selectedPeriod"
+        />
+      </VueDraggableNext>
+    </div>
   </div>
 </template>
 
-<!-- Exporta o componente para uso externo -->
 <script>
 export default {
   name: "DashboardViewSubjects",
