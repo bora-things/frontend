@@ -4,7 +4,6 @@ import SubjectCardEC from "@/components/SubjectCardEC.vue";
 import api from "@/config/axios.config";
 import { computed, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
-import { useToast } from "vue-toast-notification";
 
 import {
   handleAddInterestedSubjectRequest,
@@ -12,33 +11,7 @@ import {
   handleRemoveInterestedSubjectRequest,
 } from "./DashboardController.js";
 
-const components = ref([
-  {
-    interest_id: "IMD0043 ",
-    year: "",
-    period: "",
-    friends: [],
-    component: {
-      nome: "REDES DE COMPUTADORES ",
-      "carga-horaria-total": 90,
-      "co-requisites": null,
-      "pre-requisites": null,
-      codigo: "IMD0043",
-      blockComponents: null,
-      departamento: null,
-      "tipo-atividade-descricao": null,
-      "disciplina-obrigatoria": true,
-      ementa: null,
-      equivalentes: null,
-      "id-componente": 1,
-      "id-matriz-curricular": null,
-      "id-tipo-atividade": null,
-      "id-tipo-componente": null,
-      "id-unidade": null,
-    },
-  },
-]);
-const toast = useToast();
+const components = ref([]);
 const classes = ref(null);
 const loading = ref(true);
 const periods = ref([]);
@@ -126,6 +99,23 @@ async function fetchClasses() {
   }
 }
 
+async function fetchComponents() {
+  try {
+    const response = await api.get(
+      "/api/students/me/possible-subjects?page=2&size=10,asc"
+    );
+    components.value = response.data.map((item) => ({
+      year: null,
+      period: null,
+      "id-turma": item.codigo,
+      component: item,
+      friends: [],
+    }));
+  } catch (error) {
+    console.error("Erro ao buscar componentes:", error);
+  }
+}
+
 function setPeriods() {
   const classesPeriods = Object.keys(classes.value).map((key) => {
     const [ano, periodo] = key.split("-");
@@ -158,7 +148,7 @@ async function fetchInterestedClasses() {
 }
 
 onMounted(async () => {
-  await Promise.all([fetchClasses(), fetchInterestedClasses()]);
+  await Promise.all([fetchClasses(), fetchComponents(), fetchInterestedClasses()]);
   setPeriods();
   selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
 });
