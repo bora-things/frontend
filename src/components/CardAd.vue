@@ -30,7 +30,10 @@ onMounted(() => {
       class="relative bg-bp_grayscale-800 border border-bp_neutral-600 rounded-full w-12 h-12"
       @click="handleCardAdClick"
     >
-      <div class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"></div>
+      <div
+        v-if="advertisements.length > 0"
+        class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"
+      ></div>
       <v-icon class="p-1" name="md-notificationsnone-outlined" scale="1.8"></v-icon>
     </button>
     <div
