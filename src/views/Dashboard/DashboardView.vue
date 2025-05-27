@@ -1,6 +1,5 @@
 <script setup>
 import SubjectCard from "@/components/SubjectCard.vue";
-import SubjectCardEC from "@/components/SubjectCardEC.vue";
 import api from "@/config/axios.config";
 import { computed, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
@@ -10,6 +9,7 @@ import {
   handleInterestedSubjectsRequest,
   handleRemoveInterestedSubjectRequest,
 } from "./DashboardController.js";
+import DashboardViewSubjects from "./DashboardViewSubjects.vue";
 
 const components = ref([]);
 const classes = ref(null);
@@ -166,14 +166,6 @@ watch(
   }
 );
 
-function toggleComponentType(type) {
-  if (componentType.value === type) {
-    componentType.value = "TODAS"; // Reseta para "TODAS" se o mesmo botão for clicado novamente
-  } else {
-    componentType.value = type; // Define o tipo selecionado
-  }
-}
-
 async function handleRemoveInterestedSubject(event) {
   const toSection = event.to.id;
   if (toSection !== "components") return;
@@ -194,6 +186,7 @@ async function handleRemoveInterestedSubject(event) {
 
 function handleAddInterestedSubject(event) {
   const component = event.item;
+  console.log(event);
 
   handleAddInterestedSubjectRequest({
     subjectCode: component.id,
@@ -328,84 +321,13 @@ async function onMove(event) {
       </div>
     </VueDraggableNext>
     <hr class="my-6 border-bp_grayscale-700" />
-    <div class="flex flex-col flex-1">
-      <div class="flex items-center justify-between w-full lg:flex-row gap-3">
-        <div class="flex flex-col md:flex-row md:justify-between items-center gap-5">
-          <p class="text-3xl font-bold">Disciplinas</p>
-        </div>
-        <div
-          class="flex justify-between items-center space-x-4 p-2 rounded-xl bg-bp_neutral-700 w-[80%]"
-        >
-          <label
-            className="input bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 p-2 w-[50%]"
-          >
-            <input
-              type="search"
-              placeholder="Buscar com IA"
-              class="text-bp_grayscale-400 font-sans"
-            />
-            <v-icon
-              name="bi-stars"
-              scale="1.2"
-              class="hover:animate-twinkle cursor-pointer"
-            ></v-icon>
-          </label>
-          <div
-            class="flex items-center space-x-2 bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md p-2"
-          >
-            <label
-              className="bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 w-[60%] pr-2"
-            >
-              <input
-                type="search"
-                placeholder="Buscar por código"
-                class="pl-2 text-sm py-1 text-bp_grayscale-400 rounded-3xl bg-transparent font-sans focus:outline-none"
-              />
-              <v-icon
-                name="bi-search"
-                class="hover:scale-[1.1] cursor-pointer duration-300"
-              ></v-icon>
-            </label>
-            <button
-              :class="[
-                'badge text-white py-2 bg-transparent rounded-xl border border-bp_green-600',
-                componentType === 'OBRIGATORIO' ? 'bg-bp_green-600' : '',
-              ]"
-              @click="toggleComponentType('OBRIGATORIO')"
-            >
-              Obrigatório
-            </button>
-            <button
-              :class="[
-                'badge text-white py-2 bg-transparent rounded-xl border border-bp_primary-600',
-                componentType === 'OPTATIVO' ? 'bg-bp_primary-600' : '',
-              ]"
-              @click="toggleComponentType('OPTATIVO')"
-            >
-              Optativo
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <VueDraggableNext
-        id="components"
-        :animation="800"
-        :list="components"
-        class="grid md:grid-cols-3 md:grid-rows-3 bg-bp_grayscale-600 rounded-md gap-4 p-4 flex-1"
-        group="subjects"
-        :move="onMove"
-        @add="handleRemoveInterestedSubject"
-        @remove="handleAddInterestedSubject"
-      >
-        <SubjectCardEC
-          class="w-full"
-          v-for="classe in componentsFiltered"
-          :key="classe.component.codigo"
-          :component="classe.component"
-          :period="selectedPeriod"
-        />
-      </VueDraggableNext>
-    </div>
+    <DashboardViewSubjects
+      :components="componentsFiltered"
+      :selected-period="selectedPeriod"
+      :component-type="componentType"
+      :handle-add-interested-subject="handleAddInterestedSubject"
+      :handle-remove-interested-subject="handleRemoveInterestedSubject"
+      :on-move="onMove"
+    />
   </main>
 </template>
