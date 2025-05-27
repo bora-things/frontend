@@ -1,107 +1,118 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue' 
+import { computed, onMounted, ref } from "vue";
 
-const isCalendarOpen = ref(false)
+const isCalendarOpen = ref(false);
 
 const events = ref({
-    enrollment: [],
-    reEnrollment: [],
-    extraEnrollment: []
-})
+  enrollment: [],
+  reEnrollment: [],
+  extraEnrollment: [],
+});
 
 async function fetchCalendarEvents() {
   try {
-    const response = await fetch('src/assets/mocks/CalendarMockData.json')
-    const data = await response.json()
-    events.value = data
+    const response = await fetch("src/assets/mocks/CalendarMockData.json");
+    const data = await response.json();
+    events.value = data;
   } catch (error) {
-    console.error('Erro ao buscar dados do calendário:', error)
+    console.error("Erro ao buscar dados do calendário:", error);
   }
 }
 
-const today = new Date()
-const currentMonth = ref(today.getMonth())
-const currentYear = ref(today.getFullYear())
+const today = new Date();
+const currentMonth = ref(today.getMonth());
+const currentYear = ref(today.getFullYear());
 
 function handleCalendarClick() {
-  isCalendarOpen.value = !isCalendarOpen.value
+  isCalendarOpen.value = !isCalendarOpen.value;
 }
 
 function getDaysInMonth(month, year) {
-  const date = new Date(year, month, 1)
-  const days = []
+  const date = new Date(year, month, 1);
+  const days = [];
   while (date.getMonth() === month) {
-    days.push(new Date(date))
-    date.setDate(date.getDate() + 1)
+    days.push(new Date(date));
+    date.setDate(date.getDate() + 1);
   }
-  return days
+  return days;
 }
 
-const days = computed(() => getDaysInMonth(currentMonth.value, currentYear.value))
+const days = computed(() => getDaysInMonth(currentMonth.value, currentYear.value));
 
 function formatDate(date) {
-  return date.toISOString().split('T')[0]
+  return date.toISOString().split("T")[0];
 }
 
 function getEventClass(dateStr) {
   const applyClass = (dates, colorClass) => {
-    if (!dates.includes(dateStr)) return ''
+    if (!dates.includes(dateStr)) return "";
 
-    const isFirst = dateStr === dates[0]
-    const isLast = dateStr === dates[dates.length - 1]
+    const isFirst = dateStr === dates[0];
+    const isLast = dateStr === dates[dates.length - 1];
 
-    const borderRadius = isFirst ? 'rounded-l-md' : isLast ? 'rounded-r-md' : ''
+    const borderRadius = isFirst ? "rounded-l-md" : isLast ? "rounded-r-md" : "";
     const borderSide = [
-      isFirst ? 'border-l' : '',
-      isLast ? 'border-r' : '',
-      'border-t', 'border-b'
-    ].join(' ')
+      isFirst ? "border-l" : "",
+      isLast ? "border-r" : "",
+      "border-t",
+      "border-b",
+    ].join(" ");
 
-    return `text-white ${borderSide} ${colorClass} ${borderRadius}`
-  }
+    return `text-white ${borderSide} ${colorClass} ${borderRadius}`;
+  };
 
-  if (dateStr === formatDate(today)) return 'text-bp_green-500 font-bold'
+  if (dateStr === formatDate(today)) return "text-bp_green-500 font-bold";
 
   return (
-    applyClass(events.value.enrollment, 'border-bp_primary-700') ||
-    applyClass(events.value.reEnrollment, 'border-bp_yellow-300') ||
-    applyClass(events.value.extraEnrollment, 'border-bp_pink-100')
-  )
+    applyClass(events.value.enrollment, "border-bp_primary-700") ||
+    applyClass(events.value.reEnrollment, "border-bp_yellow-300") ||
+    applyClass(events.value.extraEnrollment, "border-bp_pink-100")
+  );
 }
-
 
 function prevMonth() {
   if (currentMonth.value === 0) {
-    currentMonth.value = 11
-    currentYear.value--
+    currentMonth.value = 11;
+    currentYear.value--;
   } else {
-    currentMonth.value--
+    currentMonth.value--;
   }
 }
 
 function nextMonth() {
   if (currentMonth.value === 11) {
-    currentMonth.value = 0
-    currentYear.value++
+    currentMonth.value = 0;
+    currentYear.value++;
   } else {
-    currentMonth.value++
+    currentMonth.value++;
   }
 }
 
-const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
-const weekDays = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB']
-
+const monthNames = [
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
+];
+const weekDays = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
 
 onMounted(() => {
-  fetchCalendarEvents()
-})
+  fetchCalendarEvents();
+});
 </script>
 
 <template>
   <div class="flex justify-end relative">
-
     <button
-      class="relative bg-bp_neutral-800 border border-bp_neutral-600 rounded-full w-12 h-12"
+      class="relative bg-bp_grayscale-800 border border-bp_neutral-600 rounded-full w-12 h-12"
       @click="handleCalendarClick"
     >
       <div class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"></div>
@@ -110,13 +121,13 @@ onMounted(() => {
 
     <div
       v-if="isCalendarOpen"
-      class="absolute right-0 mt-2 bg-bp_neutral-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-80 md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
+      class="absolute right-0 mt-2 bg-bp_grayscale-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-80 md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
-      <div class="p-4 ">
+      <div class="p-4">
         <div class="flex justify-end mb-2">
-            <button @click="isCalendarOpen = false">
+          <button @click="isCalendarOpen = false">
             <v-icon name="md-close" scale="1" />
-            </button>
+          </button>
         </div>
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-lg font-semibold">

@@ -1,72 +1,74 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref } from "vue";
 
-const isNotificationMenuOpen = ref(false)
+const isNotificationMenuOpen = ref(false);
 
 function handleNotificationMenuClick() {
-  isNotificationMenuOpen.value = !isNotificationMenuOpen.value
+  isNotificationMenuOpen.value = !isNotificationMenuOpen.value;
 }
 
-const notifications = ref([])
+const notifications = ref([]);
 
 async function fetchNotifications() {
   try {
-    const response = await fetch('/src/assets/mocks/NotificationsMockData.json')
-    const data = await response.json()
-    notifications.value = data
+    const response = await fetch("/src/assets/mocks/NotificationsMockData.json");
+    const data = await response.json();
+    notifications.value = data;
   } catch (error) {
-    console.error('Error fetching notifications:', error)
+    console.error("Error fetching notifications:", error);
   }
 }
 
 async function handleUpdateNotificationStatus(notification, status) {
   //Irá realizar um update no status da notificação
-  notifications.value = notifications.value.filter((item) => item.id !== notification.id)
+  notifications.value = notifications.value.filter((item) => item.id !== notification.id);
 }
 
-onMounted(fetchNotifications)
+onMounted(fetchNotifications);
 
 function getNotificationCreateDate(date) {
-  const now = new Date()
-  const notificationDate = new Date(date)
-  const diff = now - notificationDate
-  const diffInMinutes = Math.floor(diff / 1000 / 60)
-  const diffInHours = Math.floor(diff / 1000 / 60 / 60)
-  const diffInDays = Math.floor(diff / 1000 / 60 / 60 / 24)
-  const diffInMonths = Math.floor(diff / 1000 / 60 / 60 / 24 / 30)
-  const diffInYears = Math.floor(diff / 1000 / 60 / 60 / 24 / 30 / 12)
+  const now = new Date();
+  const notificationDate = new Date(date);
+  const diff = now - notificationDate;
+  const diffInMinutes = Math.floor(diff / 1000 / 60);
+  const diffInHours = Math.floor(diff / 1000 / 60 / 60);
+  const diffInDays = Math.floor(diff / 1000 / 60 / 60 / 24);
+  const diffInMonths = Math.floor(diff / 1000 / 60 / 60 / 24 / 30);
+  const diffInYears = Math.floor(diff / 1000 / 60 / 60 / 24 / 30 / 12);
 
   if (diffInMinutes < 60) {
-    return `${diffInMinutes} minuto${diffInMinutes > 1 ? 's' : ''}`
+    return `${diffInMinutes} minuto${diffInMinutes > 1 ? "s" : ""}`;
   } else if (diffInHours < 24) {
-    return `${diffInHours} hora${diffInHours > 1 ? 's' : ''}`
+    return `${diffInHours} hora${diffInHours > 1 ? "s" : ""}`;
   } else if (diffInDays < 30) {
-    return `${diffInDays} dia${diffInDays > 1 ? 's' : ''}`
+    return `${diffInDays} dia${diffInDays > 1 ? "s" : ""}`;
   } else if (diffInMonths < 12) {
-    return `${diffInMonths} mês${diffInMonths > 1 ? 'es' : ''}`
+    return `${diffInMonths} mês${diffInMonths > 1 ? "es" : ""}`;
   } else {
-    return `${diffInYears} ano${diffInYears > 1 ? 's' : ''}`
+    return `${diffInYears} ano${diffInYears > 1 ? "s" : ""}`;
   }
 }
 </script>
 
 <template>
   <div class="flex justify-end">
-    <button class="relative bg-bp_neutral-800 border border-bp_neutral-600 rounded-full w-12 h-12" @click="handleNotificationMenuClick">
+    <button
+      class="relative bg-bp_grayscale-800 border border-bp_neutral-600 rounded-full w-12 h-12"
+      @click="handleNotificationMenuClick"
+    >
       <div
         class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"
         v-if="notifications.length > 0"
       ></div>
-      <v-icon class="p-2" 
-          name="md-groupadd-outlined" scale="2"
-          
-          ></v-icon>
+      <v-icon class="p-2" name="md-groupadd-outlined" scale="2"></v-icon>
     </button>
     <div
       v-if="isNotificationMenuOpen"
-      class="absolute right-3 bg-bp_neutral-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
+      class="absolute right-3 bg-bp_grayscale-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
-      <div class="border-b border-bp_neutral-500 mb-4 pb-2 flex justify-between items-center">
+      <div
+        class="border-b border-bp_neutral-500 mb-4 pb-2 flex justify-between items-center"
+      >
         <div class="flex items-center gap-2">
           <h4 class="text-sm md:text-base">Pedidos de amizade</h4>
         </div>
