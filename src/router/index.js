@@ -5,7 +5,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ConsultSubjectsView from '../views/ConsultSubjetcs/ConsultSubjectsView.vue'
 import DashboardView from '../views/Dashboard/DashboardView.vue'
 import FriendsView from '../views/Friends/FriendsView.vue'
-
+import CardAd from '@/components/CardAd.vue'
+import PersonalizedCalendar from '@/components/PersonalizedCalendar.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,16 @@ const router = createRouter({
       path:'/interesses',
       name:'interests',
       component:InterestedSubjectsView
+    },
+    {
+      path:'/anuncio',
+      name: 'ad',
+      component: CardAd
+    },
+    {
+      path:'/calendar',
+      name:'calendar',
+      component: PersonalizedCalendar
     }
   ]
 })

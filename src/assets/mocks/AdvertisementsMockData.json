@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "title":"Manutenção do sistema",
+        "description": "No dia 29/02 o sistema será atualizado, e pode ficar indisponível por alguns minutos."
+    },
+    {
+        "id": 2,
+        "title":"Feriado 01/05",
+        "description": "No dia 01/05 feriado do dia do trabalhador as atividades estão suspensas."
+    },
+    {
+        "id": 3,
+        "title":"Ponto Facultativo",
+        "description": "No dia 02/05 foi declarado ponto facultativo, portanto as atividades estão suspensas."
+    },
+    {
+        "id": 4,
+        "title":"Manutenção do sistema",
+        "description": "No dia 29/02 o sistema será atualizado, e pode ficar indisponível por alguns minutos."
+    },
+    {
+        "id": 5,
+        "title":"Manutenção do sistema",
+        "description": "No dia 29/02 o sistema será atualizado, e pode ficar indisponível por alguns minutos."
+    },
+    {
+        "id": 6,
+        "title":"Manutenção do sistema",
+        "description": "No dia 29/02 o sistema será atualizado, e pode ficar indisponível por alguns minutos."
+    },
+    {
+        "id": 7,
+        "title":"Manutenção do sistema",
+        "description": "No dia 29/02 o sistema será atualizado, e pode ficar indisponível por alguns minutos."
+    },
+    {
+        "id": 8,
+        "title":"Manutenção do sistema",
+        "description": "No dia 29/02 o sistema será atualizado, e pode ficar indisponível por alguns minutos."
+    }
+]
