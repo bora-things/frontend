@@ -1,5 +1,6 @@
 <script setup>
 import SubjectCardEC from "@/components/SubjectCardEC.vue";
+import api from "@/config/axios.config";
 import { computed, ref } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
 
@@ -35,6 +36,7 @@ const emit = defineEmits(["update:page"]);
 const componentType = ref("TODAS");
 const searchQuery = ref("");
 const codeQuery = ref("");
+const loading = ref(false);
 
 const componentsFiltered = computed(() => {
   let filtered = props.components;
@@ -46,22 +48,18 @@ const componentsFiltered = computed(() => {
   } else if (componentType.value === "OPTATIVO") {
     filtered = filtered.filter((item) => !item.component?.obrigatoria);
   }
-  if (searchQuery.value && searchQuery.value.trim() !== "") {
-    const query = searchQuery.value.trim().toLowerCase();
-    filtered = filtered.filter(
-      (item) =>
-        (item.component?.nome && item.component.nome.toLowerCase().includes(query)) ||
-        (item.component?.codigo && item.component.codigo.toLowerCase().includes(query))
-    );
-  }
-  if (codeQuery.value && codeQuery.value.trim() !== "") {
-    const code = codeQuery.value.trim().toLowerCase();
-    filtered = filtered.filter(
-      (item) =>
-        item.component?.codigo && item.component.codigo.toLowerCase().includes(code)
-    );
-  }
   return filtered;
+});
+
+const totalPages = computed(() => {
+  // Always use the filtered list for page count
+  let filtered = props.components;
+  if (componentType.value === "OBRIGATORIO") {
+    filtered = filtered.filter((item) => item.component?.obrigatoria);
+  } else if (componentType.value === "OPTATIVO") {
+    filtered = filtered.filter((item) => !item.component?.obrigatoria);
+  }
+  return Math.ceil(filtered.length / 9);
 });
 
 function handleFoward() {
@@ -84,6 +82,22 @@ function handleSearchInput(e) {
 }
 function handleCodeInput(e) {
   codeQuery.value = e.target.value;
+}
+
+async function fetchSearchedComponents() {
+  try {
+    loading.value = true;
+    const response = await api.get("/api/components", {
+      params: {
+        searched: searchQuery.value,
+      },
+    });
+    emit("searched-components", response.data); // Emite para o pai atualizar a lista
+  } catch (error) {
+    console.error("Error fetching components:", error);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 
@@ -110,6 +124,12 @@ function handleCodeInput(e) {
             name="bi-stars"
             scale="1.2"
             class="hover:animate-twinkle cursor-pointer"
+          ></v-icon>
+          <v-icon
+            name="bi-search"
+            scale="1.2"
+            class="hover:scale-[1.05] cursor-pointer"
+            @click="fetchSearchedComponents"
           ></v-icon>
         </label>
         <div
@@ -158,10 +178,12 @@ function handleCodeInput(e) {
         <button class="join-item btn btn-ghost" :disabled="page == 0" @click="handleBack">
           {{ "<" }}
         </button>
+        <span v-if="page > 1" class="join-item btn btn-ghost select-none opacity-30"
+          >...</span
+        >
         <button
-          class="join-item btn btn-ghost"
           v-if="page > 0"
-          :class="page === page - 1 ? 'bg-bp_primary-600 text-white' : ''"
+          class="join-item btn btn-ghost"
           @click="emit('update:page', page - 1)"
         >
           {{ page }}
@@ -170,26 +192,31 @@ function handleCodeInput(e) {
           {{ page + 1 }}
         </button>
         <button
+          v-if="page < totalPages - 1"
           class="join-item btn btn-ghost"
-          :class="page === page + 1 ? 'bg-bp_primary-600 text-white' : ''"
           @click="emit('update:page', page + 1)"
         >
           {{ page + 2 }}
         </button>
+        <span
+          v-if="page < totalPages - 2"
+          class="join-item btn btn-ghost select-none opacity-30"
+          >...</span
+        >
         <button
           class="join-item btn btn-ghost"
-          :class="page === page + 2 ? 'bg-bp_primary-600 text-white' : ''"
-          @click="emit('update:page', page + 2)"
+          :disabled="page >= totalPages - 1"
+          @click="handleFoward"
         >
-          {{ page + 3 }}
+          {{ ">" }}
         </button>
-        <button class="join-item btn btn-ghost" @click="handleFoward">{{ ">" }}</button>
       </div>
       <VueDraggableNext
+        v-if="!loading"
         id="components"
         :animation="800"
         :list="components"
-        class="grid md:grid-cols-3 grid-rows-3 gap-4"
+        class="grid md:grid-cols-3 grid-rows-3 gap-4 w-full h-full"
         group="subjects"
         :move="onMove"
         @add="handleRemoveInterestedSubject"
@@ -203,6 +230,9 @@ function handleCodeInput(e) {
           :period="selectedPeriod"
         />
       </VueDraggableNext>
+      <div v-else class="flex items-center justify-center h-full">
+        <span class="loading loading-spinner"></span>
+      </div>
     </div>
   </div>
 </template>

@@ -22,6 +22,9 @@ const pageToFetch = ref(0);
 const componentType = ref("TODAS");
 const page = ref(0);
 
+// Flag para saber se está mostrando resultados de busca
+const isSearchActive = ref(false);
+
 const selectedPeriodWorkload = computed(() => {
   if (!periodClasses.value.length) {
     return periodInterestedClasses.value.reduce(
@@ -113,7 +116,6 @@ async function fetchInterestedClasses() {
   }
 }
 
-const lastFetchedPage = ref(0);
 async function fetchComponents() {
   try {
     const response = await api.get(
@@ -136,6 +138,8 @@ async function fetchComponents() {
 watch(
   () => page.value,
   async (newPage) => {
+    // Só busca mais páginas se não estiver em modo de busca
+    if (isSearchActive.value) return;
     // Calcula quantos itens já foram buscados
     const totalFetched = components.value.length;
     // Se o usuário passar do último item carregado, busca a próxima página
@@ -203,6 +207,30 @@ async function onMove(event) {
   }
   fetchInterestedClasses();
   return true;
+}
+
+function handleSearchedComponents(data) {
+  // Replace the components list with the search results
+  components.value = data.map((item) => ({
+    year: null,
+    period: null,
+    "id-turma": item.codigo,
+    component: item,
+    friends: [],
+  }));
+  // Reset pagination
+  page.value = 0;
+  pageToFetch.value = 1; // Next fetch should append after search results if needed
+  isSearchActive.value = true;
+}
+
+// Se quiser resetar a busca (ex: limpar campo de busca), chame esta função
+function resetSearch() {
+  components.value = [];
+  page.value = 0;
+  pageToFetch.value = 0;
+  isSearchActive.value = false;
+  fetchComponents();
 }
 </script>
 <template>
@@ -325,6 +353,7 @@ async function onMove(event) {
       :handle-remove-interested-subject="handleRemoveInterestedSubject"
       :on-move="onMove"
       v-model:page="page"
+      @searched-components="handleSearchedComponents"
     />
   </main>
 </template>
