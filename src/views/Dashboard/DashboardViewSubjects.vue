@@ -38,6 +38,9 @@ const codeQuery = ref("");
 
 const componentsFiltered = computed(() => {
   let filtered = props.components;
+
+  filtered = filtered.slice(props.page * 9, (props.page + 1) * 9);
+
   if (componentType.value === "OBRIGATORIO") {
     filtered = filtered.filter((item) => item.component?.obrigatoria);
   } else if (componentType.value === "OPTATIVO") {

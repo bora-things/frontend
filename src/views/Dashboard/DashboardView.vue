@@ -17,6 +17,7 @@ const loading = ref(true);
 const periods = ref([]);
 const interestedClasses = ref([]);
 const selectedPeriod = ref("");
+const pageToFetch = ref(0);
 
 const componentType = ref("TODAS");
 const page = ref(0);
@@ -112,18 +113,21 @@ async function fetchInterestedClasses() {
   }
 }
 
+const lastFetchedPage = ref(0);
 async function fetchComponents() {
   try {
     const response = await api.get(
-      `/api/students/me/possible-subjects?page=${page.value}&size=9`
+      `/api/students/me/possible-subjects?page=${pageToFetch.value}&size=72`
     );
-    components.value = response.data.map((item) => ({
+    const data = response.data.map((item) => ({
       year: null,
       period: null,
       "id-turma": item.codigo,
       component: item,
       friends: [],
     }));
+    components.value.push(...data);
+    pageToFetch.value += 1;
   } catch (error) {
     console.error("Erro ao buscar componentes:", error);
   }
@@ -131,8 +135,13 @@ async function fetchComponents() {
 
 watch(
   () => page.value,
-  () => {
-    fetchComponents();
+  async (newPage) => {
+    // Calcula quantos itens já foram buscados
+    const totalFetched = components.value.length;
+    // Se o usuário passar do último item carregado, busca a próxima página
+    if ((newPage + 1) * 9 >= totalFetched) {
+      await fetchComponents(pageToFetch.value);
+    }
   }
 );
 
