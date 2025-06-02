@@ -1,7 +1,7 @@
 <script setup>
 import SubjectCardEC from "@/components/SubjectCardEC.vue";
 import api from "@/config/axios.config";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
 
 const props = defineProps({
@@ -27,6 +27,10 @@ const props = defineProps({
   },
   page: {
     type: Number,
+    required: true,
+  },
+  fetchComponents: {
+    type: Function,
     required: true,
   },
 });
@@ -84,7 +88,8 @@ function handleCodeInput(e) {
   codeQuery.value = e.target.value;
 }
 
-async function fetchSearchedComponents() {
+async function fetchSearchedComponents(e) {
+  e.preventDefault();
   try {
     loading.value = true;
     const response = await api.get("/api/components", {
@@ -99,6 +104,15 @@ async function fetchSearchedComponents() {
     loading.value = false;
   }
 }
+
+watch(
+  () => searchQuery.value,
+  (newQuery) => {
+    if (newQuery === "") {
+      props.fetchComponents();
+    }
+  }
+);
 </script>
 
 <template>
@@ -110,28 +124,31 @@ async function fetchSearchedComponents() {
       <div
         class="flex justify-between items-center space-x-4 p-2 rounded-xl bg-bp_neutral-700 w-[80%]"
       >
-        <label
-          class="input bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 p-2 w-[50%]"
-        >
-          <input
-            type="search"
-            placeholder="Buscar com IA"
-            class="text-bp_grayscale-400 font-sans"
-            :value="searchQuery"
-            @input="handleSearchInput"
-          />
-          <v-icon
-            name="bi-stars"
-            scale="1.2"
-            class="hover:animate-twinkle cursor-pointer"
-          ></v-icon>
-          <v-icon
-            name="bi-search"
-            scale="1.2"
-            class="hover:scale-[1.05] cursor-pointer"
-            @click="fetchSearchedComponents"
-          ></v-icon>
-        </label>
+        <form :onsubmit="fetchSearchedComponents" class="w-full">
+          <label
+            class="w-full input bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 p-2 w-[50%]"
+          >
+            <input
+              type="search"
+              placeholder="Buscar com IA"
+              class="text-bp_grayscale-400 font-sans"
+              :value="searchQuery"
+              @input="handleSearchInput"
+            />
+            <v-icon
+              name="bi-stars"
+              scale="1.2"
+              class="hover:animate-twinkle cursor-pointer"
+            ></v-icon>
+            <button type="submit">
+              <v-icon
+                name="bi-search"
+                scale="1.2"
+                class="hover:scale-[1.05] cursor-pointer"
+              ></v-icon>
+            </button>
+          </label>
+        </form>
         <div
           class="flex items-center space-x-2 bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md p-2"
         >
@@ -211,8 +228,14 @@ async function fetchSearchedComponents() {
           {{ ">" }}
         </button>
       </div>
+      <div
+        v-if="componentsFiltered.length === 0 && !loading"
+        class="text-center text-gray-400"
+      >
+        Nenhuma disciplina encontrada.
+      </div>
       <VueDraggableNext
-        v-if="!loading"
+        v-if="!loading && props.components.length > 0"
         id="components"
         :animation="800"
         :list="components"
@@ -230,7 +253,7 @@ async function fetchSearchedComponents() {
           :period="selectedPeriod"
         />
       </VueDraggableNext>
-      <div v-else class="flex items-center justify-center h-full">
+      <div v-else-if="loading" class="flex items-center justify-center h-full">
         <span class="loading loading-spinner"></span>
       </div>
     </div>
