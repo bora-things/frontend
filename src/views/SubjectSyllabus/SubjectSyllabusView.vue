@@ -9,11 +9,11 @@ const subject = ref('')
 const friends = ref([])
 const teachers = ref([])
 
-function getCorAprovacao(approval) {
-  if (approval <= 60) {
-    return 'text-red-500'
-  } else if (approval <= 80) {
-    return 'text-yellow-400'
+function getCorAprovacao(review) {
+  if (review <= 5) {
+    return 'text-bp_pink-100'
+  } else if (review <= 7) {
+    return 'text-bp_yellow-300'
   } else {
     return 'text-bp_green-600'
   }
@@ -33,7 +33,7 @@ onMounted(async () => {
   <div class="text-white p-6 min-h-screen">
     <div class="max-w-5xl mx-auto bg-bp_neutral-800 border-2 border-bp_neutral-600 rounded-lg p-6">
       <div class="flex justify-between">
-        <h1 class="text-2xl font-bold mb-2">{{ subject.name }}</h1>
+        <h1 class="text-2xl font-bold mb-2 w-2/3">{{ subject.name }}</h1>
         <v-icon name="md-close-round" scale="1.5"/>
       </div>
         <div class="flex justify-between items-center">
@@ -74,8 +74,8 @@ onMounted(async () => {
                 <div>
                 <p>{{ teacher.name }}</p>
                 <p class="text-sm">
-                    Aprovação:
-                    <span :class="getCorAprovacao(teacher.approval)">{{ teacher.approval }}%</span>
+                    Avaliação:
+                    <span :class="getCorAprovacao(teacher.review)">{{ teacher.review }}</span>
                 </p>
                 </div>
             </div>

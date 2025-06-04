@@ -22,17 +22,17 @@
   "teachers": [
     {
       "name": "Sandra Azevedo Fonseca Dantas Martins",
-      "approval": 55,
+      "review": 5,
       "urlImgPerfil": "."
     },
     {
       "name": "Maria Lopes Shnieder",
-      "approval": 78,
+      "review": 7,
       "urlImgPerfil": "h."
     },
     {
       "name": "Edmara Alencar Madhouy Irene de Souza Bastos",
-      "approval": 91,
+      "review": 9,
       "urlImgPerfil": "."
     }
   ]
