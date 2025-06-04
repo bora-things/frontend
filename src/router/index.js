@@ -42,7 +42,7 @@ const router = createRouter({
       component:InterestedSubjectsView
     },
     {
-      path:'/ementa',
+      path:'/ementa/:id',
       name:'ementa',
       component: SubjectSyllabusView
     }

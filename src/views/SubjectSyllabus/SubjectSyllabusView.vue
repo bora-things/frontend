@@ -1,20 +1,51 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router';
+import { getSubjectSyllabusData } from './SubjectSyllabusController';
+
+const route = useRoute()
+
+const subject = ref('')
+const friends = ref([])
+const teachers = ref([])
+
+function getCorAprovacao(approval) {
+  if (approval <= 60) {
+    return 'text-red-500'
+  } else if (approval <= 80) {
+    return 'text-yellow-400'
+  } else {
+    return 'text-bp_green-600'
+  }
+}
+
+onMounted(async () => {
+  const subjectId = route.params.id
+  const data = await getSubjectSyllabusData(subjectId)
+  subject.value = data
+  friends.value = data.friends
+  teachers.value = data.teachers
+})
+
+</script>
+
 <template>
   <div class="text-white p-6 min-h-screen">
     <div class="max-w-5xl mx-auto bg-bp_neutral-800 border-2 border-bp_neutral-600 rounded-lg p-6">
       <div class="flex justify-between">
-        <h1 class="text-2xl font-bold mb-2">Princípios de Legislação Aplicáveis à Tecnologia da Informação e Comunicação de Dados</h1>
+        <h1 class="text-2xl font-bold mb-2">{{ subject.name }}</h1>
         <v-icon name="md-close-round" scale="1.5"/>
       </div>
         <div class="flex justify-between items-center">
             <div class="flex flex-wrap text-sm mb-4 gap-2">
                 <span class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md px-3 py-1">
-                Código: DB0040B
+                Código: {{ subject.code }}
                 </span>
                 <span class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md px-3 py-1">
-                Carga Horária: 90H
+                Carga Horária: {{ subject.workload }}
                 </span>
                 <span class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md px-3 py-1">
-                Tipo: Optativa
+                Tipo: {{ subject.mandatory ? 'Obrigatória' : 'Optativa' }}
                 </span>
             </div>
             
@@ -27,13 +58,7 @@
       <section class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md mb-8 p-4">
         <h2 class="text-xl font-semibold mb-2">Ementa da Disciplina</h2>
         <p class="text-sm text-gray-300">
-          Estudo dos fundamentos legais que regem o uso da Tecnologia da Informação e Comunicação (TIC)...
-          Estudo dos fundamentos legais que regem o uso da Tecnologia da Informação e Comunicação (TIC)...
-          Estudo dos fundamentos legais que regem o uso da Tecnologia da Informação e Comunicação (TIC)...
-          Estudo dos fundamentos legais que regem o uso da Tecnologia da Informação e Comunicação (TIC)...
-          Estudo dos fundamentos legais que regem o uso da Tecnologia da Informação e Comunicação (TIC)...
-          Estudo dos fundamentos legais que regem o uso da Tecnologia da Informação e Comunicação (TIC)...
-          Estudo dos fundamentos legais que regem o uso da Tecnologia da Informação e Comunicação (TIC)...
+         {{ subject.description }}
         </p>
       </section>
 
@@ -41,16 +66,16 @@
         <h2 class="text-xl font-semibold text-center mb-4">Professores Prováveis</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div
-                v-for="(prof, index) in professores"
+                v-for="(teacher, index) in teachers"
                 :key="index"
                 class="bg-bp_neutral-825 border border-bp_neutral-600 p-2 rounded flex items-center space-x-3"
             >
-                <img :src="prof.foto" alt="Foto do professor" class="rounded-full w-12 h-12 object-cover" />
+                <img :src="teacher.urlImgPerfil" alt="" class="rounded-full w-12 h-12 object-cover" />
                 <div>
-                <p>{{ prof.nome }}</p>
+                <p>{{ teacher.name }}</p>
                 <p class="text-sm">
                     Aprovação:
-                    <span :class="getCorAprovacao(prof.aprovacao)">{{ prof.aprovacao }}%</span>
+                    <span :class="getCorAprovacao(teacher.approval)">{{ teacher.approval }}%</span>
                 </p>
                 </div>
             </div>
@@ -60,11 +85,11 @@
       <section class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md p-4">
         <h2 class="text-xl font-semibold text-center mb-4">Amigos Interessados</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div v-for="(amigo, index) in amigos" :key="index" class="bg-bp_neutral-825 border border-bp_neutral-600 p-2 rounded flex items-center space-x-3">
-            <img :src="amigo.avatar" class="rounded-full w-12 h-12" />
+          <div v-for="(friend, index) in friends" :key="index" class="bg-bp_neutral-825 border border-bp_neutral-600 p-2 rounded flex items-center space-x-3">
+            <img :src="friend.urlImgPerfil" class="rounded-full w-12 h-12" />
             <div>
-              <p>{{ amigo.nome }}</p>
-              <p class="text-sm text-gray-300">{{ amigo.curso }} <span class="text-bp_neutral-400">{{ amigo.periodo }}</span></p>
+              <p>{{ friend.name }}</p>
+              <p class="text-sm text-gray-300">{{ friend.course }} <span class="text-bp_neutral-400">{{ friend.period }}</span></p>
             </div>
           </div>
         </div>
@@ -72,54 +97,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      amigos: [
-        {
-          nome: 'Sandra Azevedo Fonseca Dantas Martins',
-          curso: 'BTI',
-          periodo: '2º Período',
-          avatar: 'https://via.placeholder.com/40'
-        },
-        {
-          nome: 'Raimunda Gomes',
-          curso: 'Enfermagem',
-          periodo: '2º Período',
-          avatar: 'https://via.placeholder.com/40'
-        },
-      ],
-      professores: [
-        {
-          nome: "Sandra Azevedo Fonseca Dantas Martins",
-          aprovacao: 55,
-          foto: "https://via.placeholder.com/48/4ade80/000000?text=S"
-        },
-        {
-          nome: "Maria Lopes Shnieder",
-          aprovacao: 78,
-          foto: "https://via.placeholder.com/48/4ade80/000000?text=M"
-        },
-        {
-          nome: "Edmara Alencar Madhouy Irene de Souza Bastos",
-          aprovacao: 91,
-          foto: "https://via.placeholder.com/48/4ade80/000000?text=E"
-        }
-      ]
-    };
-  },
-  methods: {
-    getCorAprovacao(aprovacao) {
-      if (aprovacao <= 60) {
-        return 'text-red-500';
-      } else if (aprovacao <= 80) {
-        return 'text-yellow-400';
-      } else {
-        return 'text-bp_green-600';
-      }
-    }
-  }
-};
-</script>
