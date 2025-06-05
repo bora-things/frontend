@@ -2,12 +2,6 @@
 import api from "@/config/axios.config";
 import { onMounted, ref } from "vue";
 
-const isNotificationMenuOpen = ref(false);
-
-function handleNotificationMenuClick() {
-  isNotificationMenuOpen.value = !isNotificationMenuOpen.value;
-}
-
 const notifications = ref([]);
 const updatingNotificationId = ref(null);
 
@@ -67,36 +61,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex justify-end">
+  <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
     <button
+      tabindex="0"
       class="relative bg-bp_grayscale-800 border border-bp_neutral-600 rounded-full w-12 h-12"
-      @click="handleNotificationMenuClick"
     >
       <div
         v-if="notifications.length > 0"
         class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"
       ></div>
-      <v-icon name="md-notifications" scale="1.5" />
+      <v-icon class="p-1" name="fa-user-friends" scale="1.8"></v-icon>
     </button>
-    <div
-      v-if="isNotificationMenuOpen"
-      class="absolute right-3 bg-bp_grayscale-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
+    <ul
+      tabIndex="{0}"
+      className="dropdown-content flex flex-col bg-bp_grayscale-800 p-4 rounded-md
+       shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
       <div
         class="mb-4 pb-2 flex justify-between items-center top-0 z-10 transition-shadow duration-300"
         :class="{ 'shadow-md': isHeaderShadowVisible }"
       >
-        <div class="flex items-center gap-2">
-          <h4 class="text-sm md:text-base font-medium text-bp_white-100">
-            Pedidos de Amizade
-          </h4>
-        </div>
-        <button
-          class="hover:scale-110 transition-transform duration-300"
-          @click="isNotificationMenuOpen = false"
-        >
-          <v-icon name="md-close" scale="1" />
-        </button>
+        <header class="flex justify-between items-center mb-4">
+          <p class="title-h1">Pedidos de Amizade</p>
+        </header>
       </div>
       <ul class="flex flex-col gap-2 relative notification-container">
         <li
@@ -152,6 +139,6 @@ onMounted(() => {
           class="sticky bottom-0 left-0 w-full h-5 bg-gradient-to-t from-bp_neutral-700 to-transparent pointer-events-none"
         ></div>
       </ul>
-    </div>
+    </ul>
   </div>
 </template>

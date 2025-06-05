@@ -110,24 +110,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex justify-end relative">
+  <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
     <button
+      tabindex="0"
       class="relative bg-bp_grayscale-800 border border-bp_neutral-600 rounded-full w-12 h-12"
-      @click="handleCalendarClick"
     >
       <v-icon class="p-2" name="md-calendartoday-round" scale="2" />
     </button>
-
-    <div
-      v-if="isCalendarOpen"
-      class="absolute right-0 mt-2 bg-bp_grayscale-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-80 md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
+    <ul
+      tabIndex="{0}"
+      className="dropdown-content flex flex-col bg-bp_grayscale-800 p-4 rounded-md
+       shadow-lg transition-all ease-in-out duration-300 w-80 md:w-96 max-h-[70vh] overflow-y-auto"
     >
       <div class="p-4">
-        <div class="flex justify-end mb-2">
-          <button @click="isCalendarOpen = false">
-            <v-icon name="md-close" scale="1" />
-          </button>
-        </div>
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-lg font-semibold">
             {{ monthNames[currentMonth] }} {{ currentYear }}
@@ -179,6 +174,6 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </div>
+    </ul>
   </div>
 </template>
