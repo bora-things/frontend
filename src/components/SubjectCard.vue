@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps(["classSubject", "interest", "disabled"]);
+const props = defineProps(["classSubject", "interest", "disabled", "blinking"]);
 const { ano, "id-turma": IdTurma, periodo, component, friends } = props.classSubject;
 
 const maxVisible = 4;
@@ -20,8 +20,9 @@ const formatUserName = (name) => {
     :id="component.codigo"
     class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100"
     :class="{
-      'bg-bp_grayscale-800 border-bp_grayscale-500': !disabled,
+      'bg-bp_grayscale-800 border-bp_grayscale-500': !disabled && !blinking,
       'bg-bp_grayscale-700 border-bp_grayscale-500 animate-blinkOpacity': disabled,
+      'animate-blinkOpacity': blinking && !disabled,
     }"
   >
     <p class="font-sans font-medium">{{ component.nome }}</p>
@@ -81,5 +82,16 @@ const formatUserName = (name) => {
 </template>
 
 <style scoped>
-/* Removido blink-opacity, agora usando Tailwind */
+@keyframes blinkOpacity {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+.animate-blinkOpacity {
+  animation: blinkOpacity 1s linear infinite;
+}
 </style>

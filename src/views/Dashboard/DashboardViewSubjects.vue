@@ -140,13 +140,6 @@ watch(
               scale="1.2"
               class="hover:animate-twinkle cursor-pointer"
             ></v-icon>
-            <button type="submit">
-              <v-icon
-                name="bi-search"
-                scale="1.2"
-                class="hover:scale-[1.05] cursor-pointer"
-              ></v-icon>
-            </button>
           </label>
         </form>
         <div
@@ -241,9 +234,8 @@ watch(
         :list="components"
         class="grid md:grid-cols-3 grid-rows-3 gap-4 w-full h-full"
         group="subjects"
-        :move="onMove"
-        @add="handleRemoveInterestedSubject"
-        @remove="handleAddInterestedSubject"
+        @add="props.handleRemoveInterestedSubject"
+        @remove="props.handleAddInterestedSubject"
       >
         <SubjectCardEC
           class="w-full"

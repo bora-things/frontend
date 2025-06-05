@@ -184,29 +184,24 @@ async function handleRemoveInterestedSubject(event) {
     setPeriods();
     selectPeriod(selectedPeriod.value);
   }
+  fetchInterestedClasses();
 }
 
-function handleAddInterestedSubject(event) {
+const blinkingIds = ref([]);
+
+async function handleAddInterestedSubject(event) {
   const component = event.item;
-  handleAddInterestedSubjectRequest({
+  // Adiciona o id-turma ao array de blinking
+  blinkingIds.value.push(component.id);
+  await handleAddInterestedSubjectRequest({
     subjectCode: component.id,
     period: selectedPeriod.value.split("-")[1],
     year: selectedPeriod.value.split("-")[0],
   });
-}
-
-async function onMove(event) {
-  const toSection = event.to.id;
-  const fromSection = event.from.id;
-  if (toSection == fromSection) return false; // Impede o movimento dentro da mesma seção
-  if (toSection === "interested-classes") {
-    return handleAddInterestedSubject(event); // Permite mover apenas se não estiver desabilitado
-  }
-  if (toSection === "components") {
-    return await handleRemoveInterestedSubject(event); // Permite mover apenas se não estiver desabilitado
-  }
-  fetchInterestedClasses();
-  return true;
+  await fetchInterestedClasses();
+  // Remove o id-turma do blinking após o fetch
+  const idx = blinkingIds.value.indexOf(component.id);
+  if (idx !== -1) blinkingIds.value.splice(idx, 1);
 }
 
 function handleSearchedComponents(data) {
@@ -318,7 +313,6 @@ function resetSearch() {
       :animation="800"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
       :list="interestedClasses[selectedPeriod]"
-      :move="onMove"
       group="subjects"
       :key="
         (interestedClasses[selectedPeriod] || [])
@@ -331,7 +325,7 @@ function resetSearch() {
         :key="item.interest_id"
         class="w-full"
         :classSubject="item"
-        :disabled="item.disabled"
+        :blinking="blinkingIds.includes(item.component.codigo)"
       />
       <div
         v-for="_ in [1]"
