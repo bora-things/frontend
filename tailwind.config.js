@@ -96,7 +96,7 @@ export default {
       },
       animation: {
         twinkle: 'twinkle 1.2s ease-in-out infinite',
-        blinkOpacity: 'blinkOpacity 1.6s ease-in-out infinite',
+        blinkOpacity: 'blinkOpacity 0.5s ease-in-out infinite',
       },
     }
     },

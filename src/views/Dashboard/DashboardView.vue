@@ -1,70 +1,29 @@
 <script setup>
 import SubjectCard from "@/components/SubjectCard.vue";
-import SubjectCardEC from "@/components/SubjectCardEC.vue";
 import api from "@/config/axios.config";
 import { computed, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
-import { useToast } from "vue-toast-notification";
 
 import {
   handleAddInterestedSubjectRequest,
   handleInterestedSubjectsRequest,
   handleRemoveInterestedSubjectRequest,
 } from "./DashboardController.js";
+import DashboardViewSubjects from "./DashboardViewSubjects.vue";
 
-const components = ref([
-  {
-    interest_id: "IMD0043 ",
-    year: "",
-    period: "",
-    friends: [],
-    component: {
-      nome: "REDES DE COMPUTADORES ",
-      "carga-horaria-total": 90,
-      "co-requisites": null,
-      "pre-requisites": null,
-      codigo: "IMD0043",
-      blockComponents: null,
-      departamento: null,
-      "tipo-atividade-descricao": null,
-      "disciplina-obrigatoria": true,
-      ementa: null,
-      equivalentes: null,
-      "id-componente": 1,
-      "id-matriz-curricular": null,
-      "id-tipo-atividade": null,
-      "id-tipo-componente": null,
-      "id-unidade": null,
-    },
-  },
-]);
-const toast = useToast();
+const components = ref([]);
 const classes = ref(null);
 const loading = ref(true);
 const periods = ref([]);
 const interestedClasses = ref([]);
-const searchQuery = ref("");
 const selectedPeriod = ref("");
+const pageToFetch = ref(0);
 
 const componentType = ref("TODAS");
+const page = ref(0);
 
-const componentsFiltered = computed(() => {
-  let filtered = components.value;
-  if (componentType.value === "OBRIGATORIO") {
-    filtered = filtered.filter((item) => item.obrigatoria);
-  } else if (componentType.value === "OPTATIVO") {
-    filtered = filtered.filter((item) => !item.obrigatoria);
-  }
-  if (searchQuery.value && searchQuery.value.trim() !== "") {
-    const query = searchQuery.value.trim().toLowerCase();
-    filtered = filtered.filter(
-      (item) =>
-        (item.nome && item.nome.toLowerCase().includes(query)) ||
-        (item.codigo && item.codigo.toLowerCase().includes(query))
-    );
-  }
-  return filtered;
-});
+// Flag para saber se está mostrando resultados de busca
+const isSearchActive = ref(false);
 
 const selectedPeriodWorkload = computed(() => {
   if (!periodClasses.value.length) {
@@ -157,8 +116,41 @@ async function fetchInterestedClasses() {
   }
 }
 
+async function fetchComponents() {
+  try {
+    const response = await api.get(
+      `/api/students/me/possible-subjects?page=${pageToFetch.value}&size=72`
+    );
+    const data = response.data.map((item) => ({
+      year: null,
+      period: null,
+      "id-turma": item.codigo,
+      component: item,
+      friends: [],
+    }));
+    components.value.push(...data);
+    pageToFetch.value += 1;
+  } catch (error) {
+    console.error("Erro ao buscar componentes:", error);
+  }
+}
+
+watch(
+  () => page.value,
+  async (newPage) => {
+    // Só busca mais páginas se não estiver em modo de busca
+    if (isSearchActive.value) return;
+    // Calcula quantos itens já foram buscados
+    const totalFetched = components.value.length;
+    // Se o usuário passar do último item carregado, busca a próxima página
+    if ((newPage + 1) * 9 >= totalFetched) {
+      await fetchComponents(pageToFetch.value);
+    }
+  }
+);
+
 onMounted(async () => {
-  await Promise.all([fetchClasses(), fetchInterestedClasses()]);
+  await Promise.all([fetchClasses(), fetchInterestedClasses(), fetchComponents()]);
   setPeriods();
   selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
 });
@@ -176,14 +168,6 @@ watch(
   }
 );
 
-function toggleComponentType(type) {
-  if (componentType.value === type) {
-    componentType.value = "TODAS"; // Reseta para "TODAS" se o mesmo botão for clicado novamente
-  } else {
-    componentType.value = type; // Define o tipo selecionado
-  }
-}
-
 async function handleRemoveInterestedSubject(event) {
   const toSection = event.to.id;
   if (toSection !== "components") return;
@@ -200,30 +184,48 @@ async function handleRemoveInterestedSubject(event) {
     setPeriods();
     selectPeriod(selectedPeriod.value);
   }
+  fetchInterestedClasses();
 }
 
-function handleAddInterestedSubject(event) {
-  const component = event.item;
+const blinkingIds = ref([]);
 
-  handleAddInterestedSubjectRequest({
+async function handleAddInterestedSubject(event) {
+  const component = event.item;
+  // Adiciona o id-turma ao array de blinking
+  blinkingIds.value.push(component.id);
+  await handleAddInterestedSubjectRequest({
     subjectCode: component.id,
     period: selectedPeriod.value.split("-")[1],
     year: selectedPeriod.value.split("-")[0],
   });
+  await fetchInterestedClasses();
+  // Remove o id-turma do blinking após o fetch
+  const idx = blinkingIds.value.indexOf(component.id);
+  if (idx !== -1) blinkingIds.value.splice(idx, 1);
 }
 
-async function onMove(event) {
-  const toSection = event.to.id;
-  const fromSection = event.from.id;
-  if (toSection == fromSection) return false; // Impede o movimento dentro da mesma seção
-  if (toSection === "interested-classes") {
-    return handleAddInterestedSubject(event); // Permite mover apenas se não estiver desabilitado
-  }
-  if (toSection === "components") {
-    return await handleRemoveInterestedSubject(event); // Permite mover apenas se não estiver desabilitado
-  }
-  fetchInterestedClasses();
-  return true;
+function handleSearchedComponents(data) {
+  // Replace the components list with the search results
+  components.value = data.map((item) => ({
+    year: null,
+    period: null,
+    "id-turma": item.codigo,
+    component: item,
+    friends: [],
+  }));
+  // Reset pagination
+  page.value = 0;
+  pageToFetch.value = 1; // Next fetch should append after search results if needed
+  isSearchActive.value = true;
+}
+
+// Se quiser resetar a busca (ex: limpar campo de busca), chame esta função
+function resetSearch() {
+  components.value = [];
+  page.value = 0;
+  pageToFetch.value = 0;
+  isSearchActive.value = false;
+  fetchComponents();
 }
 </script>
 <template>
@@ -311,7 +313,6 @@ async function onMove(event) {
       :animation="800"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
       :list="interestedClasses[selectedPeriod]"
-      :move="onMove"
       group="subjects"
       :key="
         (interestedClasses[selectedPeriod] || [])
@@ -324,7 +325,7 @@ async function onMove(event) {
         :key="item.interest_id"
         class="w-full"
         :classSubject="item"
-        :disabled="item.disabled"
+        :blinking="blinkingIds.includes(item.component.codigo)"
       />
       <div
         v-for="_ in [1]"
@@ -338,84 +339,16 @@ async function onMove(event) {
       </div>
     </VueDraggableNext>
     <hr class="my-6 border-bp_grayscale-700" />
-    <div class="flex flex-col flex-1">
-      <div class="flex items-center justify-between w-full lg:flex-row gap-3">
-        <div class="flex flex-col md:flex-row md:justify-between items-center gap-5">
-          <p class="text-3xl font-bold">Disciplinas</p>
-        </div>
-        <div
-          class="flex justify-between items-center space-x-4 p-2 rounded-xl bg-bp_neutral-700 w-[80%]"
-        >
-          <label
-            className="input bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 p-2 w-[50%]"
-          >
-            <input
-              type="search"
-              placeholder="Buscar com IA"
-              class="text-bp_grayscale-400 font-sans"
-            />
-            <v-icon
-              name="bi-stars"
-              scale="1.2"
-              class="hover:animate-twinkle cursor-pointer"
-            ></v-icon>
-          </label>
-          <div
-            class="flex items-center space-x-2 bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md p-2"
-          >
-            <label
-              className="bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 w-[60%] pr-2"
-            >
-              <input
-                type="search"
-                placeholder="Buscar por código"
-                class="pl-2 text-sm py-1 text-bp_grayscale-400 rounded-3xl bg-transparent font-sans focus:outline-none"
-              />
-              <v-icon
-                name="bi-search"
-                class="hover:scale-[1.1] cursor-pointer duration-300"
-              ></v-icon>
-            </label>
-            <button
-              :class="[
-                'badge text-white py-2 bg-transparent rounded-xl border border-bp_green-600',
-                componentType === 'OBRIGATORIO' ? 'bg-bp_green-600' : '',
-              ]"
-              @click="toggleComponentType('OBRIGATORIO')"
-            >
-              Obrigatório
-            </button>
-            <button
-              :class="[
-                'badge text-white py-2 bg-transparent rounded-xl border border-bp_primary-600',
-                componentType === 'OPTATIVO' ? 'bg-bp_primary-600' : '',
-              ]"
-              @click="toggleComponentType('OPTATIVO')"
-            >
-              Optativo
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <VueDraggableNext
-        id="components"
-        :animation="800"
-        :list="components"
-        class="grid md:grid-cols-3 md:grid-rows-3 bg-bp_grayscale-600 rounded-md gap-4 p-4 flex-1"
-        group="subjects"
-        :move="onMove"
-        @add="handleRemoveInterestedSubject"
-        @remove="handleAddInterestedSubject"
-      >
-        <SubjectCardEC
-          class="w-full"
-          v-for="classe in componentsFiltered"
-          :key="classe.component.codigo"
-          :component="classe.component"
-          :period="selectedPeriod"
-        />
-      </VueDraggableNext>
-    </div>
+    <DashboardViewSubjects
+      :components="components"
+      :selected-period="selectedPeriod"
+      :component-type="componentType"
+      :handle-add-interested-subject="handleAddInterestedSubject"
+      :handle-remove-interested-subject="handleRemoveInterestedSubject"
+      :on-move="onMove"
+      v-model:page="page"
+      :fetch-components="fetchComponents"
+      @searched-components="handleSearchedComponents"
+    />
   </main>
 </template>
