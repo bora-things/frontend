@@ -21,10 +21,6 @@ const props = defineProps({
     type: Function,
     required: true,
   },
-  onMove: {
-    type: Function,
-    required: true,
-  },
   page: {
     type: Number,
     required: true,
