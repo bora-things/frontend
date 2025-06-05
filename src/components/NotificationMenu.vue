@@ -70,7 +70,7 @@ onMounted(() => {
         v-if="notifications.length > 0"
         class="top-1 right-0 w-3 h-3 bg-bp_green-100 absolute rounded-full"
       ></div>
-      <v-icon class="p-1" name="fa-user-friends" scale="1.8"></v-icon>
+      <v-icon class="p-1" name="oi-people" scale="2"></v-icon>
     </button>
     <ul
       tabIndex="{0}"

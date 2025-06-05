@@ -63,7 +63,7 @@ onMounted(() => {
 
     <div class="flex justify-between items-center w-full xl:max-w-7xl mx-auto pr-8">
       <div class="flex gap-4 items-center">
-        <h4 class="text-xl font-bold font-sans">
+        <h4 class="text-2xl font-bold font-sans">
           {{ greeting }}, {{ user ? capitalizeText(user.name.split(" ")[0]) : "" }}!
         </h4>
       </div>
@@ -94,14 +94,14 @@ onMounted(() => {
           <img
             v-if="user && user.image_url"
             :src="user.image_url"
-            alt=""
-            class="h-12 w-12 rounded-full"
+            alt="Foto do usuário"
+            class="h-16 w-16 rounded-full object-cover"
           />
         </div>
       </div>
     </div>
     <nav
-      class="w-11/12 md:w-auto bg-bp_neutral-950 z-[99] border-r-2 border-bp_neutral-700 fixed top-0 h-full transition-all ease-in-out duration-300"
+      class="w-11/12 md:w-auto bg-bp_grayscale-800 z-[99] border-r-2 border-bp_neutral-700 fixed top-0 h-full transition-all ease-in-out duration-300"
       :class="{
         '-left-full': !isMenuOpen,
         'left-0': isMenuOpen,
@@ -121,7 +121,7 @@ onMounted(() => {
                 v-if="user.image_url"
                 :src="user.image_url"
                 alt=""
-                class="h-12 w-12 rounded-full"
+                class="h-16 w-16 rounded-full object-cover"
               />
               <div
                 v-else
