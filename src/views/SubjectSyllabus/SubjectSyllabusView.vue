@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue' // Importe nextTick
 import { useRoute } from 'vue-router';
 import { getSubjectSyllabusData } from './SubjectSyllabusController';
 
@@ -8,6 +8,9 @@ const route = useRoute()
 const subject = ref('')
 const friends = ref([])
 const teachers = ref([])
+
+const isSyllabusShadowVisible = ref(false);
+const isFriendsShadowVisible = ref(false);
 
 function getCorAprovacao(review) {
   if (review <= 5) {
@@ -19,12 +22,42 @@ function getCorAprovacao(review) {
   }
 }
 
+function handleSyllabusScroll() {
+  const container = document.querySelector(".syllabus-content");
+  if (container) {
+    isSyllabusShadowVisible.value = container.scrollHeight > container.clientHeight &&
+                                   (container.scrollTop + container.clientHeight < container.scrollHeight);
+  }
+}
+
+function handleFriendsScroll() {
+  const container = document.querySelector(".friends-container");
+  if (container) {
+    isFriendsShadowVisible.value = container.scrollHeight > container.clientHeight &&
+                                  (container.scrollTop + container.clientHeight < container.scrollHeight);
+  }
+}
+
 onMounted(async () => {
   const subjectId = route.params.id
   const data = await getSubjectSyllabusData(subjectId)
   subject.value = data
   friends.value = data.friends
   teachers.value = data.teachers
+
+  await nextTick(() => {
+    const syllabusContainer = document.querySelector(".syllabus-content");
+    if (syllabusContainer) {
+      syllabusContainer.addEventListener("scroll", handleSyllabusScroll);
+      handleSyllabusScroll();
+    }
+
+    const friendsContainer = document.querySelector(".friends-container");
+    if (friendsContainer) {
+      friendsContainer.addEventListener("scroll", handleFriendsScroll);
+      handleFriendsScroll();
+    }
+  });
 })
 
 </script>
@@ -48,25 +81,30 @@ onMounted(async () => {
                 Tipo: {{ subject.mandatory ? 'Obrigatória' : 'Optativa' }}
                 </span>
             </div>
-            
+
             <button class="bg-bp_green-500 px-2 py-1 rounded mb-6">
                 + Adicionar à Grade
             </button>
         </div>
 
-
-      <section class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md mb-8 p-4">
+      <section class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md mb-8 p-4 relative">
         <h2 class="text-xl font-semibold mb-2">Ementa da Disciplina</h2>
-        <p class="text-sm text-gray-300">
-         {{ subject.description }}
-        </p>
+        <div class="syllabus-content max-h-40 overflow-y-auto relative hide-scrollbar" @scroll="handleSyllabusScroll">
+          <p class="text-sm text-gray-300 pr-2">
+            {{ subject.description }}
+          </p>
+        </div>
+        <div
+          v-if="isSyllabusShadowVisible"
+          class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-bp_neutral-850 to-transparent pointer-events-none"
+        ></div>
       </section>
 
       <section class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md mb-8 p-4">
         <h2 class="text-xl font-semibold text-center mb-4">Professores Prováveis</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div
-                v-for="(teacher, index) in teachers"
+                v-for="teacher in teachers"
                 :key="index"
                 class="bg-bp_neutral-825 border border-bp_neutral-600 p-2 rounded flex items-center space-x-3"
             >
@@ -82,10 +120,13 @@ onMounted(async () => {
         </div>
       </section>
 
-      <section class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md p-4">
+      <section class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md p-4 relative">
         <h2 class="text-xl font-semibold text-center mb-4">Amigos Interessados</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div v-for="(friend, index) in friends" :key="index" class="bg-bp_neutral-825 border border-bp_neutral-600 p-2 rounded flex items-center space-x-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 friends-container max-h-40 overflow-y-auto relative hide-scrollbar" @scroll="handleFriendsScroll">
+          <div v-if="friends.length === 0" class="text-bp_grayscale-400 text-sm md:text-base col-span-full text-center">
+            Nenhum amigo interessado!
+          </div>
+          <div v-for="friend in friends" :key="index" class="bg-bp_neutral-825 border border-bp_neutral-600 p-2 rounded flex items-center space-x-3">
             <img :src="friend.urlImgPerfil" class="rounded-full w-12 h-12" />
             <div>
               <p>{{ friend.name }}</p>
@@ -93,7 +134,21 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+        <div
+          v-if="isFriendsShadowVisible"
+          class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-bp_neutral-850 to-transparent pointer-events-none"
+        ></div>
       </section>
     </div>
   </div>
 </template>
+
+<style scoped>
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+</style>
