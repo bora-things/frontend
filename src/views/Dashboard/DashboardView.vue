@@ -345,7 +345,6 @@ function resetSearch() {
       :component-type="componentType"
       :handle-add-interested-subject="handleAddInterestedSubject"
       :handle-remove-interested-subject="handleRemoveInterestedSubject"
-      :on-move="onMove"
       v-model:page="page"
       :fetch-components="fetchComponents"
       @searched-components="handleSearchedComponents"

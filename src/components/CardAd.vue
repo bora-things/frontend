@@ -25,10 +25,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex justify-end">
+  <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
     <button
+      tabindex="0"
       class="relative bg-bp_grayscale-800 border border-bp_neutral-600 rounded-full w-12 h-12"
-      @click="handleCardAdClick"
     >
       <div
         v-if="advertisements.length > 0"
@@ -36,15 +36,13 @@ onMounted(() => {
       ></div>
       <v-icon class="p-1" name="md-notificationsnone-outlined" scale="1.8"></v-icon>
     </button>
-    <div
-      v-if="isCardAdOpen"
-      class="absolute right-3 bg-bp_grayscale-800 p-4 rounded-md shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
+    <ul
+      tabIndex="{0}"
+      className="dropdown-content flex flex-col bg-bp_grayscale-800 p-4 rounded-md
+       shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
       <header class="flex justify-between items-center mb-4">
         <p class="title-h1">Anúncios</p>
-        <button @click="isCardAdOpen = false">
-          <v-icon name="md-close" scale="1" />
-        </button>
       </header>
 
       <ul class="flex flex-col gap-2">
@@ -69,6 +67,7 @@ onMounted(() => {
           </div>
         </li>
       </ul>
-    </div>
+    </ul>
   </div>
+  <div class="flex justify-end"></div>
 </template>
