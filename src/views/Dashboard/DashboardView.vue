@@ -121,13 +121,7 @@ async function fetchComponents() {
     const response = await api.get(
       `/api/students/me/possible-subjects?page=${pageToFetch.value}&size=72`
     );
-    const data = response.data.map((item) => ({
-      year: null,
-      period: null,
-      "id-turma": item.codigo,
-      component: item,
-      friends: [],
-    }));
+    const data = response.data;
     components.value.push(...data);
     pageToFetch.value += 1;
   } catch (error) {
