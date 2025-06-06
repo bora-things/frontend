@@ -96,7 +96,18 @@ function setPeriods() {
   });
 
   const allPeriods = [...classesPeriods, ...interestedPeriods];
-  periods.value = allPeriods;
+  periods.value = allPeriods
+    .sort((a, b) => {
+      if (a.ano === b.ano) {
+        return a.periodo - b.periodo;
+      }
+      return a.ano - b.ano;
+    })
+    .filter((item, index, self) => {
+      return (
+        index === self.findIndex((t) => t.ano === item.ano && t.periodo === item.periodo)
+      );
+    });
 }
 
 async function fetchInterestedClasses() {
