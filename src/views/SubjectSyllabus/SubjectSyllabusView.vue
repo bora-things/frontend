@@ -96,7 +96,7 @@ onMounted(async () => {
         </div>
         <div
           v-if="isSyllabusShadowVisible"
-          class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-bp_neutral-850 to-transparent pointer-events-none"
+          class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-bp_neutral-850 to-transparent pointer-events-none"
         ></div>
       </section>
 
@@ -122,7 +122,7 @@ onMounted(async () => {
 
       <section class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md p-4 relative">
         <h2 class="text-xl font-semibold text-center mb-4">Amigos Interessados</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 friends-container max-h-40 overflow-y-auto relative hide-scrollbar" @scroll="handleFriendsScroll">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 friends-container max-h-44 overflow-y-auto relative hide-scrollbar" @scroll="handleFriendsScroll">
           <div v-if="friends.length === 0" class="text-bp_grayscale-400 text-sm md:text-base col-span-full text-center">
             Nenhum amigo interessado!
           </div>
@@ -136,7 +136,7 @@ onMounted(async () => {
         </div>
         <div
           v-if="isFriendsShadowVisible"
-          class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-bp_neutral-850 to-transparent pointer-events-none"
+          class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-bp_neutral-850 to-transparent pointer-events-none"
         ></div>
       </section>
     </div>
