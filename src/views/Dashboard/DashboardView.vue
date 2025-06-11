@@ -1,7 +1,7 @@
 <script setup>
 import SubjectCard from "@/components/SubjectCard.vue";
 import api from "@/config/axios.config";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
 
 import {
@@ -22,7 +22,6 @@ const pageToFetch = ref(0);
 const componentType = ref("TODAS");
 const page = ref(0);
 
-// Flag para saber se está mostrando resultados de busca
 const isSearchActive = ref(false);
 
 const selectedPeriodWorkload = computed(() => {
@@ -59,9 +58,15 @@ function selectPeriod(period) {
     periods.value.push({ ano: newYear, periodo: newPeriod });
     selectedPeriod.value = newYear + "-" + newPeriod;
     interestedClasses.value[selectedPeriod.value] = [];
+    nextTick(() => {
+      if (sectionRef.value) sectionRef.value.focus();
+    });
     return;
   }
   selectedPeriod.value = period;
+  nextTick(() => {
+    if (sectionRef.value) sectionRef.value.focus();
+  });
 }
 
 async function fetchClasses() {
@@ -110,9 +115,17 @@ function setPeriods() {
     });
 }
 
+let fetchInterestedClassesAbortController = null;
+
 async function fetchInterestedClasses() {
+  // Cancela a requisição anterior, se houver
+  if (fetchInterestedClassesAbortController) {
+    fetchInterestedClassesAbortController.abort();
+  }
+  fetchInterestedClassesAbortController = new AbortController();
+  const signal = fetchInterestedClassesAbortController.signal;
   try {
-    const data = await handleInterestedSubjectsRequest();
+    const data = await handleInterestedSubjectsRequest({ signal });
     interestedClasses.value = data.reduce((acc, item) => {
       const { year, period } = item;
       const periodKey = `${year}-${period}`;
@@ -123,6 +136,10 @@ async function fetchInterestedClasses() {
       return acc;
     }, {});
   } catch (error) {
+    if (error.name === "AbortError") {
+      // Requisição cancelada, não faz nada
+      return;
+    }
     console.error("Erro ao buscar disciplinas de interesse:", error);
   }
 }
@@ -224,14 +241,7 @@ function handleSearchedComponents(data) {
   isSearchActive.value = true;
 }
 
-// Se quiser resetar a busca (ex: limpar campo de busca), chame esta função
-function resetSearch() {
-  components.value = [];
-  page.value = 0;
-  pageToFetch.value = 0;
-  isSearchActive.value = false;
-  fetchComponents();
-}
+const sectionRef = ref(null);
 </script>
 <template>
   <main class="container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
@@ -255,13 +265,13 @@ function resetSearch() {
             </div>
             <ul
               tabIndex="{0}"
-              className="title-h2 dropdown-content menu bg-bp_grayscale-600 rounded-box z-1 w-52 p-2 shadow-sm gap-1"
+              className="title-h2 dropdown-content menu bg-bp_grayscale-700 rounded-box z-1 w-52 p-2 shadow-sm gap-1"
             >
               <li
                 :class="[
-                  'hover:bg-bp_grayscale-700 p-2 rounded-md cursor-pointer',
+                  'hover:bg-bp_grayscale-800 p-2 rounded-md cursor-pointer',
                   selectedPeriod == `${period.ano}-${period.periodo}`
-                    ? 'bg-bp_grayscale-700'
+                    ? 'bg-bp_grayscale-800'
                     : '',
                 ]"
                 v-for="(period, index) in periods"
@@ -285,12 +295,31 @@ function resetSearch() {
       </div>
 
       <div className="tooltip">
-        <div className="tooltip-content text-xl tooltip-error tooltip-bottom">
-          <div className="text-white ">
-            <span>Limite alcançado</span>
+        <div
+          :class="[
+            'tooltip-content text-xl tooltip-bottom',
+            selectedPeriodWorkload < 480 ? 'tooltip-warning' : 'tooltip-error',
+          ]"
+          v-if="selectedPeriodWorkload >= 360"
+        >
+          <div className="text-white">
+            <span
+              >Limite {{ selectedPeriodWorkload < 480 ? "Próximo" : "Alcançado" }}</span
+            >
           </div>
         </div>
-        <span class="title-h2"> {{ selectedPeriodWorkload }}h </span>
+        <span
+          :class="[
+            'text-2xl',
+            selectedPeriodWorkload > 360
+              ? selectedPeriodWorkload >= 480
+                ? 'text-red-500'
+                : 'text-orange-400'
+              : 'text-white',
+          ]"
+        >
+          {{ selectedPeriodWorkload }}h
+        </span>
       </div>
     </header>
 
@@ -301,6 +330,8 @@ function resetSearch() {
       <span class="loading loading-spinner loading-lg text-white"></span>
     </div>
     <section
+      ref="sectionRef"
+      tabindex="-1"
       v-if="!loading && periodClasses.length > 0"
       class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
       :key="selectedPeriod"
@@ -312,37 +343,46 @@ function resetSearch() {
         :classSubject="item"
       />
     </section>
-    <VueDraggableNext
+    <div
       v-else-if="!loading && periodClasses.length === 0"
-      id="interested-classes"
-      :animation="800"
-      class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
-      :list="interestedClasses[selectedPeriod]"
-      group="subjects"
-      :key="
-        (interestedClasses[selectedPeriod] || [])
-          .map((item) => item.interest_id)
-          .join(',')
-      "
+      class="relative bg-bp_grayscale-600 rounded-md h-[400px] overflow-y-auto"
     >
-      <SubjectCard
-        v-for="item in periodInterestedClasses"
-        :key="item.interest_id"
-        class="w-full"
-        :classSubject="item"
-        :blinking="blinkingIds.includes(item.component.codigo)"
-      />
-      <div
-        v-for="_ in [1]"
-        class="bg-bp_grayscale-800 w-full h-[160px] rounded-md flex flex-col items-center gap-4 p-4 text-vtd-secondary-100 border border-dashed border-[3px] border-bp_grayscale-500"
+      <VueDraggableNext
+        id="interested-classes"
+        :animation="800"
+        class="grid md:grid-cols-3 gap-4 p-4"
+        :list="periodInterestedClasses"
+        group="subjects"
+        :key="(periodInterestedClasses || []).map((item) => item.interest_id).join(',')"
       >
-        <v-icon name="bi-plus-circle" scale="2.6" class="text-bp_grayscale-500"></v-icon>
-        <div class="flex flex-col items-center">
-          <span class="font-span font-medium">ARRASTE PARA ADICIONAR</span>
-          <span class="font-span font-medium">NOVAS MATÉRIAS</span>
+        <SubjectCard
+          v-for="item in periodInterestedClasses"
+          :key="item.interest_id"
+          class="w-full"
+          :classSubject="item"
+          :blinking="blinkingIds.includes(item.component.codigo)"
+        />
+        <div
+          v-if="!loading && periodInterestedClasses.length == 0"
+          class="bg-bp_grayscale-800 w-full h-[160px] rounded-md flex flex-col items-center gap-4 p-4 text-vtd-secondary-100 border border-dashed border-[3px] border-bp_grayscale-500"
+        >
+          <v-icon
+            name="bi-plus-circle"
+            scale="2.6"
+            class="text-bp_grayscale-500"
+          ></v-icon>
+          <div class="flex flex-col items-center">
+            <span class="font-span font-medium">ARRASTE PARA ADICIONAR</span>
+            <span class="font-span font-medium">NOVAS MATÉRIAS</span>
+          </div>
         </div>
-      </div>
-    </VueDraggableNext>
+      </VueDraggableNext>
+
+      <div
+        v-if="periodInterestedClasses.length > 6"
+        class="sticky -bottom-1 w-full h-[50px] bg-gradient-to-t from-bp_neutral-700 to-transparent"
+      ></div>
+    </div>
     <hr class="my-6 border-bp_grayscale-700" />
     <DashboardViewSubjects
       :components="components"

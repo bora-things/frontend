@@ -23,11 +23,14 @@ export async function handleAddInterestedSubjectRequest({ subjectCode, year, per
   }
 }
 
-export async function handleInterestedSubjectsRequest() {
+export async function handleInterestedSubjectsRequest({ signal } = {}) {
   try {
-    const response = await api.get('/api/users/interests');
+    const response = await api.get('/api/users/interests', { signal });
     return response.data;
   } catch (error) {
+    if (error.name === 'CanceledError' || error.name === 'AbortError') {
+      return;
+    }
     console.error('Error fetching interested subjects:', error);
     return [];
   }
