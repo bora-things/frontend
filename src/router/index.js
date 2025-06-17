@@ -1,12 +1,10 @@
-import InterestedSubjectsView from '@/views/InterestedSubjects/InterestedSubjectsView.vue'
 import LandingPageView from '@/views/LandingPage/LandingPageView.vue'
+import NotFoundView from '@/views/NotFound/NotFoundView.vue'
 import ProfileView from '@/views/Profile/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import ConsultSubjectsView from '../views/ConsultSubjetcs/ConsultSubjectsView.vue'
 import DashboardView from '../views/Dashboard/DashboardView.vue'
 import FriendsView from '../views/Friends/FriendsView.vue'
-import CardAd from '@/components/CardAd.vue'
-import PersonalizedCalendar from '@/components/PersonalizedCalendar.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,19 +35,9 @@ const router = createRouter({
       component: ProfileView
     },
     {
-      path:'/interesses',
-      name:'interests',
-      component:InterestedSubjectsView
-    },
-    {
-      path:'/anuncio',
-      name: 'ad',
-      component: CardAd
-    },
-    {
-      path:'/calendar',
-      name:'calendar',
-      component: PersonalizedCalendar
+      path: '/:catchAll(.*)',
+      name: 'not-found',
+      component: NotFoundView
     }
   ]
 })
