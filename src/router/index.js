@@ -1,3 +1,4 @@
+import FriendsInterestsView from '@/views/FriendsInterests/FriendsInterestsView.vue'
 import LandingPageView from '@/views/LandingPage/LandingPageView.vue'
 import NotFoundView from '@/views/NotFound/NotFoundView.vue'
 import ProfileView from '@/views/Profile/ProfileView.vue'
@@ -33,6 +34,10 @@ const router = createRouter({
       path: '/perfil/:id',
       name: 'profile',
       component: ProfileView
+    },{
+      path:"/interesses",
+      name: 'interests',
+      component:FriendsInterestsView
     },
     {
       path: '/:catchAll(.*)',
