@@ -1,37 +1,22 @@
 <template>
-  <main class="p-5 w-full">
-    <div class="container mx-auto shadow-lg rounded-lg overflow-hidden flex flex-col gap-5">
-      <div class="space-y-2">
-        <h1 class="text-5xl font-semibold">Interesses</h1>
-        <dialog className="dropdown dropdown-hover bg-bp_grayscale-600 p-2 rounded-box text-white">
-          <div tabIndex="{0}" role="button" className=" m-1 p-0 flex items-center gap-2 ">
-            {{ period ? period : 'Selecione um Período' }}
-            <v-icon name="bi-chevron-down" scale="1.2"></v-icon>
-          </div>
-          <ul
-            tabIndex="{0}"
-            className="text-lg dropdown-content menu bg-bp_grayscale-700 rounded-box z-1 w-52 p-2 shadow-sm gap-1"
-          >
-            <li class="opacity-50">Selecione um periodo</li>
-            <li
-              v-for="p in ['2025.2', '2026.1', '2026.2']"
-              :key="p"
-              class="hover:bg-bp_grayscale-600 p-1 rounded-lg cursor-pointer"
-              :class="{ 'bg-bp_grayscale-600': period === p }"
-              @click="period = p"
-            >
-              {{ p }}
-            </li>
-          </ul>
-        </dialog>
-      </div>
-
-      <div class="overflow-x-auto bg-bp_grayscale-600 rounded-box py-2 relative group">
+  <button
+    className="btn btn-sm bg-transparent text-white shadow-none w-fit self-end hover:bg-bp_grayscale-600 hover:shadow-lg
+     hover:scale-105 transition-all duration-300"
+    @click="openDialog"
+  >
+    <v-icon name="fa-users" class="text-white w-6 h-6 mr-2" />
+    Interesses dos Amigos
+  </button>
+  <dialog ref="dialogRef" class="p-5 w-full modal">
+    <div
+      class="modal-box p-0 min-w-[95%] max-h-[95%] shadow-lg rounded-lg overflow-hidden flex flex-col gap-5"
+    >
+      <div class="overflow-x-auto bg-bp_grayscale-600 rounded-box relative group p-4 pl-0">
         <table class="min-w-full table" style="min-width: 700px">
           <thead class="">
-            <tr class="border-b border-bp_grayscale-500">
+            <tr class="border-b border-bp_grayscale-700">
               <th
-                class="py-3 px-4 text-center text-2xl text-bp_grayscale-400 font-semibold text-white sticky left-0 z-20 bg-bp_grayscale-600"
+                class="py-3 px-4 text-center text-2xl text-bp_grayscale-400 font-semibold text-white sticky left-0 z-20"
               >
                 Disciplina
               </th>
@@ -63,7 +48,7 @@
             <tr
               v-for="subject in subjectsStatus"
               :key="subject.name"
-              class="border-t border-bp_grayscale-500"
+              class="border-t border-bp_grayscale-700"
             >
               <td
                 class="py-2 px-4 font-medium sticky text-xl left-0 z-10 bg-bp_grayscale-600"
@@ -94,11 +79,20 @@
         </table>
       </div>
     </div>
-  </main>
+    <form method="dialog" className="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
+
+const dialogRef = ref(null)
+
+function openDialog() {
+  dialogRef.value?.showModal()
+}
 
 const period = ref('2025.2')
 
@@ -212,6 +206,70 @@ const subjects = [
   {
     code: 'DIM0129',
     name: 'Engenharia de Software'
+  },
+  {
+    code: 'DIM0030',
+    name: 'Estruturas Discretas'
+  },
+  {
+    code: 'DIM0040',
+    name: 'Cálculo I'
+  },
+  {
+    code: 'DIM0050',
+    name: 'Cálculo II'
+  },
+  {
+    code: 'DIM0060',
+    name: 'Probabilidade e Estatística'
+  },
+  {
+    code: 'DIM0070',
+    name: 'Sistemas Operacionais'
+  },
+  {
+    code: 'DIM0080',
+    name: 'Redes de Computadores'
+  },
+  {
+    code: 'DIM0090',
+    name: 'Compiladores'
+  },
+  {
+    code: 'DIM0100',
+    name: 'Inteligência Artificial'
+  },
+  {
+    code: 'DIM0110',
+    name: 'Computação Gráfica'
+  },
+  {
+    code: 'DIM0130',
+    name: 'Empreendedorismo em TI'
+  },
+  {
+    code: 'DIM0140',
+    name: 'Gestão de Projetos'
+  },
+  {
+    code: 'DIM0150',
+    name: 'Linguagens Formais e Autômatos'
+  },
+  {
+    code: 'DIM0160',
+    name: 'Teoria da Computação'
+  },
+  {
+    code: 'DIM0170',
+    name: 'Computação em Nuvem'
+  },
+  {
+    code: 'DIM0180',
+    name: 'Desenvolvimento Web'
+  },
+  {
+    code: 'DIM0190',
+    name: 'Desenvolvimento Mobile'
   }
   // Add the rest of the subjects here, following the same structure
 ]
