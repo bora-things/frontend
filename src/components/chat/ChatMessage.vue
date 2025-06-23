@@ -1,6 +1,5 @@
 <script setup>
 import { computed } from 'vue'
-import SimboraImg from '../SimboraImg.vue'
 
 const props = defineProps(['author', 'sentAt'])
 
@@ -9,24 +8,43 @@ const isMessageFromSimbora = computed(() => props.author === 'simbora')
 
 <template>
   <div
-    class="flex flex-col gap-2 p-4 whitespace-pre-wrap"
+    class="flex flex-col p-4 whitespace-pre-wrap"
     :class="{ 'items-start': isMessageFromSimbora, 'items-end': !isMessageFromSimbora }"
   >
-    <div class="flex gap-3 items-start" :class="{ 'flex-row-reverse': !isMessageFromSimbora }">
-      <SimboraImg v-if="isMessageFromSimbora" />
+    <div
+      class="flex gap-3 items-start"
+      :class="{ 'flex-row-reverse': !isMessageFromSimbora }"
+    >
+      <div class="relative">
+        <v-icon
+          v-if="isMessageFromSimbora"
+          name="bi-caret-left-fill"
+          scale="1.8"
+          class="absolute -rotate-90 -top-3 -left-1 text-green-600"
+        />
 
-      <img
-        src="https://images.pexels.com/photos/1526404/pexels-photo-1526404.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        alt="Avatar do usuário não logado"
-        class="h-12 w-12 rounded-full"
-        v-else
-      />
+        <v-icon
+          v-if="!isMessageFromSimbora"
+          name="bi-caret-right-fill"
+          scale="1.8"
+          class="absolute rotate-90 -top-3 -right-1 text-bp_neutral-700"
+        />
 
-      <div class="bg-bp_neutral-700 p-2 rounded-md max-w-xs text-sm font-bold flex">
-        <slot />
-        <span class="text-[10px] text-bp_primary-50 font-normal ml-4 self-end">{{
-          props.sentAt
-        }}</span>
+        <div
+          class="p-2 max-w-xs text-sm text-white font-bold"
+          :class="{
+            'bg-green-600 rounded-r-md rounded-b-md ml-3': isMessageFromSimbora,
+            'bg-bp_neutral-700 rounded-l-md rounded-b-md mr-3': !isMessageFromSimbora,
+          }"
+        >
+          <div class="flex flex-col">
+            <slot />
+            <span
+              class="text-[10px] text-gray-300 font-normal ml-auto mt-1 self-end"
+              >{{ props.sentAt }}</span
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>

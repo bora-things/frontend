@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import ChatMessage from './ChatMessage.vue'
 import SimboraImg from '../SimboraImg.vue'
+import SimboraSvg from '../SimboraSvg.vue'
 
 const isChatOpened = ref(false)
 const messages = ref([])
@@ -138,25 +139,25 @@ async function sendMessage() {
   >
     <div class="flex flex-col justify-between w-full h-full">
       <header
-        class="w-full h-20 p-4 border-b bg-bp_neutral-900 bg-opacity-20 border-bp_neutral-700 flex items-center justify-between"
+        class="w-full h-20 p-4 border-b rounded-t-lg bg-bp_neutral-900 border-bp_neutral-700 flex items-center justify-between"
       >
         <div class="flex items-center gap-2">
-          <SimboraImg />
+          <SimboraSvg />
           <div class="flex flex-col">
             <h4 class="text-xl font-bold">Simbora</h4>
             <p class="flex items-center gap-1 text-xs mt-1">
-              <span class="w-2 h-2 bg-green-400 rounded-full"></span>
+              <span class="w-2 h-2 bg-bp_green-600 rounded-full"></span>
               <span>Online</span>
             </p>
           </div>
         </div>
 
-        <button type="button" @click="chatToggler">
+        <button class="bg-bp_neutral-825 w-10 h-10 rounded-full" type="button" @click="chatToggler">
           <v-icon name="md-close" />
         </button>
       </header>
 
-      <main class="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
+      <main class="bg-bp_neutral-825 w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
         <div class="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
           <ChatMessage
             v-for="message in messages"
@@ -173,7 +174,7 @@ async function sendMessage() {
             autocomplete="off"
             name="message"
             placeholder="Mensagem"
-            class="w-full border border-bp_neutral-600 rounded-full resize-none overflow-hidden bg-transparent px-4 py-3 h-12 placeholder:text-bp_neutral-600"
+            class="w-full border border-bp_neutral-600 rounded-xl resize-none overflow-hidden bg-transparent px-4 py-3 h-12 placeholder:text-bp_neutral-600"
             v-model="currentUserMessage"
             :disabled="isAwaitingSimbora"
             ref="textarea"
@@ -182,12 +183,12 @@ async function sendMessage() {
           </textarea>
           <button
             size="small"
-            class="w-10 p-0 bg-blue-500 btn border-none text-white flex items-center justify-center"
+            class="w-10 p-0 bg-bp_neutral-50 btn border-none text-white flex items-center justify-center"
             style="border-radius: 9999px !important"
             @click="sendMessage"
             :disabled="isAwaitingSimbora"
           >
-            <v-icon name="md-send"/>
+            <v-icon class="text-bp_neutral-800" scale="2" name="bi-arrow-up-short"/>
         </button>
         </div>
       </main>
