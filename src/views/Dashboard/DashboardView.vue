@@ -1,6 +1,6 @@
 <script setup>
-import SubjectCard from '@/components/SubjectCard.vue'
 import FriendInterests from '@/components/FriendsInterests.vue'
+import SubjectCard from '@/components/SubjectCard.vue'
 import api from '@/config/axios.config'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
@@ -336,12 +336,11 @@ const sectionRef = ref(null)
         class="w-full"
         :classSubject="item"
       />
-    </section>
-    <div
+    </section>    <div
       v-else-if="!loading && periodClasses.length === 0"
       class="relative bg-bp_grayscale-600 rounded-md h-[400px] overflow-y-auto p-2 flex flex-col w-full"
     >
-      <FriendInterests />
+      <FriendInterests :periodo="selectedPeriod.split('-')[1]" :ano="selectedPeriod.split('-')[0]" />
       <VueDraggableNext
         id="interested-classes"
         :animation="800"
