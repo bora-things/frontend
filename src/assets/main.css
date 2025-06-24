@@ -5,18 +5,17 @@
 
 * {
   font-family: 'sans', sans-serif;
-  scroll-behavior: smooth
+  scroll-behavior: smooth;
 }
-
 
 @layer components {
   .menu-item {
     @apply flex items-center gap-4 relative;
   }
 
- .nav-item {
-  @apply font-bold relative p-2 before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[4px] before:bg-bp_green-400 before:transition-all duration-1000 hover:before:w-full;
-}
+  .nav-item {
+    @apply font-bold relative p-2 before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[4px] before:bg-bp_green-400 before:transition-all duration-1000 hover:before:w-full;
+  }
 
   .active-nav::before {
     content: '';
@@ -32,7 +31,7 @@
   }
 
   .card-profile {
-    @apply space-y-6 p-6 border border-bp_neutral-600 rounded-xl bg-bp_neutral-800 text-bp_neutral-50 ;
+    @apply space-y-6 p-6 border border-bp_neutral-600 rounded-xl bg-bp_neutral-800 text-bp_neutral-50;
   }
 
   .title-h1 {
@@ -43,49 +42,57 @@
   }
 
   .menu-item::after {
-    content: "";
+    content: '';
     width: 0%;
     height: 2px;
-    background-color: #F7F7F7;
+    background-color: #f7f7f7;
     position: absolute;
     bottom: 0;
     left: 0;
-    transition: .3s ease-in-out;
+    transition: 0.3s ease-in-out;
   }
-  
+
   .menu-item:hover:after {
     width: 100%;
   }
-}
 
-/* Custom scrollbar styles */
-::-webkit-scrollbar {
-  width: 8px;
-}
+  .table-zebra tbody tr:nth-child(even) td {
+    @apply bg-bp_grayscale-600; 
+  }
+ 
+  .table-zebra tbody tr:nth-child(odd) td { 
+    @apply bg-bp_grayscale-700; 
+  }
 
-::-webkit-scrollbar-track {
-  background: #2d2d2d; /* Track color */
-  border-radius: 4px;
-}
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: #555; /* Thumb color */
-  border-radius: 4px;
-}
+  ::-webkit-scrollbar-track {
+    background: #2d2d2d; /* Track color */
+    border-radius: 4px;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #777; /* Thumb hover color */
-}
+  ::-webkit-scrollbar-thumb {
+    background: #555; /* Thumb color */
+    border-radius: 4px;
+  }
 
-/* Optional: Add styles for horizontal scrollbars */
-::-webkit-scrollbar:horizontal {
-  height: 8px;
-}
+  ::-webkit-scrollbar-thumb:hover {
+    background: #777; /* Thumb hover color */
+  }
 
-::-webkit-scrollbar-thumb:horizontal {
-  background: #555;
-}
+  /* Optional: Add styles for horizontal scrollbars */
+  ::-webkit-scrollbar:horizontal {
+    height: 8px;
+  }
 
-::-webkit-scrollbar-thumb:horizontal:hover {
-  background: #777;
+  ::-webkit-scrollbar-thumb:horizontal {
+    background: #555;
+  }
+
+  ::-webkit-scrollbar-thumb:horizontal:hover {
+    background: #777;
+  }
 }

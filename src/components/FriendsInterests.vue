@@ -11,12 +11,18 @@
     <div
       class="modal-box p-0 min-w-[95%] max-h-[95%] shadow-lg rounded-lg overflow-hidden flex flex-col gap-5"
     >
-      <div class="overflow-x-auto bg-bp_grayscale-600 rounded-box relative group p-4 pl-0">
-        <table class="min-w-full table" style="min-width: 700px">
+      <div
+        class="overflow-x-auto bg-bp_grayscale-600 rounded-box flex flex-col relative group p-4 pl-0"
+      >
+        <form method="dialog" class="absolute top-2 right-2">
+          <button className="btn btn-sm btn-circle btn-ghost ">✕</button>
+        </form>
+        <table class="min-w-full table table-zebra mt-5" style="min-width: 700px">
           <thead class="">
             <tr class="border-b border-bp_grayscale-700">
               <th
-                class="py-3 px-4 text-center text-2xl text-bp_grayscale-400 font-semibold text-white sticky left-0 z-20"
+                class="py-3 px-4 text-center text-2xl bg-bp_grayscale-600 text-bp_grayscale-400 
+                font-semibold text-white sticky left-0 z-30"
               >
                 Disciplina
               </th>
@@ -46,13 +52,12 @@
           </thead>
           <tbody class="text-white">
             <tr
+            class="border-b-0"
               v-for="subject in subjectsStatus"
               :key="subject.name"
-              class="border-t border-bp_grayscale-700"
             >
               <td
-                class="py-2 px-4 font-medium sticky text-xl left-0 z-10 bg-bp_grayscale-600"
-                style="min-width: 220px"
+                class="py-2 px-4 font-medium sticky text-xl left-0 z-30 border-0 "
               >
                 <div
                   className="tooltip tooltip-right z-[1000] text-nowrap text-gray-200"
@@ -73,6 +78,7 @@
                   :class="statusClass(status)"
                   >{{ statusText(status) }}</span
                 >
+                <span v-else class="font-light">-</span>
               </td>
             </tr>
           </tbody>
