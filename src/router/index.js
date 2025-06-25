@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ConsultSubjectsView from '../views/ConsultSubjetcs/ConsultSubjectsView.vue'
 import DashboardView from '../views/Dashboard/DashboardView.vue'
 import FriendsView from '../views/Friends/FriendsView.vue'
+import SubjectSyllabusView from '@/views/SubjectSyllabus/SubjectSyllabusView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,14 @@ const router = createRouter({
       component: ProfileView
     },
     {
+      path:'/interesses',
+      name:'interests',
+      component:InterestedSubjectsView
+    },
+    {
+      path:'/ementa/:id',
+      name:'ementa',
+      component: SubjectSyllabusView
       path: '/:catchAll(.*)',
       name: 'not-found',
       component: NotFoundView
