@@ -4,9 +4,10 @@
 @plugin daisyui;
 
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'sans', sans-serif;
   scroll-behavior: smooth
 }
+
 
 @layer components {
   .menu-item {
@@ -27,7 +28,7 @@
     background-color: #22c55e; /* bp_green-400 */
   }
   .card-options {
-    @apply bg-bp_neutral-800 text-bp_neutral-50  border border-bp_neutral-600 rounded-md p-2;
+    @apply bg-transparent text-bp_neutral-50  border border-bp_neutral-600 rounded-md py-1 px-2;
   }
 
   .card-profile {
@@ -87,16 +88,4 @@
 
 ::-webkit-scrollbar-thumb:horizontal:hover {
   background: #777;
-}
-
-.ant-modal{ 
-  @apply !pb-0
-}
-
-.ant-modal-content {
-  @apply !bg-bp_neutral-800 !text-white !border !border-white !rounded-md !pb-0; 
-}
-
-.ant-modal-close-x {
-  @apply !text-white ;
 }

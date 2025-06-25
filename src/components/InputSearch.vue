@@ -1,9 +1,15 @@
 <script setup>
 import { ref } from 'vue';
-import InputBase from './InputBase.vue'
 
 const searchQuery = ref('');
 const emit = defineEmits(['search']); 
+
+const placeholder = defineProps({
+  placeholder: {
+    type: String,
+    default: 'Pesquisar', // Set a default value to avoid issues
+  },
+});
 
 const handleSearch = () => {
   console.log('Buscando:', searchQuery.value);
@@ -12,17 +18,18 @@ const handleSearch = () => {
 
 </script>
 <template>
-  <div class="flex">
+  <div class="flex justify-between items-center border border-bp_neutral-700 rounded-full overflow-hidden bg-bp_neutral-800">
     <input
       type="text"
       v-model="searchQuery"
-      class="w-full bg-bp_neutral-800 border border-bp_neutral-700 rounded-l-lg py-2 px-4 text-bp_neutral-500"
-      placeholder="pré requisito de fmciii |"
+      class="flex py-2 pl-6 bg-transparent text-bp_neutral-500"
+      :placeholder="placeholder.placeholder"
     />
     <button 
-    @click="handleSearch"
-    class="bg-bp_primary-300 text-bp_primary-50 rounded-r-lg py-2 px-4">
+      @click="handleSearch"
+      class="text-bp_primary-50 px-4 py-2">
       <v-icon name="md-search" scale="1.5" />
     </button>
   </div>
 </template>
+

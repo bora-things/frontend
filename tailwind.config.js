@@ -9,7 +9,17 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
       colors: {
+        "bp_grayscale":{
+          400:"#999999",
+          500:"#505050",
+          600:"#1F1F1F",
+          700:"#323232",
+          800:"#1A1A1A"
+        },
         "bp_primary": {
           400: "#42A1FF", // Main Color
           50: "#E3F1FF",
@@ -35,12 +45,17 @@ export default {
           800: "#1A1A1A",
           825: "#1F1F1F",
           850: "#1A1A16",
+          900: "#232622",
           950: "#141713"
         },
 
         "bp_danger": {
           DEFAULT: "#DA1E28",
           light: "#FFAAAA"
+        },
+
+        "bp_pink": {
+          100: "#F80052"
         },
 
         "bp_green": {
@@ -73,8 +88,22 @@ export default {
       },
       fontSize: {
         xxs: '0.5rem',
-      }
       },
+      keyframes: {
+        twinkle: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.5', transform: 'scale(1.2)' },
+        },
+        blinkOpacity: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.4' },
+        },
+      },
+      animation: {
+        twinkle: 'twinkle 1.2s ease-in-out infinite',
+        blinkOpacity: 'blinkOpacity 0.5s ease-in-out infinite',
+      },
+    }
     },
   plugins: [
     daisyui

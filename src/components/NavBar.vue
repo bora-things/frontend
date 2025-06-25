@@ -1,57 +1,110 @@
 <script setup>
-import api from '@/config/axios.config'
-import { capitalizeText } from '@/utils/capitalizeText.js'
-import { onMounted, ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import NotificationMenu from './NotificationMenu.vue'
-const isMenuOpen = ref(false)
+import api from "@/config/axios.config";
+import { capitalizeText } from "@/utils/capitalizeText.js";
+import { onMounted, ref } from "vue";
+import { RouterLink } from "vue-router";
+import CardAd from "./CardAd.vue";
+import NotificationMenu from "./NotificationMenu.vue";
+import PersonalizedCalendar from "./PersonalizedCalendar.vue";
+
+const isMenuOpen = ref(false);
 
 function handleMenuClick() {
-  isMenuOpen.value = !isMenuOpen.value
+  isMenuOpen.value = !isMenuOpen.value;
 }
 
 async function handleLogout() {
-  const logoutLink = import.meta.env.VITE_API_URL + '/logout'
-  window.location.href = logoutLink
+  const logoutLink = import.meta.env.VITE_API_URL + "/logout";
+  window.location.href = logoutLink;
 }
 
-const user = ref(null)
+const user = ref(null);
 
 async function fetchUser() {
   try {
-    const response = await api.get('/api/students/me') 
-    const data = await response.data
-    user.value = data
+    const response = await api.get("/api/students/me");
+    const data = await response.data;
+    user.value = data;
   } catch (error) {
-    console.error('Erro ao buscar dados do usuário:', error)
+    console.error("Erro ao buscar dados do usuário:", error);
+  }
+}
+
+const greeting = ref("");
+
+function setGreeting() {
+  const hour = new Date().getHours();
+
+  if (hour >= 5 && hour < 12) {
+    greeting.value = "Bom dia";
+  } else if (hour >= 12 && hour < 18) {
+    greeting.value = "Boa tarde";
+  } else {
+    greeting.value = "Boa noite";
   }
 }
 
 onMounted(() => {
-  fetchUser()
-})
+  fetchUser();
+  setGreeting();
+});
 </script>
 
 <template>
   <header
-    class="w-full h-auto flex justify-between items-center p-6 border-b border-bp_neutral-700"
+    class="w-full h-auto flex items-center p-6 border-b border-bp_neutral-900 gap-2 z-[1000]"
   >
-    <div class="flex items-center gap-10">
-      <button
-        class="btn btn-ghost text-bp_neutral-400 w-11 h-11 flex items-center justify-center bg-transparent border border-bp_neutral-700 rounded-md"
-        @click="handleMenuClick"
-      >
-        <v-icon name="md-menu-round" scale="1.5" />
-      </button>
+    <button
+      class="btn btn-ghost text-bp_neutral-400 w-11 h-11 flex items-center justify-center bg-transparent border border-bp_neutral-600 rounded-md"
+      @click="handleMenuClick"
+    >
+      <v-icon name="md-menu-round" scale="1.5" />
+    </button>
+
+    <div class="flex justify-between items-center w-full xl:max-w-7xl mx-auto pr-8">
       <div class="flex gap-4 items-center">
-        <h4 class="text-xl font-bold">Bora Pagar</h4>
+        <h4 class="text-2xl font-bold font-sans">
+          {{ greeting }}, {{ user ? capitalizeText(user.name.split(" ")[0]) : "" }}!
+        </h4>
+      </div>
+
+      <div class="flex items-center md:gap-5">
+        <div>
+          <button
+            class="group flex items-center bg-bp_neutral-800 border-2 border-bp_green-500 rounded-lg py-1 px-2 transition-all duration-300 shadow-bp_green-500/30 hover:shadow-[0_0_16px_4px_#22c55e] hover:border-bp_green-100 focus:outline-none focus:ring-2 focus:ring-bp_green-400"
+            style="box-shadow: 0 0 0 0 #22c55e"
+          >
+            <v-icon
+              name="bi-stars"
+              scale="1.2"
+              class="group-hover:animate-twinkle cursor-pointer"
+            ></v-icon>
+            <span class="">Fale com o Simbora</span>
+          </button>
+        </div>
+        <div class="relative z-50">
+          <div class="flex px-4 py-2 rounded-3xl gap-2 items-center">
+            <CardAd />
+            <NotificationMenu />
+            <PersonalizedCalendar />
+          </div>
+        </div>
+
+        <div>
+          <img
+            v-if="user && user.image_url"
+            :src="user.image_url"
+            alt="Foto do usuário"
+            class="h-16 w-16 rounded-full object-cover"
+          />
+        </div>
       </div>
     </div>
     <nav
-      class="w-11/12 md:w-auto bg-bp_neutral-950 z-[99] border-r-2 border-bp_neutral-700 fixed top-0 h-full transition-all ease-in-out duration-300"
+      class="w-11/12 md:w-auto bg-bp_grayscale-800 z-[99] border-r-2 border-bp_neutral-700 fixed top-0 h-full transition-all ease-in-out duration-300"
       :class="{
         '-left-full': !isMenuOpen,
-        'left-0': isMenuOpen
+        'left-0': isMenuOpen,
       }"
     >
       <div class="relative p-5 py-8">
@@ -68,7 +121,7 @@ onMounted(() => {
                 v-if="user.image_url"
                 :src="user.image_url"
                 alt=""
-                class="h-12 w-12 rounded-full"
+                class="h-16 w-16 rounded-full object-cover"
               />
               <div
                 v-else
@@ -77,7 +130,9 @@ onMounted(() => {
                 <v-icon name="fa-user-alt" class="text-white text-4xl" />
               </div>
               <div class="flex flex-col">
-                <span class="font-bold text-lg leading-none">{{ capitalizeText(user.name) }}</span>
+                <span class="font-bold text-lg leading-none">{{
+                  capitalizeText(user.name)
+                }}</span>
                 <span class="text-sm">{{ user.login }}</span>
               </div>
             </template>
@@ -121,11 +176,6 @@ onMounted(() => {
             <v-icon name="md-menubook-outlined" />
             <span>Disciplinas</span>
           </RouterLink>
-          <RouterLink class="menu-item" to="/interesses">
-            <v-icon name="md-class-outlined" />
-            <span>Interesses</span>
-          </RouterLink>
-
           <button
             class="flex items-center gap-4 mt-4 text-bp_danger border-bp_danger menu-item after:bg-bp_danger"
             @click="handleLogout"
@@ -136,6 +186,5 @@ onMounted(() => {
         </div>
       </div>
     </nav>
-    <NotificationMenu />
   </header>
 </template>
