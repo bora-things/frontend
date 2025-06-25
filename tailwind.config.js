@@ -45,6 +45,9 @@ export default {
           800: "#1A1A1A",
           825: "#1A1A16",
           910: "#232622",
+          825: "#1F1F1F",
+          850: "#1A1A16",
+          900: "#232622",
           950: "#141713"
         },
 
@@ -60,12 +63,15 @@ export default {
           100: "#6AE156",
           400: "#33D160",
           500: "#24A148",
-          600: "#268742"
+          600: "#01D600"
         },
         "bp_yellow": {
           100: "#D9B655",
           200: "#A38D50",
           300: "#FFC91F"
+        },
+        "bp_pink": {
+          100: "#F80052" 
         },
         "vtd-primary": colors.sky, // Light mode Datepicker color
         "vtd-secondary": {

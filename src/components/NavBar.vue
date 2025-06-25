@@ -52,7 +52,7 @@ onMounted(() => {
 
 <template>
   <header
-    class="w-full h-auto flex items-center p-6 border-b border-bp_neutral-900 gap-2"
+    class="w-full h-auto flex items-center p-6 border-b border-bp_neutral-900 gap-2 z-[1000]"
   >
     <button
       class="btn btn-ghost text-bp_neutral-400 w-11 h-11 flex items-center justify-center bg-transparent border border-bp_neutral-600 rounded-md"
@@ -176,11 +176,6 @@ onMounted(() => {
             <v-icon name="md-menubook-outlined" />
             <span>Disciplinas</span>
           </RouterLink>
-          <RouterLink class="menu-item" to="/interesses">
-            <v-icon name="md-class-outlined" />
-            <span>Interesses</span>
-          </RouterLink>
-
           <button
             class="flex items-center gap-4 mt-4 text-bp_danger border-bp_danger menu-item after:bg-bp_danger"
             @click="handleLogout"
