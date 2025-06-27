@@ -327,7 +327,7 @@ const sectionRef = ref(null);
 
     <div
       v-if="loading"
-      class="flex items-center bg-bp_grayscale-600 p-4 justify-center h-[15vh] w-full rounded-md"
+      class="flex items-center bg-bp_neutral-700 p-4 justify-center h-[15vh] w-full rounded-md"
     >
       <span class="loading loading-spinner loading-lg text-white"></span>
     </div>
@@ -335,7 +335,7 @@ const sectionRef = ref(null);
       ref="sectionRef"
       tabindex="-1"
       v-if="!loading && periodClasses.length > 0"
-      class="grid md:grid-cols-3 bg-bp_grayscale-600 rounded-md gap-4 p-4"
+      class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4 p-4"
       :key="selectedPeriod"
     >
       <SubjectCard
@@ -347,7 +347,7 @@ const sectionRef = ref(null);
     </section>
     <div
       v-else-if="!loading && periodClasses.length === 0"
-      class="relative bg-bp_grayscale-600 rounded-md h-[400px] overflow-y-auto p-2 flex flex-col w-full"
+      class="relative bg-bp_neutral-700 rounded-md h-[400px] overflow-y-auto p-2 flex flex-col w-full"
     >
       <FriendInterests
         :periodo="selectedPeriod.split('-')[1]"

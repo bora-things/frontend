@@ -117,9 +117,7 @@ watch(
       <div class="flex flex-col md:flex-row md:justify-between items-center gap-5">
         <p class="text-3xl font-bold">Disciplinas</p>
       </div>
-      <div
-        class="flex justify-between items-center space-x-4 p-2 rounded-xl bg-bp_neutral-700 w-[80%]"
-      >
+      <div class="flex justify-between items-center space-x-4 p-2 rounded-xl w-[80%]">
         <form :onsubmit="fetchSearchedComponents" class="w-full">
           <label
             class="w-full input bg-bp_grayscale-600 border border-bp_grayscale-500 rounded-md flex items-center gap-2 p-2 w-[50%]"
@@ -177,9 +175,7 @@ watch(
         </div>
       </div>
     </div>
-    <div
-      class="flex flex-col items-center bg-bp_grayscale-600 rounded-md gap-4 p-4 flex-1"
-    >
+    <div class="flex flex-col items-center bg-bp_neutral-700 rounded-md gap-4 p-4 flex-1">
       <div class="join bg-transparent text-gray-300">
         <button class="join-item btn btn-ghost" :disabled="page == 0" @click="handleBack">
           {{ "<" }}
