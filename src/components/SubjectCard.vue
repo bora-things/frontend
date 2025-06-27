@@ -1,4 +1,6 @@
 <script setup>
+import { capitalizeText } from "@/utils/capitalizeText";
+
 const props = defineProps(["classSubject", "interest", "disabled", "blinking"]);
 const { ano, "id-turma": IdTurma, periodo, component, friends } = props.classSubject;
 
@@ -25,7 +27,7 @@ const formatUserName = (name) => {
       'animate-blinkOpacity': blinking && !disabled,
     }"
   >
-    <p class="font-sans font-medium">{{ component.nome }}</p>
+    <p class="font-sans font-medium">{{ capitalizeText(component.nome) }}</p>
     <div class="flex justify-between items-end">
       <div>
         <div v-if="visibleUsers.length > 0" class="flex gap-2 items-center">
