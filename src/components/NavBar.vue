@@ -176,6 +176,10 @@ onMounted(() => {
             <v-icon name="md-menubook-outlined" />
             <span>Disciplinas</span>
           </RouterLink>
+          <RouterLink class="menu-item" to="/interesses">
+            <v-icon name="bi-people-fill" />
+            <span>Interesses</span>
+          </RouterLink>
           <button
             class="flex items-center gap-4 mt-4 text-bp_danger border-bp_danger menu-item after:bg-bp_danger"
             @click="handleLogout"

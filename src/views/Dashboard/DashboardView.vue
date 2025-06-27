@@ -1,4 +1,5 @@
 <script setup>
+import FriendInterests from "@/components/FriendsInterests.vue";
 import SubjectCard from "@/components/SubjectCard.vue";
 import api from "@/config/axios.config";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
@@ -294,13 +295,13 @@ const sectionRef = ref(null);
         }}</span>
       </div>
 
-      <div className="tooltip">
+      <div className="tooltip tooltip-left">
         <div
           :class="[
-            'tooltip-content text-xl tooltip-bottom',
+            'tooltip-content text-xl',
             selectedPeriodWorkload < 480 ? 'tooltip-warning' : 'tooltip-error',
           ]"
-          v-if="selectedPeriodWorkload >= 360"
+          v-if="selectedPeriodWorkload > 360"
         >
           <div className="text-white">
             <span
@@ -308,9 +309,9 @@ const sectionRef = ref(null);
             >
           </div>
         </div>
-        <span
+        <div
           :class="[
-            'text-2xl',
+            'text-2xl flex items-center',
             selectedPeriodWorkload > 360
               ? selectedPeriodWorkload >= 480
                 ? 'text-red-500'
@@ -318,8 +319,9 @@ const sectionRef = ref(null);
               : 'text-white',
           ]"
         >
-          {{ selectedPeriodWorkload }}h
-        </span>
+          <v-icon name="bi-clock" scale="1.2" class="mr-2"></v-icon>
+          <span> {{ selectedPeriodWorkload }}h</span>
+        </div>
       </div>
     </header>
 
@@ -345,12 +347,16 @@ const sectionRef = ref(null);
     </section>
     <div
       v-else-if="!loading && periodClasses.length === 0"
-      class="relative bg-bp_grayscale-600 rounded-md h-[400px] overflow-y-auto"
+      class="relative bg-bp_grayscale-600 rounded-md h-[400px] overflow-y-auto p-2 flex flex-col w-full"
     >
+      <FriendInterests
+        :periodo="selectedPeriod.split('-')[1]"
+        :ano="selectedPeriod.split('-')[0]"
+      />
       <VueDraggableNext
         id="interested-classes"
         :animation="800"
-        class="grid md:grid-cols-3 gap-4 p-4"
+        class="grid md:grid-cols-3 gap-4 p-4 h-full"
         :list="periodInterestedClasses"
         group="subjects"
         :key="(periodInterestedClasses || []).map((item) => item.interest_id).join(',')"

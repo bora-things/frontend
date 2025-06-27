@@ -1,4 +1,5 @@
 <script setup>
+import { capitalizeText } from "@/utils/capitalizeText";
 import { computed, ref, watch } from "vue";
 
 const props = defineProps(["component", "period"]);
@@ -66,7 +67,7 @@ const formatUserName = (name) => {
     :id="component.codigo"
     class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100"
   >
-    <p class="font-sans font-medium">{{ component.nome }}</p>
+    <p class="font-sans font-medium">{{ capitalizeText(component.nome) }}</p>
     <div class="flex justify-between flex-row-reverse">
       <div class="flex flex-col gap-2 items-end">
         <span
