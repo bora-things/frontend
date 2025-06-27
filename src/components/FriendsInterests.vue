@@ -23,14 +23,28 @@
         <form method="dialog" class="absolute top-2 right-2">
           <button className="btn btn-sm btn-circle btn-ghost text-lg ">✕</button>
         </form>
-        <table class="min-w-full table table-zebra mt-4" style="min-width: 700px">
+
+        <!-- Tabela só aparece quando há dados ou está carregando -->
+        <table
+          v-if="isLoading || hasData"
+          class="min-w-full table table-zebra mt-4"
+          style="min-width: 700px"
+        >
           <thead class="">
             <tr class="border-b border-bp_grayscale-700">
               <th
-                class="py-3 px-4 text-center text-2xl bg-bp_grayscale-600 text-bp_grayscale-400 font-semibold text-white sticky left-0 z-30"
+                class="py-3 px-4 text-center text-xl bg-bp_grayscale-600 text-bp_grayscale-400 font-semibold text-white sticky left-0 z-30"
                 style="width: 10%"
               >
                 Disciplina
+              </th>
+              <th
+                class="py-3 px-4 text-center text-lg bg-bp_grayscale-600 text-bp_grayscale-400 font-semibold text-white"
+                style="width: 8%; min-width: 100px"
+              >
+                <div class="flex flex-col gap-1 items-center">
+                  <span class="text-xl">Interessados</span>
+                </div>
               </th>
               <template v-if="isLoading">
                 <th
@@ -48,7 +62,7 @@
                 </th>
               </template>
               <th
-                v-else
+                v-else-if="hasData"
                 v-for="friend in friends.sort((a, b) => a.name.localeCompare(b.name))"
                 :key="friend.name"
                 class="py-3 px-4 text-center text-sm font-semibold text-white"
@@ -90,7 +104,7 @@
               class="border-b-0 w-full"
               v-for="subject in subjectsStatus"
               :key="subject.nome"
-              v-else
+              v-else-if="hasData"
             >
               <td
                 class="py-2 px-4 font-medium sticky text-xl left-0 z-30 border-0"
@@ -102,6 +116,16 @@
                 >
                   <span>{{ capitalizeText(subject.nome) }}</span>
                 </div>
+              </td>
+              <td
+                class="py-2 px-4 text-center text-lg font-semibold"
+                style="width: 8%; min-width: 100px"
+              >
+                <span
+                  class="inline-flex items-center justify-center text-sm font-bold text-white"
+                >
+                  {{ getInterestedCount(subject) }}
+                </span>
               </td>
               <td
                 v-for="(status, idx) in subject.statuses"
@@ -120,6 +144,21 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Estado vazio - aparece quando não há dados -->
+        <div v-if="!isLoading && !hasData" class="py-12 px-4 text-center">
+          <div class="flex flex-col items-center gap-4">
+            <v-icon name="fa-user-friends" class="text-bp_grayscale-400 w-16 h-16" />
+            <div class="flex flex-col gap-2">
+              <span class="text-xl text-gray-300 font-semibold">
+                Nenhum amigo com interesses encontrado
+              </span>
+              <span class="text-md text-gray-400">
+                Não há amigos com interesses cadastrados para o semestre selecionado.
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <form method="dialog" className="modal-backdrop">
@@ -147,6 +186,7 @@ const props = defineProps({
 const dialogRef = ref(null);
 const isLoading = ref(false);
 const imageErrors = ref({});
+const hasData = ref(false);
 
 function handleImageError(friendName) {
   imageErrors.value[friendName] = true;
@@ -169,18 +209,31 @@ function formatName(name) {
 async function fetchInterests() {
   try {
     isLoading.value = true;
+    hasData.value = false;
     const response = await api.get("/api/users/interests/friends", {
       params: {
         period: props.periodo,
         year: props.ano,
       },
     });
-    friends.value = response.data.friendsInterests || [];
-    components.value = response.data.components || [];
+
+    const friendsData = response.data.friendsInterests || [];
+    const componentsData = response.data.components || [];
+
+    if (friendsData.length === 0 || componentsData.length === 0) {
+      friends.value = [];
+      components.value = [];
+      hasData.value = false;
+    } else {
+      friends.value = friendsData;
+      components.value = componentsData;
+      hasData.value = true;
+    }
   } catch (error) {
     console.error("Erro ao buscar interesses dos amigos:", error);
     friends.value = [];
     components.value = [];
+    hasData.value = false;
   } finally {
     isLoading.value = false;
   }
@@ -188,7 +241,7 @@ async function fetchInterests() {
 
 function openDialog() {
   dialogRef.value?.showModal();
-  if (!isLoading.value && friends.value.length === 0) {
+  if (!isLoading.value) {
     fetchInterests();
   }
 }
@@ -202,7 +255,12 @@ const subjectsStatus = ref([]);
 watch(
   [components, friends],
   () => {
-    if (components.value && friends.value && components.value.length > 0) {
+    if (
+      components.value &&
+      friends.value &&
+      components.value.length > 0 &&
+      friends.value.length > 0
+    ) {
       subjectsStatus.value = components.value.map((subject) => {
         return {
           nome: subject.nome || "",
@@ -221,8 +279,10 @@ watch(
           }),
         };
       });
+      hasData.value = true;
     } else {
       subjectsStatus.value = [];
+      hasData.value = false;
     }
   },
   { deep: true }
@@ -257,5 +317,11 @@ function statusClass(status) {
     default:
       return "bg-gray-500";
   }
+}
+
+// Função para contar quantos amigos têm interesse na matéria
+function getInterestedCount(subject) {
+  if (!subject.statuses) return 0;
+  return subject.statuses.filter((status) => status === "interesse").length;
 }
 </script>

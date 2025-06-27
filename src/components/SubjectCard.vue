@@ -45,6 +45,7 @@ const formatUserName = (name) => {
                 v-if="friend.imageUrl"
                 class="w-10 h-10 rounded-full"
                 :src="friend.imageUrl"
+                @error="friend.imageUrl = null"
               />
               <div v-else class="w-10 h-10 rounded-full flex items-center justify-center">
                 <v-icon name="io-person-circle-sharp" class="text-white" scale="2.2" />
