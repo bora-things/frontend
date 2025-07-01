@@ -1,8 +1,10 @@
 <script setup>
 import { capitalizeText } from "@/utils/capitalizeText";
 import { computed, ref, watch } from "vue";
+import SubjectSyllabusModal from "./SubjectSyllabusModal.vue";
 
 const props = defineProps(["component", "period"]);
+const modalRef = ref(null);
 
 const period = ref(props.period);
 const component = props.component;
@@ -60,12 +62,19 @@ const formatUserName = (name) => {
 
   return `${firstName} ${lastName}`;
 };
+
+function openModal() {
+  console.log("Clique detectado no card EC:", component.codigo);
+  console.log("Modal ref:", modalRef.value);
+  modalRef.value?.openDialog();
+}
 </script>
 
 <template>
   <div
     :id="component.codigo"
-    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100"
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
+    @click="openModal"
   >
     <p class="font-sans font-medium">{{ capitalizeText(component.nome) }}</p>
     <div class="flex justify-between flex-row-reverse">
@@ -112,4 +121,7 @@ const formatUserName = (name) => {
       </div>
     </div>
   </div>
+
+  <!-- Modal do Subject Syllabus -->
+  <SubjectSyllabusModal ref="modalRef" :subject-code="component.codigo" />
 </template>

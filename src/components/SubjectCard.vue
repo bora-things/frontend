@@ -1,7 +1,10 @@
 <script setup>
 import { capitalizeText } from "@/utils/capitalizeText";
+import { ref } from "vue";
+import SubjectSyllabusModal from "./SubjectSyllabusModal.vue";
 
 const props = defineProps(["classSubject", "interest", "disabled", "blinking"]);
+const modalRef = ref(null);
 const { ano, "id-turma": IdTurma, periodo, component, friends } = props.classSubject;
 
 const maxVisible = 4;
@@ -15,17 +18,24 @@ const formatUserName = (name) => {
 
   return `${firstName} ${lastName}`;
 };
+
+function openModal() {
+  console.log("Clique detectado no card:", component.codigo);
+  console.log("Modal ref:", modalRef.value);
+  modalRef.value?.openDialog();
+}
 </script>
 
 <template>
   <div
     :id="component.codigo"
-    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100"
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
     :class="{
       'bg-bp_grayscale-800 border-bp_grayscale-500': !disabled && !blinking,
       'bg-bp_grayscale-700 border-bp_grayscale-500 animate-blinkOpacity': disabled,
       'animate-blinkOpacity': blinking && !disabled,
     }"
+    @click="openModal"
   >
     <p class="font-sans font-medium">{{ capitalizeText(component.nome) }}</p>
     <div class="flex justify-between items-end">
@@ -82,6 +92,12 @@ const formatUserName = (name) => {
       </div>
     </div>
   </div>
+  
+  <!-- Modal do Subject Syllabus -->
+  <SubjectSyllabusModal 
+    ref="modalRef"
+    :subject-code="component.codigo"
+  />
 </template>
 
 <style scoped>
