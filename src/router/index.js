@@ -1,7 +1,6 @@
 import LandingPageView from '@/views/LandingPage/LandingPageView.vue'
 import NotFoundView from '@/views/NotFound/NotFoundView.vue'
 import ProfileView from '@/views/Profile/ProfileView.vue'
-import SubjectSyllabusView from '@/views/SubjectSyllabus/SubjectSyllabusView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import ConsultSubjectsView from '../views/ConsultSubjetcs/ConsultSubjectsView.vue'
 import DashboardView from '../views/Dashboard/DashboardView.vue'
@@ -34,11 +33,6 @@ const router = createRouter({
       path: '/perfil/:id',
       name: 'profile',
       component: ProfileView
-    },
-    {
-      path: '/ementa/:id',
-      name: 'ementa',
-      component: SubjectSyllabusView
     },
     {
       path: '/:catchAll(.*)',
