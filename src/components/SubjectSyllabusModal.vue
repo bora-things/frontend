@@ -1,5 +1,6 @@
 <script setup>
 import api from "@/config/axios.config";
+import { capitalizeText } from "@/utils/capitalizeText";
 import { nextTick, ref } from "vue";
 
 const props = defineProps({
@@ -111,13 +112,10 @@ defineExpose({
                 {{
                   isLoading
                     ? "Carregando..."
-                    : subject.name || subject.nome || "Nome não encontrado"
+                    : capitalizeText(subject.name) || "Nome não encontrado"
                 }}
               </h1>
-              <div
-                v-if="!isLoading && (subject.name || subject.nome)"
-                class="flex flex-wrap text-sm gap-2"
-              >
+              <div v-if="!isLoading && subject.name" class="flex flex-wrap text-sm gap-2">
                 <span
                   class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md px-3 py-1 text-white"
                 >
@@ -212,7 +210,7 @@ defineExpose({
                   <v-icon name="fa-user-alt" class="text-white w-6 h-6" />
                 </div>
                 <div>
-                  <p class="text-white font-medium">{{ teacher.name }}</p>
+                  <p class="text-white font-medium">{{ capitalizeText(teacher.name) }}</p>
                   <p class="text-sm">
                     <span class="text-gray-300">Avaliação: </span>
                     <span :class="getCorAprovacao(teacher.review)">{{
@@ -258,9 +256,11 @@ defineExpose({
                   <v-icon name="fa-user-alt" class="text-white w-6 h-6" />
                 </div>
                 <div>
-                  <p class="text-white font-medium">{{ friend.personName }}</p>
+                  <p class="text-white font-medium">
+                    {{ capitalizeText(friend.personName) }}
+                  </p>
                   <p class="text-sm text-gray-300">
-                    {{ friend.courseName }}
+                    {{ capitalizeText(friend.courseName) }}
                   </p>
                   <span class="text-bp_neutral-400">{{ friend.period }}° Período </span>
                 </div>
