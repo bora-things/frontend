@@ -249,7 +249,7 @@ const sectionRef = ref(null);
     <header class="flex items-center justify-between pb-4">
       <div class="flex flex-col items-start">
         <div class="flex flex-col">
-          <div className="dropdown dropdown-hover">
+          <div className="dropdown dropdown-hover ">
             <div
               tabIndex="{0}"
               role="button"
@@ -266,7 +266,7 @@ const sectionRef = ref(null);
             </div>
             <ul
               tabIndex="{0}"
-              className="title-h2 dropdown-content menu bg-bp_grayscale-700 rounded-box z-1 w-52 p-2 shadow-sm gap-1"
+              className="title-h2 dropdown-content menu bg-bp_grayscale-700 rounded-box z-1 w-52 p-2 shadow-xl gap-1"
             >
               <li
                 :class="[
