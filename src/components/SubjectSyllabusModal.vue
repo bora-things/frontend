@@ -96,24 +96,16 @@ defineExpose({
 <template>
   <dialog ref="dialogRef" class="p-5 w-full modal">
     <div
-      class="modal-box p-0 min-w-[95%] max-h-[95%] shadow-lg rounded-lg overflow-hidden flex flex-col gap-5"
+      class="modal-box p-0 min-w-[60%] h-[95%] shadow-lg rounded-lg flex flex-col gap-5"
     >
       <div
-        class="overflow-x-auto bg-bp_grayscale-600 rounded-box flex flex-col relative group p-6"
+        class="overflow-x-auto bg-bp_grayscale-600 h-full rounded-box flex flex-col relative group p-6"
       >
-        <!-- Header -->
         <div class="flex flex-col gap-5 mb-4">
-          <form method="dialog" class="ml-4 self-end">
-            <button class="btn btn-sm btn-circle btn-ghost text-lg text-white">✕</button>
-          </form>
           <div class="flex-1 flex justify-between w-full">
-            <div>
+            <div v-if="!isLoading" class="flex-1">
               <h1 class="text-3xl font-bold mb-2 text-white">
-                {{
-                  isLoading
-                    ? "Carregando..."
-                    : capitalizeText(subject.name) || "Nome não encontrado"
-                }}
+                {{ capitalizeText(subject.name) }}
               </h1>
               <div v-if="!isLoading && subject.name" class="flex flex-wrap text-sm gap-2">
                 <span
@@ -142,16 +134,24 @@ defineExpose({
                 </span>
               </div>
             </div>
-            <button
-              class="btn bg-bp_green-500 hover:bg-bp_green-600 text-white border-none"
-            >
-              <v-icon name="fa-plus" class="w-4 h-4 mr-1" />
-              Adicionar à Grade
-            </button>
+            <div class="flex items-center gap-2" v-if="!isLoading">
+              <button
+                class="btn bg-bp_green-500 hover:bg-bp_green-600 text-white border-none"
+              >
+                <v-icon name="fa-plus" class="w-4 h-4 mr-1" />
+                Adicionar à Grade
+              </button>
+              <form method="dialog" class="hover:bg-bp_green-600 rounded-md p-1">
+                <button
+                  class="btn btn-sm btn-circle btn-ghost border-0 hover:bg-transparent hover:border-0 shadow-none text-lg text-white"
+                >
+                  ✕
+                </button>
+              </form>
+            </div>
           </div>
         </div>
 
-        <!-- Loading State -->
         <div v-if="isLoading" class="py-12 px-4 text-center">
           <div class="flex flex-col items-center gap-3">
             <div class="loading loading-spinner loading-md text-white"></div>
@@ -159,11 +159,7 @@ defineExpose({
           </div>
         </div>
 
-        <!-- Content -->
         <div v-else-if="subject.name || subject.nome" class="space-y-6">
-          <!-- Add to Schedule Button -->
-
-          <!-- Syllabus Section -->
           <section
             class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md p-4 relative"
           >
@@ -180,6 +176,35 @@ defineExpose({
               v-if="isSyllabusShadowVisible"
               class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-bp_neutral-850 to-transparent pointer-events-none"
             ></div>
+          </section>
+          <section>
+            <h2 class="text-lg font-semibold mb-4 text-white">Pré Requisitos</h2>
+            <div class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md p-4">
+              <p class="text-sm text-gray-300">
+                {{
+                  subject["pre-requisites"] ||
+                  "Essa disciplina não possui pré-requisitos."
+                }}
+              </p>
+            </div>
+          </section>
+          <section>
+            <h2 class="text-lg font-semibold mb-4 text-white">Co Requisitos</h2>
+            <div class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md p-4">
+              <p class="text-sm text-gray-300">
+                {{
+                  subject["co-requisites"] || "Essa disciplina não possui co-requisitos."
+                }}
+              </p>
+            </div>
+          </section>
+          <section>
+            <h2 class="text-lg font-semibold mb-4 text-white">Equivalentes</h2>
+            <div class="bg-bp_neutral-850 border border-bp_neutral-600 rounded-md p-4">
+              <p class="text-sm text-gray-300">
+                {{ subject.equivalents || "Essa disciplina não possui equivalentes." }}
+              </p>
+            </div>
           </section>
 
           <!-- Teachers Section -->
