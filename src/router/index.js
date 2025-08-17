@@ -2,7 +2,6 @@ import LandingPageView from '@/views/LandingPage/LandingPageView.vue'
 import NotFoundView from '@/views/NotFound/NotFoundView.vue'
 import ProfileView from '@/views/Profile/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import ConsultSubjectsView from '../views/ConsultSubjetcs/ConsultSubjectsView.vue'
 import DashboardView from '../views/Dashboard/DashboardView.vue'
 import FriendsView from '../views/Friends/FriendsView.vue'
 
@@ -13,11 +12,6 @@ const router = createRouter({
       path: '/',
       name: 'landing-page',
       component: LandingPageView
-    },
-    {
-      path: '/disciplinas',
-      name: 'subjects',
-      component: ConsultSubjectsView
     },
     {
       path: '/dashboard',
