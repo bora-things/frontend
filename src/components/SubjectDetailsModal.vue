@@ -20,7 +20,7 @@ const subject = ref({});
 const friends = ref([]);
 const teachers = ref([]);
 
-const isSyllabusShadowVisible = ref(false);
+const isDetailsShadowVisible = ref(false);
 const isFriendsShadowVisible = ref(false);
 
 function getCorAprovacao(review) {
@@ -33,10 +33,10 @@ function getCorAprovacao(review) {
   }
 }
 
-function handleSyllabusScroll() {
-  const container = document.querySelector(".syllabus-content");
+function handleDetailsScroll() {
+  const container = document.querySelector(".details-content");
   if (container) {
-    isSyllabusShadowVisible.value =
+    isDetailsShadowVisible.value =
       container.scrollHeight > container.clientHeight &&
       container.scrollTop + container.clientHeight < container.scrollHeight;
   }
@@ -61,10 +61,10 @@ async function fetchSubjectData() {
     teachers.value = response.data.teachers || [];
 
     await nextTick(() => {
-      const syllabusContainer = document.querySelector(".syllabus-content");
-      if (syllabusContainer) {
-        syllabusContainer.addEventListener("scroll", handleSyllabusScroll);
-        handleSyllabusScroll();
+      const detailsContainer = document.querySelector(".details-content");
+      if (detailsContainer) {
+        detailsContainer.addEventListener("scroll", handleDetailsScroll);
+        handleDetailsScroll();
       }
 
       const friendsContainer = document.querySelector(".friends-container");
@@ -165,15 +165,15 @@ defineExpose({
           >
             <h2 class="text-xl font-semibold mb-3 text-white">Ementa da Disciplina</h2>
             <div
-              class="syllabus-content max-h-40 overflow-y-auto relative hide-scrollbar"
-              @scroll="handleSyllabusScroll"
+              class="details-content max-h-40 overflow-y-auto relative hide-scrollbar"
+              @scroll="handleDetailsScroll"
             >
               <p class="text-sm text-gray-300 pr-2">
                 {{ subject.description || subject.ementa || "Ementa não disponível" }}
               </p>
             </div>
             <div
-              v-if="isSyllabusShadowVisible"
+              v-if="isDetailsShadowVisible"
               class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-bp_neutral-850 to-transparent pointer-events-none"
             ></div>
           </section>

@@ -1,7 +1,7 @@
 <script setup>
 import { capitalizeText } from "@/utils/capitalizeText";
 import { ref } from "vue";
-import SubjectSyllabusModal from "./SubjectSyllabusModal.vue";
+import SubjectDetailsModal from "./SubjectDetailsModal.vue";
 
 const props = defineProps(["classSubject", "interest", "disabled", "blinking"]);
 const modalRef = ref(null);
@@ -92,12 +92,9 @@ function openModal() {
       </div>
     </div>
   </div>
-  
+
   <!-- Modal do Subject Syllabus -->
-  <SubjectSyllabusModal 
-    ref="modalRef"
-    :subject-code="component.codigo"
-  />
+  <SubjectDetailsModal ref="modalRef" :subject-code="component.codigo" />
 </template>
 
 <style scoped>
