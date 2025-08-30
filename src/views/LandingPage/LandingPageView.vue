@@ -1,63 +1,61 @@
 <script setup>
-import CardComponent from '@/components/CardComponent.vue'
-import CardDoubts from '@/components/CardDoubts.vue'
-import SimboraImg from '@/components/SimboraImg.vue'
-import { addIcons } from 'oh-vue-icons'
-import { onMounted, ref } from 'vue'
-import { getComponents, getDoubts } from './LandingPageController'
+import SimboraImg from "@/components/SimboraImg.vue";
+import { onMounted, ref } from "vue";
+import { useToast } from "vue-toast-notification";
+import { getComponents, getDoubts } from "./LandingPageController";
 
-const components = ref([])
-const doubts = ref([])
+const components = ref([]);
+const doubts = ref([]);
 
 onMounted(async () => {
-  components.value = await getComponents()
-  doubts.value = await getDoubts()
-})
-
+  components.value = await getComponents();
+  doubts.value = await getDoubts();
+});
 
 function handleLoginClick() {
-  const authLink = import.meta.env.VITE_API_URL + '/oauth2/authorization/sigaa'
-
-  window.location.href = authLink
+  const toast = useToast();
+  toast.info("Funcionalidade não disponível para testes");
+  // const authLink = import.meta.env.VITE_API_URL + "/oauth2/authorization/sigaa";
+  // window.location.href = authLink;
 }
 
 function scrollToElement(id) {
-  const element = document.getElementById(id)
-  const headerOffset = document.querySelector('header').offsetHeight
-  const elementPosition = element.getBoundingClientRect().top
-  const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+  const element = document.getElementById(id);
+  const headerOffset = document.querySelector("header").offsetHeight;
+  const elementPosition = element.getBoundingClientRect().top;
+  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
   window.scrollTo({
     top: offsetPosition - 100,
-    behavior: 'smooth'
-  })
+    behavior: "smooth",
+  });
 }
 
 onMounted(() => {
-  document.querySelectorAll('a.nav-item').forEach((anchor) => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault()
-      const href = this.getAttribute('href').substring(1)
-      scrollToElement(href)
-    })
-  })
-})
+  document.querySelectorAll("a.nav-item").forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      const href = this.getAttribute("href").substring(1);
+      scrollToElement(href);
+    });
+  });
+});
 </script>
 
 <template>
   <div>
     <header
-      class="flex justify-between place-items-center py-6 px-20 sticky top-0 w-full z-50 bg-bp_neutral-950"
+      class="flex justify-between place-items-center py-6 px-4 xl:px-20 sticky top-0 w-full z-50 bg-bp_neutral-950"
     >
       <div class="flex place-items-center space-x-4">
         <SimboraImg />
-        <p class="font-bold xl:text-3xl text-xl">BoraPagar</p>
+        <p class="font-bold xl:text-3xl text-xl">MatriculaAi</p>
       </div>
-      <div class="space-x-6 hidden xl:flex">
-        <a class="nav-item" href="#motivacao">Motivação</a>
-        <a class="nav-item" href="#sobre">Sobre</a>
-        <a class="nav-item" href="#criadores">Criadores</a>
-      </div>
+      <!-- <div class="space-x-6 hidden xl:flex"> -->
+      <!-- <a class="nav-item" href="#motivacao">Motivação</a> -->
+      <!-- <a class="nav-item" href="#sobre">Sobre</a> -->
+      <!-- <a class="nav-item" href="#criadores">Criadores</a> -->
+      <!-- </div> -->
       <div>
         <button
           class="btn btn-ghost px-6 bg-bp_green-400 hover:bg-bp_green-500 text-white active:bg-bp_green-500 disabled:cursor-default disabled:bg-[#E2E2E2] disabled:text-[#ABABAB]"
@@ -68,8 +66,10 @@ onMounted(() => {
       </div>
     </header>
     <main class="h-full mx-auto bg-bp_neutral-800">
-      <section class="bg-bp_neutral-950 border-b border-bp_neutral-600 px-4 md:px-8 lg:px-20 pb-20">
-        <div class="grid grid-cols-2 items-center gap-8 py-12">
+      <section
+        class="bg-bp_neutral-950 border-b border-bp_neutral-600 px-4 md:px-8 lg:px-20 pb-20"
+      >
+        <div class="flex flex-col md:grid grid-cols-2 items-center gap-8 py-12">
           <div class="space-y-8">
             <p class="text-4xl lg:text-5xl font-bold">
               <span class="text-bp_green-400">Simbora</span> organizar o seu semestre
@@ -78,6 +78,7 @@ onMounted(() => {
               Gerencie seu curso, acompanhe seus resultados e se divirta no processo
             </p>
             <button
+              @click="handleLoginClick"
               class="btn btn-ghost px-6 bg-bp_green-400 hover:bg-bp_green-500 text-white active:bg-bp_green-500 disabled:cursor-default disabled:bg-[#E2E2E2] disabled:text-[#ABABAB]"
             >
               Comece Agora
@@ -85,7 +86,7 @@ onMounted(() => {
           </div>
           <div class="w-full flex justify-end">
             <img
-              class="max-w-[450px] max-h-[450px]"
+              class="xl:max-w-[450px] xl:max-h-[450px]"
               src="/images/ILUSTRACAO_SIMBORA.png"
               :preview="false"
             />
@@ -98,7 +99,7 @@ onMounted(() => {
             Um Projeto Oficial
           </p>
           <div
-            class="flex justify-center items-center border border-bp_neutral-700 rounded-2xl w-full h-28 overflow-hidden space-x-4 md:space-x-20 px-4"
+            class="flex flex-col py-6 gap-8 md:flex-row justify-center items-center border border-bp_neutral-700 rounded-2xl w-full md:h-28 overflow-hidden space-x-4 md:space-x-20 px-4"
           >
             <img class="object-contain" src="/images/ufrn-logo.png" :preview="false" />
             <img class="object-contain" src="/images/Vector.png" :preview="false" />
@@ -113,7 +114,7 @@ onMounted(() => {
       >
         <div class="text-5xl text-center font-bold text-bp_neutral-200">
           <h1 class="mb-6">
-            Com o <span class="text-bp_green-400">Bora Pagar</span> Você Consegue...
+            Com o <span class="text-bp_green-400">MatriculaAi</span> Você Consegue...
           </h1>
           <v-icon name="hi-solid-arrow-down" scale="2.3" class="text-bp_neutral-700" />
         </div>
@@ -125,9 +126,9 @@ onMounted(() => {
             <v-icon name="md-inventory-outlined" scale="1.5" />
             <p class="text-lg text-bp_green-400 font-bold">Organização</p>
             <p>
-              Organize suas matérias de forma prática e eficiente. Ajudamos a tentar se organizar da
-              melhor forma possível em relação a horários, fazer um semestre balanceado e escolher
-              as matérias ideais de acordo com seu objetivo.
+              Organize suas matérias de forma prática e eficiente. Ajudamos a tentar se
+              organizar da melhor forma possível em relação a horários, fazer um semestre
+              balanceado e escolher as matérias ideais de acordo com seu objetivo.
             </p>
           </div>
           <div
@@ -137,8 +138,8 @@ onMounted(() => {
             <p class="text-lg text-bp_green-400 font-bold">Progresso</p>
             <p>
               Ajudamos o aluno em seu progresso acadêmico, monitorando e apoiando seu
-              desenvolvimento ao longo do curso. Fornecemos uma visão geral das matérias já cursadas
-              e das que ainda faltam cursar.
+              desenvolvimento ao longo do curso. Fornecemos uma visão geral das matérias
+              já cursadas e das que ainda faltam cursar.
             </p>
           </div>
           <div
@@ -147,9 +148,9 @@ onMounted(() => {
             <v-icon name="md-managesearch" scale="1.5" />
             <p class="text-lg text-bp_green-400 font-bold">Matricula</p>
             <p>
-              Ajudamos os alunos a se organizar durante o período de matrícula, como escolher quais
-              matérias cursar, ver quais amigos vão cursar essas matérias e montar um semestre
-              balanceado de acordo com suas necessidades.
+              Ajudamos os alunos a se organizar durante o período de matrícula, como
+              escolher quais matérias cursar, ver quais amigos vão cursar essas matérias e
+              montar um semestre balanceado de acordo com suas necessidades.
             </p>
           </div>
           <div
@@ -159,8 +160,8 @@ onMounted(() => {
             <p class="text-lg text-bp_green-400 font-bold">Avaliação e feedbacks</p>
             <p>
               A plataforma auxilia os alunos na avaliação do corpo docente e das matérias,
-              permitindo que os estudantes forneçam feedback sobre seus professores, disciplinas e o
-              ambiente de aprendizado.
+              permitindo que os estudantes forneçam feedback sobre seus professores,
+              disciplinas e o ambiente de aprendizado.
             </p>
           </div>
           <div
@@ -169,8 +170,8 @@ onMounted(() => {
             <v-icon name="md-description-outlined" scale="1.5" />
             <p class="text-lg text-bp_green-400 font-bold">Relatórios</p>
             <p>
-              Relatórios para o DAAL visando um melhor entendimento das necessidades dos alunos em
-              relação às matérias, suporte e eventos.
+              Relatórios para o DAAL visando um melhor entendimento das necessidades dos
+              alunos em relação às matérias, suporte e eventos.
             </p>
           </div>
           <div
@@ -179,18 +180,23 @@ onMounted(() => {
             <v-icon name="md-smarttoy-outlined" scale="1.5" />
             <p class="text-lg text-bp_green-400 font-bold">Chatbot Inteligente</p>
             <p>
-              Imagina ter um sagui chamado Simbora sempre ao seu lado durante a graduação. O Simbora
-              é uma IA que tá aqui pra ajudar você a navegar pelos desafios do curso, tipo escolher
-              as matérias, organizar a grade, ou até planejar o que estudar em cada semestre.
+              Imagina ter um sagui chamado Simbora sempre ao seu lado durante a graduação.
+              O Simbora é uma IA que tá aqui pra ajudar você a navegar pelos desafios do
+              curso, tipo escolher as matérias, organizar a grade, ou até planejar o que
+              estudar em cada semestre.
             </p>
           </div>
         </div>
       </div>
 
-      <section id="sobre" class="py-20 px-4 md:px-8 lg:px-20 bg-bp_neutral-950">
+      <!-- <section id="sobre" class="py-20 px-4 md:px-8 lg:px-20 bg-bp_neutral-950">
         <h1 class="text-5xl text-bp_neutral-200 mb-20">Tire Suas Dúvidas Aqui</h1>
         <div class="space-y-4">
-          <CardDoubts v-for="doubt in doubts" :key="doubt.descriptionDoubt" :doubt="doubt" />
+          <CardDoubts
+            v-for="doubt in doubts"
+            :key="doubt.descriptionDoubt"
+            :doubt="doubt"
+          />
         </div>
       </section>
 
@@ -205,19 +211,34 @@ onMounted(() => {
             />
           </div>
         </div>
-      </div>
+      </div> -->
     </main>
 
-    <footer class="absolute bg-bp_neutral-900 w-full">
-      <div class="flex place-items-start justify-between px-4 md:px-8 lg:px-16 py-10 space-y-8">
+    <!-- Seção Em breve disponível para o público -->
+    <section
+      class="bg-bp_neutral-950 border-b border-bp_neutral-600 px-4 md:px-8 lg:px-20 py-20 flex flex-col items-center"
+    >
+      <h2 class="text-4xl lg:text-5xl font-bold text-bp_green-400 mb-6 text-center">
+        Em breve disponível para o público
+      </h2>
+      <p class="text-bp_neutral-400 text-xl text-center max-w-2xl">
+        Estamos preparando novidades incríveis para você! Fique atento, em breve todos
+        poderão aproveitar essa experiência.
+      </p>
+    </section>
+
+    <!-- <footer class="absolute bg-bp_neutral-900 w-full">
+      <div
+        class="flex place-items-start justify-between px-4 md:px-8 lg:px-16 py-10 space-y-8"
+      >
         <div class="flex place-items-center space-x-4">
           <SimboraImg />
-          <p class="font-bold text-2xl">BoraPagar</p>
+          <p class="font-bold text-2xl">MatriculaAi</p>
         </div>
         <div class="grid grid-cols-1 gap-y-4 md:gap-y-0 md:flex md:space-x-10 w-1/2">
           <div class="space-y-3">
             <p class="font-bold text-2xl">Contato</p>
-            <p class="text-bp_neutral-400 text-sm">+55 21 9999-9999</p>
+            <p class="text-bp_neutral-400 text-sm">+99 99 9999-9999</p>
             <p class="text-bp_neutral-400 text-sm">contato@borapagar.com</p>
             <div class="flex space-x-2">
               <button><v-icon name="fa-instagram" scale="1.5" /></button>
@@ -231,7 +252,11 @@ onMounted(() => {
               placeholder="Mensagem..."
             />
             <div class="relative flex items-center">
-              <v-icon name="md-email-outlined" scale="1.0" class="absolute text-bp_neutral-400" />
+              <v-icon
+                name="md-email-outlined"
+                scale="1.0"
+                class="absolute text-bp_neutral-400"
+              />
               <input
                 class="w-full bg-bp_neutral-900 border-b-2 border-bp_neutral-400 py-2 text-bp_neutral-50 placeholder:text-bp_neutral-400 text-sm indent-8"
                 type="text"
@@ -249,7 +274,9 @@ onMounted(() => {
         </div>
       </div>
       <div class="border-t border-bp_neutral-700">
-        <div class="flex justify-between px-4 md:px-16 lg:px-40 py-4 text-xs text-bp_neutral-400">
+        <div
+          class="flex justify-between px-4 md:px-16 lg:px-40 py-4 text-xs text-bp_neutral-400"
+        >
           <div>
             <p class="">Bora Pagar © Alguns direitos reservados</p>
           </div>
@@ -260,7 +287,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </footer>
+    </footer> -->
     <Image class="relative mt-20" src="/images/istockphoto.png" :preview="false" />
   </div>
 </template>
