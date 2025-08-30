@@ -1,8 +1,8 @@
 <script setup>
 import api from "@/config/axios.config";
+import router from "@/router";
 import { capitalizeText } from "@/utils/capitalizeText.js";
 import { onMounted, ref } from "vue";
-import { RouterLink } from "vue-router";
 import CardAd from "./CardAd.vue";
 import NotificationMenu from "./NotificationMenu.vue";
 import PersonalizedCalendar from "./PersonalizedCalendar.vue";
@@ -54,12 +54,12 @@ onMounted(() => {
   <header
     class="w-full h-auto flex items-center p-6 border-b border-bp_neutral-900 gap-2 z-[1000]"
   >
-    <button
-      class="btn btn-ghost text-bp_neutral-400 w-11 h-11 flex items-center justify-center bg-transparent border border-bp_neutral-600 rounded-md"
-      @click="handleMenuClick"
-    >
-      <v-icon name="md-menu-round" scale="1.5" />
-    </button>
+    <img
+      class="w-16 h-auto cursor-pointer"
+      src="/public/images/simbora.svg"
+      @click="router.push('/dashboard')"
+      alt="Logo do Simbora"
+    />
 
     <div class="flex justify-between items-center w-full xl:max-w-7xl mx-auto pr-8">
       <div class="flex gap-4 items-center">
@@ -90,105 +90,35 @@ onMounted(() => {
           </div>
         </div>
 
-        <div>
-          <img
-            v-if="user && user.image_url"
-            :src="user.image_url"
-            alt="Foto do usuário"
-            class="h-16 w-16 rounded-full object-cover"
-          />
+        <div className="dropdown dropdown-end">
+          <div tabIndex="{0}" role="button" className="rounded-field ">
+            <img
+              v-if="user && user.image_url"
+              :src="user.image_url"
+              @error="user.image_url = null"
+              alt="Foto do usuário"
+              class="h-16 w-16 rounded-full object-cover"
+            />
+            <div v-else class="w-16 h-16 rounded-full flex items-center justify-center">
+              <v-icon name="io-person-circle-sharp" class="text-white w-14 h-14" />
+            </div>
+          </div>
+          <ul
+            tabIndex="{0}"
+            className="menu dropdown-content bg-bp_neutral-700 rounded-box z-1 w-52 p-2 shadow-sm"
+          >
+            <li><a :href="`/perfil/${user ? user.id : 0}`">Perfil</a></li>
+            <li><a href="/amigos">Amigos</a></li>
+            <li>
+              <a @click="handleLogout" class="relative w-full">
+                <v-icon name="md-logout" class="w-5 h-5 mr-2 absolute text-red-500" />
+
+                Sair</a
+              >
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-    <nav
-      class="w-11/12 md:w-auto bg-bp_grayscale-800 z-[99] border-r-2 border-bp_neutral-700 fixed top-0 h-full transition-all ease-in-out duration-300"
-      :class="{
-        '-left-full': !isMenuOpen,
-        'left-0': isMenuOpen,
-      }"
-    >
-      <div class="relative p-5 py-8">
-        <div
-          @click="handleMenuClick"
-          class="absolute top-2 text-lg right-0 translate-x-1/2 bg-white text-black w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-bp_neutral-700 hover:text-white transition-all ease-in-out duration-300"
-        >
-          <v-icon name="fa-angle-double-left" scale="1.5" />
-        </div>
-        <div class="flex items-center justify-between">
-          <div class="flex gap-3 items-center">
-            <template v-if="user">
-              <img
-                v-if="user.image_url"
-                :src="user.image_url"
-                alt=""
-                class="h-16 w-16 rounded-full object-cover"
-              />
-              <div
-                v-else
-                class="bg-bp_neutral-600 rounded-full flex items-center justify-center w-12 h-12"
-              >
-                <v-icon name="fa-user-alt" class="text-white text-4xl" />
-              </div>
-              <div class="flex flex-col">
-                <span class="font-bold text-lg leading-none">{{
-                  capitalizeText(user.name)
-                }}</span>
-                <span class="text-sm">{{ user.login }}</span>
-              </div>
-            </template>
-            <template v-else>
-              <div class="h-12 w-12 rounded-full bg-bp_neutral-600 animate-pulse"></div>
-              <div class="h-6 w-24 bg-bp_neutral-600 animate-pulse rounded"></div>
-            </template>
-          </div>
-        </div>
-        <div class="flex items-center gap-6 text-sm mt-7">
-          <template v-if="user" class="flex flex-col">
-            <span class="badge bg-bp_neutral-700 p-2 text-white rounded-lg">{{
-              capitalizeText(user.course_name)
-            }}</span>
-            <span class="badge bg-bp_neutral-700 p-2 text-white rounded-lg"
-              >{{ user.period }}º Período</span
-            >
-          </template>
-          <template v-else>
-            <div class="h-6 w-32 bg-bp_neutral-600 animate-pulse rounded"></div>
-            <div class="h-6 w-20 bg-bp_neutral-600 animate-pulse rounded"></div>
-          </template>
-        </div>
-
-        <hr class="my-6" />
-
-        <div class="flex flex-col gap-4">
-          <RouterLink class="menu-item" to="/dashboard">
-            <v-icon name="md-home-outlined" />
-            <span>Home</span>
-          </RouterLink>
-          <RouterLink class="menu-item" :to="`/perfil/${user ? user.id : 0}`">
-            <v-icon name="md-person-outlined" />
-            <span>Perfil</span>
-          </RouterLink>
-          <RouterLink class="menu-item" to="/amigos">
-            <v-icon name="md-group-outlined" />
-            <span>Amigos</span>
-          </RouterLink>
-          <RouterLink class="menu-item" to="/disciplinas">
-            <v-icon name="md-menubook-outlined" />
-            <span>Disciplinas</span>
-          </RouterLink>
-          <RouterLink class="menu-item" to="/interesses">
-            <v-icon name="bi-people-fill" />
-            <span>Interesses</span>
-          </RouterLink>
-          <button
-            class="flex items-center gap-4 mt-4 text-bp_danger border-bp_danger menu-item after:bg-bp_danger"
-            @click="handleLogout"
-          >
-            <v-icon name="md-logout" />
-            <span>Sair</span>
-          </button>
-        </div>
-      </div>
-    </nav>
   </header>
 </template>
