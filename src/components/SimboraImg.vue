@@ -15,10 +15,5 @@ const sizeClass = computed(() => {
 </script>
 
 <template>
-  <img
-    src="/images/simbora.png"
-    alt="Simbora: o mascote do Bora Pagar"
-    :class="sizeClass"
-    class="rounded-full bg-bp_primary-50"
-  />
+  <img src="/favicon.svg" alt="Simbora: o mascote do Bora Pagar" :class="sizeClass" />
 </template>
