@@ -35,15 +35,17 @@ const router = createRouter({
       name: 'profile',
       component: ProfileView
     },
-    {
-      path:'/interesses',
-      name:'interests',
-      component:InterestedSubjectsView
-    },
+    //{
+    //  path:'/interesses',
+     // name:'interests',
+     // component:InterestedSubjectsView
+    //},
     {
       path:'/ementa/:id',
       name:'ementa',
       component: SubjectSyllabusView
+    },
+    {
       path: '/:catchAll(.*)',
       name: 'not-found',
       component: NotFoundView
