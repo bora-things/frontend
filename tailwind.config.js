@@ -13,6 +13,9 @@ export default {
         sans: ['Inter', 'sans-serif'],
       },
       colors: {
+        "bp_white": {
+          100: "#FFFFFF" // Cor adicionada que estava faltando (usada em NotificationMenu.vue)
+        },
         "bp_grayscale":{
           400:"#999999",
           500:"#505050",
@@ -33,7 +36,6 @@ export default {
           900: "#1F3286"
         },
         "bp_neutral": {
-          900: "#030303", // Main color
           50: "#F7F7F7",
           100: "#E6E6E6",
           200: "#D9D9D9",
@@ -43,11 +45,10 @@ export default {
           600: "#505050",
           700: "#323232",
           800: "#1A1A1A",
-          825: "#1A1A16",
-          910: "#232622",
           825: "#1F1F1F",
           850: "#1A1A16",
           900: "#232622",
+          910: "#232622",
           950: "#141713"
         },
 
@@ -56,7 +57,7 @@ export default {
           light: "#FFAAAA"
         },
 
-        "bp_pink": {
+        "bp_pink": { 
           100: "#F80052"
         },
         "bp_green": {
@@ -69,9 +70,6 @@ export default {
           100: "#D9B655",
           200: "#A38D50",
           300: "#FFC91F"
-        },
-        "bp_pink": {
-          100: "#F80052" 
         },
         "vtd-primary": colors.sky, // Light mode Datepicker color
         "vtd-secondary": {

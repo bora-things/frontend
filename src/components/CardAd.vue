@@ -28,6 +28,7 @@ onMounted(() => {
   <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
     <button
       tabindex="0"
+      disabled="true"
       class="relative bg-bp_grayscale-800 border border-bp_neutral-600 rounded-full w-12 h-12"
     >
       <div
@@ -38,7 +39,7 @@ onMounted(() => {
     </button>
     <ul
       tabIndex="{0}"
-      className="dropdown-content flex flex-col bg-bp_grayscale-800 p-4 rounded-md
+      className="dropdown-content mt-1 flex flex-col bg-bp_grayscale-700 p-4 rounded-md
        shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
       <header class="flex justify-between items-center mb-4">

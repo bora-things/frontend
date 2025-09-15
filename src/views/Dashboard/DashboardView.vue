@@ -119,7 +119,6 @@ function setPeriods() {
 let fetchInterestedClassesAbortController = null;
 
 async function fetchInterestedClasses() {
-  // Cancela a requisição anterior, se houver
   if (fetchInterestedClassesAbortController) {
     fetchInterestedClassesAbortController.abort();
   }
@@ -138,7 +137,6 @@ async function fetchInterestedClasses() {
     }, {});
   } catch (error) {
     if (error.name === "AbortError") {
-      // Requisição cancelada, não faz nada
       return;
     }
     console.error("Erro ao buscar disciplinas de interesse:", error);
@@ -347,7 +345,7 @@ const sectionRef = ref(null);
     </section>
     <div
       v-else-if="!loading && periodClasses.length === 0"
-      class="relative bg-bp_neutral-700 rounded-md h-[400px] overflow-y-auto p-2 flex flex-col w-full"
+      class="relative bg-bp_grayscale-700 rounded-md h-[400px] overflow-y-auto p-2 flex flex-col w-full"
     >
       <FriendInterests
         :periodo="selectedPeriod.split('-')[1]"
