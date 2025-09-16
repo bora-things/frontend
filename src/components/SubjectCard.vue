@@ -32,6 +32,7 @@ function openModal() {
     :id="component.codigo"
     class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
     :class="{
+      'border-bp_green-600': component['disciplina-obrigatoria'],
       'bg-bp_grayscale-800 border-bp_grayscale-500': !disabled && !blinking,
       'bg-bp_grayscale-700 border-bp_grayscale-500 animate-blinkOpacity': disabled,
       'animate-blinkOpacity': blinking && !disabled,
@@ -70,9 +71,11 @@ function openModal() {
           <span
             :class="[
               'font-sans badge text-vtd-secondary-100 bg-transparent border',
-              component.obrigatoria ? 'border-bp_green-600' : 'border-sky-600',
+              component['disciplina-obrigatoria']
+                ? 'border-bp_green-600'
+                : 'border-sky-600',
             ]"
-            >{{ component.obrigatoria ? "OBRIGATÓRIO" : "OPTATIVO" }}</span
+            >{{ component["disciplina-obrigatoria"] ? "OBRIGATÓRIO" : "OPTATIVO" }}</span
           >
           <span
             class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
