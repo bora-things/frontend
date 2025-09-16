@@ -2,6 +2,7 @@
 import api from "@/config/axios.config";
 import { capitalizeText } from "@/utils/capitalizeText";
 import { nextTick, ref } from "vue";
+import UserImage from "./UserImage.vue";
 
 const props = defineProps({
   subjectCode: {
@@ -152,7 +153,7 @@ defineExpose({
           </div>
         </div>
 
-        <div v-if="isLoading" class="py-12 px-4 text-center">
+        <div v-if="isLoading" class="flex-1 flex items-center justify-center text-center">
           <div class="flex flex-col items-center gap-3">
             <div class="loading loading-spinner loading-md text-white"></div>
             <span class="text-lg text-gray-300">Carregando dados da disciplina...</span>
@@ -221,21 +222,21 @@ defineExpose({
                 :key="index"
                 class="bg-bp_neutral-825 border border-bp_neutral-600 p-3 rounded flex items-center space-x-3"
               >
-                <img
-                  v-if="teacher.imageUrl"
-                  :src="teacher.imageUrl"
-                  @error="teacher.imageUrl = null"
-                  alt="Foto do professor"
-                  class="rounded-full w-12 h-12 object-cover"
+                <UserImage
+                  v-if="teacher"
+                  :image-url="teacher.imageUrl"
+                  :full-name="teacher.name"
+                  :alt-text="teacher.name"
+                  class="w-12 h-12"
                 />
-                <div
-                  v-else
-                  class="bg-bp_grayscale-500 rounded-full flex items-center justify-center w-12 h-12"
-                >
-                  <v-icon name="fa-user-alt" class="text-white w-6 h-6" />
-                </div>
-                <div>
-                  <p class="text-white font-medium">{{ capitalizeText(teacher.name) }}</p>
+
+                <div class="flex-1 min-w-0">
+                  <p
+                    class="text-white font-medium truncate"
+                    :title="capitalizeText(teacher.name)"
+                  >
+                    {{ capitalizeText(teacher.name) }}
+                  </p>
                   <p class="text-sm">
                     <span class="text-gray-300">Avaliação: </span>
                     <span :class="getCorAprovacao(teacher.review)">{{
@@ -267,19 +268,13 @@ defineExpose({
                 :key="index"
                 class="bg-bp_neutral-825 border border-bp_neutral-600 p-3 rounded flex items-center space-x-3"
               >
-                <img
-                  v-if="friend.imageUrl"
-                  :src="friend.imageUrl"
-                  @error="friend.imageUrl = null"
-                  alt="Foto do amigo"
-                  class="rounded-full w-12 h-12 object-cover"
+                <UserImage
+                  v-if="friend"
+                  :image-url="friend.imageUrl"
+                  :alt-text="friend.personName"
+                  class="w-12 h-12"
                 />
-                <div
-                  v-else
-                  class="bg-bp_grayscale-500 rounded-full flex items-center justify-center w-12 h-12"
-                >
-                  <v-icon name="fa-user-alt" class="text-white w-6 h-6" />
-                </div>
+
                 <div>
                   <p class="text-white font-medium">
                     {{ capitalizeText(friend.personName) }}

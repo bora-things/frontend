@@ -2,6 +2,7 @@
 import { capitalizeText } from "@/utils/capitalizeText";
 import { computed, ref, watch } from "vue";
 import SubjectDetailsModal from "./SubjectDetailsModal.vue";
+import UserImage from "./UserImage.vue";
 
 const props = defineProps(["component", "period"]);
 const modalRef = ref(null);
@@ -109,7 +110,11 @@ function openModal() {
             </div>
           </div>
           <div :key="friend.id">
-            <img class="w-10 h-10 rounded-full" :src="friend.imageUrl" />
+            <UserImage
+              :imageUrl="friend.imageUrl"
+              :fullName="friend.name"
+              class="w-10 h-10 rounded-full border-2 border-white"
+            />
           </div>
         </div>
         <div

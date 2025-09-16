@@ -1,6 +1,7 @@
 <script setup>
 import api from "@/config/axios.config";
 import { onMounted, ref } from "vue";
+import UserImage from "./UserImage.vue";
 
 const notifications = ref([]);
 const updatingNotificationId = ref(null);
@@ -100,17 +101,11 @@ onMounted(() => {
         >
           <div class="flex flex-wrap items-center gap-4">
             <div>
-              <img
-                v-if="notification.fromUser.imageUrl"
-                :src="notification.fromUser.imageUrl"
-                alt="Imagem do usuário"
-                class="h-8 w-8 md:h-10 md:w-10 rounded-full"
-              />
-              <v-icon
-                v-else
-                name="md-person"
-                class="text-white bg-bp_grayscale-500 rounded-full p-1"
-                scale="2.5"
+              <UserImage
+                v-if="notification.fromUser.personName"
+                :fullName="notification.fromUser.personName"
+                :imageUrl="notification.fromUser.imageUrl"
+                class="h-8 w-8 md:h-10 md:w-10"
               />
             </div>
             <div class="flex-1">

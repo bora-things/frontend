@@ -2,6 +2,7 @@
 import { capitalizeText } from "@/utils/capitalizeText";
 import { ref } from "vue";
 import SubjectDetailsModal from "./SubjectDetailsModal.vue";
+import UserImage from "./UserImage.vue";
 
 const props = defineProps(["classSubject", "interest", "disabled", "blinking"]);
 const modalRef = ref(null);
@@ -45,22 +46,12 @@ function openModal() {
             v-for="friend in visibleUsers"
             className="tooltip tooltip-info rounded-full tooltip-bottom "
           >
-            <div className="tooltip-content text-xs ">
-              <div className="text-white">
-                <span>{{ formatUserName(friend.name) }}</span>
-              </div>
-            </div>
-            <div :key="friend.id">
-              <img
-                v-if="friend.imageUrl"
-                class="w-10 h-10 rounded-full"
-                :src="friend.imageUrl"
-                @error="friend.imageUrl = null"
-              />
-              <div v-else class="w-10 h-10 rounded-full flex items-center justify-center">
-                <v-icon name="io-person-circle-sharp" class="text-white" scale="2.2" />
-              </div>
-            </div>
+            <UserImage
+              :show-tooltip="true"
+              :image-url="friend.imageUrl"
+              :full-name="formatUserName(friend.name)"
+              :alt-text="formatUserName(friend.name)"
+            />
           </div>
           <div
             v-if="hiddenUsersCount > 0"

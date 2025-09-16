@@ -6,6 +6,7 @@ import { onMounted, ref } from "vue";
 import CardAd from "./CardAd.vue";
 import NotificationMenu from "./NotificationMenu.vue";
 import PersonalizedCalendar from "./PersonalizedCalendar.vue";
+import UserImage from "./UserImage.vue";
 
 const isMenuOpen = ref(false);
 
@@ -92,16 +93,7 @@ onMounted(() => {
 
         <div className="dropdown dropdown-end">
           <div tabIndex="{0}" role="button" className="rounded-field ">
-            <img
-              v-if="user && user.image_url"
-              :src="user.image_url"
-              @error="user.image_url = null"
-              alt="Foto do usuário"
-              class="h-16 w-16 rounded-full object-cover"
-            />
-            <div v-else class="w-16 h-16 rounded-full flex items-center justify-center">
-              <v-icon name="io-person-circle-sharp" class="text-white w-14 h-14" />
-            </div>
+            <UserImage v-if="user" :imageUrl="user.image_url" :fullName="user.name" />
           </div>
           <ul
             tabIndex="{0}"
@@ -110,8 +102,8 @@ onMounted(() => {
             <li><a :href="`/perfil/${user ? user.id : 0}`">Perfil</a></li>
             <li><a href="/amigos">Amigos</a></li>
             <li>
-              <a @click="handleLogout" class="relative w-full">
-                <v-icon name="md-logout" class="w-5 h-5 mr-2 absolute text-red-500" />
+              <a @click="handleLogout" class="relative w-full flex gap-2">
+                <v-icon name="md-logout" class="w-5 h-5 text-red-500" />
 
                 Sair</a
               >
