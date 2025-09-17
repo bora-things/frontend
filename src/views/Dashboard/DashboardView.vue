@@ -5,6 +5,7 @@ import api from "@/config/axios.config";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
 
+import PeriodSelect from "@/components/PeriodSelect.vue";
 import {
   handleAddInterestedSubjectRequest,
   handleInterestedSubjectsRequest,
@@ -94,11 +95,11 @@ async function fetchClasses() {
 function setPeriods() {
   const classesPeriods = Object.keys(classes.value).map((key) => {
     const [ano, periodo] = key.split("-");
-    return { ano, periodo };
+    return { ano, periodo, interest: false };
   });
   const interestedPeriods = Object.keys(interestedClasses.value).map((key) => {
     const [ano, periodo] = key.split("-");
-    return { ano, periodo };
+    return { ano, periodo, interest: true };
   });
 
   const allPeriods = [...classesPeriods, ...interestedPeriods];
@@ -236,7 +237,7 @@ function handleSearchedComponents(data) {
   }));
   // Reset pagination
   page.value = 0;
-  pageToFetch.value = 1; // Next fetch should append after search results if needed
+  pageToFetch.value = 1;
   isSearchActive.value = true;
 }
 
@@ -245,53 +246,11 @@ const sectionRef = ref(null);
 <template>
   <main class="container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
     <header class="flex items-center justify-between pb-4">
-      <div class="flex flex-col items-start">
-        <div class="flex flex-col">
-          <div className="dropdown dropdown-hover ">
-            <div
-              tabIndex="{0}"
-              role="button"
-              className=" m-1 title-h1 p-0 flex items-center gap-2 "
-            >
-              {{
-                periods.findIndex(
-                  (item) =>
-                    item.ano == selectedPeriod.split("-")[0] &&
-                    item.periodo == selectedPeriod.split("-")[1]
-                ) + 1
-              }}º Período
-              <v-icon name="bi-chevron-down" scale="1.2"></v-icon>
-            </div>
-            <ul
-              tabIndex="{0}"
-              className="title-h2 dropdown-content menu bg-bp_grayscale-700 rounded-box z-1 w-52 p-2 shadow-xl gap-1"
-            >
-              <li
-                :class="[
-                  'hover:bg-bp_grayscale-800 p-2 rounded-md cursor-pointer',
-                  selectedPeriod == `${period.ano}-${period.periodo}`
-                    ? 'bg-bp_grayscale-800'
-                    : '',
-                ]"
-                v-for="(period, index) in periods"
-                :key="index"
-                @click="selectPeriod(`${period.ano}-${period.periodo}`)"
-              >
-                {{ index + 1 }}º Período
-              </li>
-              <li
-                class="hover:bg-bp_grayscale-700 p-2 rounded-md cursor-pointer"
-                @click="selectPeriod('new')"
-              >
-                Novo Período
-              </li>
-            </ul>
-          </div>
-        </div>
-        <span class="font-sans text-vtd-secondary-100">{{
-          selectedPeriod.replace("-", ".")
-        }}</span>
-      </div>
+      <PeriodSelect
+        :periods="periods"
+        :selected-period="selectedPeriod"
+        @select-period="selectPeriod"
+      />
 
       <div className="tooltip tooltip-left">
         <div
@@ -345,7 +304,7 @@ const sectionRef = ref(null);
     </section>
     <div
       v-else-if="!loading && periodClasses.length === 0"
-      class="relative bg-bp_grayscale-700 rounded-md h-[400px] overflow-y-auto p-2 flex flex-col w-full"
+      class="relative bg-bp_grayscale-700 rounded-md min-h-[200px] max-h-[440px] overflow-y-auto p-2 flex flex-col w-full border border-bp_green-100/40"
     >
       <FriendInterests
         :periodo="selectedPeriod.split('-')[1]"
@@ -354,7 +313,7 @@ const sectionRef = ref(null);
       <VueDraggableNext
         id="interested-classes"
         :animation="800"
-        class="grid md:grid-cols-3 gap-4 p-4 h-full"
+        class="grid md:grid-cols-3 gap-4 p-4 w-full h-full"
         :list="periodInterestedClasses"
         group="subjects"
         :key="(periodInterestedClasses || []).map((item) => item.interest_id).join(',')"
@@ -368,7 +327,7 @@ const sectionRef = ref(null);
         />
         <div
           v-if="!loading && periodInterestedClasses.length == 0"
-          class="bg-bp_grayscale-800 w-full h-[160px] rounded-md flex flex-col items-center gap-4 p-4 text-vtd-secondary-100 border border-dashed border-[3px] border-bp_grayscale-500"
+          class="w-full min-h-[160px] rounded-md flex flex-col items-center gap-4 p-4 text-vtd-secondary-100 border-4 border-dashed border-bp_grayscale-500 bg-bp_grayscale-800"
         >
           <v-icon
             name="bi-plus-circle"
@@ -379,6 +338,13 @@ const sectionRef = ref(null);
             <span class="font-span font-medium">ARRASTE PARA ADICIONAR</span>
             <span class="font-span font-medium">NOVAS MATÉRIAS</span>
           </div>
+        </div>
+        <!-- Área de drop extra para quando há itens -->
+        <div
+          v-else
+          class="w-full min-h-[40px]rounded-md flex items-center justify-center bg-transparent"
+        >
+          <span class="font-span font-medium text-vtd-secondary-100"> </span>
         </div>
       </VueDraggableNext>
 
