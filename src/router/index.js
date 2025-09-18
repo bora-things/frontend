@@ -1,4 +1,5 @@
 import LandingPageView from '@/views/LandingPage/LandingPageView.vue'
+import NotAllowedView from '@/views/NotAllowed/NotAllowedView.vue'
 import NotFoundView from '@/views/NotFound/NotFoundView.vue'
 import ProfileView from '@/views/Profile/ProfileView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/perfil/:id',
       name: 'profile',
       component: ProfileView
+    },
+    {
+      path:"/acesso-negado",
+      name:"not-allowed",
+      component: NotAllowedView
     },
     {
       path: '/:catchAll(.*)',

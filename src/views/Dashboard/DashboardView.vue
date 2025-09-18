@@ -71,10 +71,30 @@ function selectPeriod(period) {
   });
 }
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function fetchClasses() {
+  const MAX_TENTATIVAS = 5; // Tenta no máximo 5 vezes
+  const DELAY_MS = 2000; // Espera 2 segundos entre as tentativas
+
   try {
-    const response = await api.get("/api/classrooms/me");
-    const data = response.data.filter((item) => item.component);
+    let data = [];
+
+    // Inicia o loop de tentativas (polling)
+    for (let i = 0; i < MAX_TENTATIVAS; i++) {
+      const response = await api.get("/api/classrooms/me");
+      data = response.data.filter((item) => item.component);
+
+      console.log(`Tentativa ${i + 1}: Encontradas ${data.length} turmas.`);
+      if (data.length > 0) {
+        break;
+      }
+
+      await delay(DELAY_MS);
+    }
+
     const classesGroupedByPeriod = data.reduce((acc, item) => {
       const { ano, periodo } = item;
       const periodKey = `${ano}-${periodo}`;

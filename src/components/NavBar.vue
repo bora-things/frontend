@@ -57,7 +57,7 @@ onMounted(() => {
   >
     <img
       class="w-16 h-auto cursor-pointer"
-      src="/public/images/simbora.svg"
+      src="/images/simbora.svg"
       @click="router.push('/dashboard')"
       alt="Logo do Simbora"
     />

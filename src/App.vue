@@ -5,10 +5,10 @@ import { ref, watch } from "vue";
 import { RouterView, useRoute } from "vue-router";
 
 const route = useRoute();
-const showComponents = ref(route.path !== "/");
+const showComponents = ref(route.path !== "/" && route.path !== "/acesso-negado");
 
 watch(route, (newRoute) => {
-  showComponents.value = newRoute.path !== "/";
+  showComponents.value = newRoute.path !== "/" && newRoute.path !== "/acesso-negado";
 });
 </script>
 
