@@ -29,11 +29,11 @@ const router = createRouter({
       name: 'profile',
       component: ProfileView
     },
-    {
-      path:"/acesso-negado",
-      name:"not-allowed",
-      component: NotAllowedView
-    },
+    //{
+    //  path:'/interesses',
+     // name:'interests',
+     // component:InterestedSubjectsView
+    //},
     {
       path: '/:catchAll(.*)',
       name: 'not-found',

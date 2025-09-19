@@ -45,7 +45,8 @@ function openModal() {
         <div v-if="visibleUsers.length > 0" class="flex gap-2 items-center">
           <div
             v-for="friend in visibleUsers"
-            className="tooltip tooltip-info rounded-full tooltip-bottom "
+            :key="friend.id"
+            class="tooltip tooltip-info rounded-full tooltip-bottom"
           >
             <UserImage
               :show-tooltip="true"
@@ -54,6 +55,7 @@ function openModal() {
               :alt-text="formatUserName(friend.name)"
             />
           </div>
+
           <div
             v-if="hiddenUsersCount > 0"
             class="w-10 h-10 rounded-full bg-[#fdfdfd] flex items-center justify-center text-black"
@@ -62,11 +64,13 @@ function openModal() {
           </div>
         </div>
       </div>
+
       <div class="flex flex-col gap-2 items-end">
         <span
           class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
-          >{{ component.codigo }}</span
         >
+          {{ component.codigo }}
+        </span>
         <div class="flex gap-2">
           <span
             :class="[

@@ -2,49 +2,37 @@
     {
       "name": "Natalya",
       "position": "Dev Front-End",
-      "description": "texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/images/imgPerfil.png",
-      "doubts": "duvida q tenho aqui, só uma duvida",
-      "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
+      "description": "Dedicada à construção visual da plataforma, Natalya desenvolve os componentes interativos que você usa no dia a dia, garantindo uma experiência coesa e responsiva em qualquer dispositivo.",
+      "imageUrl": "/images/semperfil.jpg",
+      "numberdoubts": "1",
+      "doubts": "O que é o Matriculai?",
+      "descriptionDoubts": "O Matriculai é uma plataforma de planejamento acadêmico criada para ajudar os alunos do BTI a navegarem pela estrutura curricular flexível do curso. Nossa missão é tornar o planejamento de disciplinas uma tarefa visual, colaborativa e estratégica."
     },
     {
       "name": "Matheus",
       "position": "Dev Fullstack",
-      "description": "texto texto sdsa sadsd sadasd  asd ds asda dsad asds asd a texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/images/imgPerfil.png",
-      "doubts": "duvida q tenho aqui",
-      "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
-    },
-    {
-      "name": "Daniel",
-      "position": "dev",
-      "description": "texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/images/imgPerfil.png",
-      "doubts": "duvida q tenho aqui, só uma duvida",
-      "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
+      "description": "Atuando tanto no front-end quanto no back-end, Matheus é a ponte que conecta a interface do usuário com a lógica do servidor. É o desenvolvedor versátil que integra todas as partes do sistema.",
+      "imageUrl": "/images/semperfil.jpg",
+      "numberdoubts": "2",
+      "doubts": "Como a plataforma me ajuda a escolher minhas disciplinas?",
+      "descriptionDoubts": "A plataforma funciona em 3 passos: 1) Você visualiza seu histórico e as disciplinas futuras em um painel interativo. 2) Simula seus próximos semestres, adicionando e removendo disciplinas para ver como elas se encaixam. 3) Acessa informações valiosas como a ementa, professores prováveis e quais dos seus amigos também têm interesse em cursar a mesma disciplina."
     },
     {
       "name": "José",
       "position": "Dev Back-End",
-      "description": "Estruturas texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/images/imgPerfil.png",
-      "doubts": "duvida q tenho aqui",
-      "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
+      "description": "Responsável pela arquitetura e as regras de negócio do nosso servidor. Garante que os dados de disciplinas, usuários e suas conexões funcionem de forma segura e eficiente.",
+      "imageUrl": "/images/semperfil.jpg",
+      "numberdoubts": "4",
+      "doubts": "Posso ver o planejamento de outros alunos?",
+      "descriptionDoubts": " Sim! Uma das principais funcionalidades é a rede social acadêmica. Você pode adicionar amigos e, com a permissão deles, visualizar suas jornadas acadêmicas. Isso serve como uma ótima referência para o seu próprio planejamento."
     },
     {
       "name": "Isaac",
       "position": "Dev Front-End",
-      "description": "texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/images/imgPerfil.png",
-      "doubts": "duvida q tenho aqui",
-      "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
-    },
-    {
-      "name": "Felipe",
-      "position": "Dev Front-End",
-      "description": "texto texto texto texto texto texto texto texto texto texto texto texto",
-      "imageUrl": "/images/imgPerfil.png",
-      "doubts": "duvida q tenho aqui, só uma duvida",
-      "descriptionDoubts": "resposta aqui, resposta resposta aqui, resposta resposta aqui, respostaresposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta resposta aqui, resposta"
+      "description": "Responsável por explorar e implementar soluções de inteligência artificial na plataforma. Seu trabalho busca usar dados para criar sugestões de disciplinas e otimizar o planejamento acadêmico dos estudantes.",
+      "imageUrl": "/images/semperfil.jpg",
+      "numberdoubts": "5",
+      "doubts": "Como faço para criar uma conta?",
+      "descriptionDoubts": "É muito fácil! Clique em 'Cadastre-se', logue com o sigaa. Em menos de um minuto, você estará pronto para começar a planejar seu curso."
     }
   ]
