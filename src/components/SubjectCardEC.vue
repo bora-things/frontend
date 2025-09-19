@@ -2,7 +2,6 @@
 import { capitalizeText } from "@/utils/capitalizeText";
 import { computed, ref, watch } from "vue";
 import SubjectDetailsModal from "./SubjectDetailsModal.vue";
-import UserImage from "./UserImage.vue";
 
 const props = defineProps(["component", "period"]);
 const modalRef = ref(null);
@@ -104,7 +103,7 @@ function openModal() {
           >
         </div>
       </div>
-      <div v-if="visibleUsers.length > 0" class="flex gap-2 items-center">
+      <!-- <div v-if="visibleUsers.length > 0" class="flex gap-2 items-center">
         <div
           v-for="friend in visibleUsers"
           className="tooltip tooltip-info rounded-full tooltip-bottom "
@@ -128,7 +127,7 @@ function openModal() {
         >
           +{{ hiddenUsersCount }}
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 

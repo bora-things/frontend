@@ -1,16 +1,24 @@
 <script setup>
 import { capitalizeText } from "@/utils/capitalizeText";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import SubjectDetailsModal from "./SubjectDetailsModal.vue";
 import UserImage from "./UserImage.vue";
 
 const props = defineProps(["classSubject", "interest", "disabled", "blinking"]);
 const modalRef = ref(null);
-const { ano, "id-turma": IdTurma, periodo, component, friends } = props.classSubject;
+const component = computed(() => props.classSubject.component || {});
+const friends = computed(() => props.classSubject.friends || []);
 
 const maxVisible = 4;
-const visibleUsers = friends?.slice(0, maxVisible) || [];
-const hiddenUsersCount = friends?.length > 4 ? friends.length - maxVisible : 0;
+const visibleUsers = computed(() => {
+  // Use 'friends.value' para acessar o array
+  return friends.value.slice(0, maxVisible);
+});
+const hiddenUsersCount = computed(() => {
+  // Use 'friends.value' para acessar o array
+  const length = friends.value.length;
+  return length > 4 ? length - maxVisible : 0;
+});
 
 const formatUserName = (name) => {
   const nameParts = name.split(" ");
