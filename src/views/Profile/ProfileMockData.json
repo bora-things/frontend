@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Natalya",
+    "nome": "Natalya",
     "course": "T.I",
     "period": "3",
     "urlImgPerfil": ".",
@@ -10,13 +10,13 @@
     "friends": [
       {
         "id": 2,
-        "name": "Naty",
+        "nome": "Naty",
         "course": "C.C",
         "period": "5"
       },
       {
         "id": 3,
-        "name": "Gabriele",
+        "nome": "Gabriele",
         "course": "E.S",
         "period": "3"
       }
@@ -28,62 +28,47 @@
         "interesse": false,
         "classes": [
           {
-            "code": "IMD0126",
-            "type": "Obrigatória",
-            "name": "Matemática Elementar",
-            "teacher": "Antonio Igor",
-            "time": "Terça e Quinta 8:00 - 10:00",
-            "workload": 60,
-            "status": "completed",
+            "codigo": "IMD0126",
+            "disciplina-obrigatoria": true,
+            "nome": "Matemática Elementar",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0127",
-            "type": "Optativa",
-            "name": "Programação Básica",
-            "teacher": "Antonio Igor",
-            "time": "Terça e Quinta 8:00 - 10:00",
-            "workload": 60,
-            "status": "completed",
+            "codigo": "IMD0127",
+            "disciplina-obrigatoria": false,
+            "nome": "Programação Básica",
+            "carga-horaria-total": 60,
             "friendsInClass": []
           },
           {
-            "code": "IMD0150",
-            "type": "Optativa",
-            "name": "Introdução à Programação Web",
-            "teacher": "João Silva",
-            "time": "Quarta e Sexta 10:00 - 12:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0150",
+            "disciplina-obrigatoria": false,
+            "nome": "Introdução à Programação Web",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0154",
-            "type": "Optativa",
-            "name": "Fundamentos de Programação Funcional",
-            "teacher": "Lucas Almeida",
-            "time": "Segunda e Quarta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0154",
+            "disciplina-obrigatoria": false,
+            "nome": "Fundamentos de Programação Funcional",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 4, "name": "Gabi", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 4, "nome": "Gabi", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0155",
-            "type": "Optativa",
-            "name": "Introdução ao Desenvolvimento de Jogos",
-            "teacher": "Mariana Costa",
-            "time": "Terça e Quinta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0155",
+            "disciplina-obrigatoria": false,
+            "nome": "Introdução ao Desenvolvimento de Jogos",
+            "carga-horaria-total": 60
           }
         ]
       },
@@ -93,49 +78,34 @@
         "interesse": false,
         "classes": [
           {
-            "code": "IMD0128",
-            "type": "Obrigatória",
-            "name": "Algoritmos Avançados",
-            "teacher": "Antonio Igor",
-            "time": "Terça e Quinta 8:00 - 10:00",
-            "workload": 60,
-            "status": "completed"
+            "codigo": "IMD0128",
+            "disciplina-obrigatoria": true,
+            "nome": "Algoritmos Avançados",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0129",
-            "type": "Optativa",
-            "name": "Estruturas de Dados",
-            "teacher": "Antonio Igor",
-            "time": "Segunda e Quinta 8:00 - 10:00",
-            "workload": 60,
-            "status": "completed"
+            "codigo": "IMD0129",
+            "disciplina-obrigatoria": false,
+            "nome": "Estruturas de Dados",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0151",
-            "type": "Optativa",
-            "name": "Desenvolvimento de Aplicações Móveis",
-            "teacher": "Ana Souza",
-            "time": "Terça e Quinta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0151",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento de Aplicações Móveis",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0156",
-            "type": "Obrigatória",
-            "name": "Programação Paralela",
-            "teacher": "Ricardo Santos",
-            "time": "Quarta e Sexta 10:00 - 12:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0156",
+            "disciplina-obrigatoria": true,
+            "nome": "Programação Paralela",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0157",
-            "type": "Optativa",
-            "name": "Desenvolvimento de APIs REST",
-            "teacher": "Fernanda Lima",
-            "time": "Segunda e Quarta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0157",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento de APIs REST",
+            "carga-horaria-total": 60
           }
         ]
       },
@@ -145,58 +115,43 @@
         "interesse": false,
         "classes": [
           {
-            "code": "IMD0132",
-            "type": "Obrigatória",
-            "name": "Engenharia de Software II",
-            "teacher": "Antonio Igor",
-            "time": "Segunda e Quarta 8:00 - 10:00",
-            "workload": 60,
-            "status": "in-progress",
+            "codigo": "IMD0132",
+            "disciplina-obrigatoria": true,
+            "nome": "Engenharia de Software II",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0133",
-            "type": "Optativa",
-            "name": "Sistemas Operacionais",
-            "teacher": "Antonio Igor",
-            "time": "Terça e Quinta 10:00 - 12:00",
-            "workload": 60,
-            "status": "in-progress",
+            "codigo": "IMD0133",
+            "disciplina-obrigatoria": false,
+            "nome": "Sistemas Operacionais",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0152",
-            "type": "Obrigatória",
-            "name": "Programação Orientada a Objetos",
-            "teacher": "Carlos Mendes",
-            "time": "Segunda e Quarta 16:00 - 18:00",
-            "workload": 60,
-            "status": "in-progress"
+            "codigo": "IMD0152",
+            "disciplina-obrigatoria": true,
+            "nome": "Programação Orientada a Objetos",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0158",
-            "type": "Optativa",
-            "name": "Programação para IoT",
-            "teacher": "João Silva",
-            "time": "Terça e Quinta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0158",
+            "disciplina-obrigatoria": false,
+            "nome": "Programação para IoT",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0159",
-            "type": "Obrigatória",
-            "name": "Estruturas de Dados Avançadas",
-            "teacher": "Ana Souza",
-            "time": "Segunda e Quarta 10:00 - 12:00",
-            "workload": 60,
-            "status": "in-progress",
+            "codigo": "IMD0159",
+            "disciplina-obrigatoria": true,
+            "nome": "Estruturas de Dados Avançadas",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" }
             ]
           }
         ]
@@ -207,55 +162,43 @@
         "interesse": true,
         "classes": [
           {
-            "code": "IMD0140",
-            "type": "Optativa",
-            "name": "Inteligência Artificial",
-            "teacher": "Maria Clara",
-            "time": "Segunda e Quarta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0140",
+            "disciplina-obrigatoria": false,
+            "nome": "Inteligência Artificial",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0153",
-            "type": "Optativa",
-            "name": "Desenvolvimento Backend",
-            "teacher": "Fernanda Lima",
-            "time": "Terça e Quinta 10:00 - 12:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0153",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento Backend",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0160",
-            "type": "Optativa",
-            "name": "Desenvolvimento Full Stack",
-            "teacher": "Carlos Mendes",
-            "time": "Quarta e Sexta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0160",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento Full Stack",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0161",
-            "type": "Optativa",
-            "name": "Programação em Python Avançada",
-            "teacher": "Maria Clara",
-            "time": "Segunda e Quarta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0161",
+            "disciplina-obrigatoria": false,
+            "nome": "Programação em Python Avançada",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           }
         ]
@@ -264,7 +207,7 @@
   },
   {
     "id": 2,
-    "name": "Naty",
+    "nome": "Naty",
     "course": "C.C",
     "period": "5",
     "urlImgPerfil": ".",
@@ -273,13 +216,13 @@
     "friends": [
       {
         "id": 1,
-        "name": "Natalya",
+        "nome": "Natalya",
         "course": "T.I",
         "period": "3"
       },
       {
         "id": 4,
-        "name": "Gabi",
+        "nome": "Gabi",
         "course": "T.I",
         "period": "5"
       }
@@ -291,53 +234,38 @@
         "interesse": false,
         "classes": [
           {
-            "code": "IMD0134",
-            "type": "Obrigatória",
-            "name": "Cálculo I",
-            "teacher": "Maria Clara",
-            "time": "Segunda e Quarta 10:00 - 12:00",
-            "workload": 60,
-            "status": "completed",
+            "codigo": "IMD0134",
+            "disciplina-obrigatoria": true,
+            "nome": "Cálculo I",
+            "carga-horaria-total": 60,
             "friendsInClass": []
           },
           {
-            "code": "IMD0135",
-            "type": "Optativa",
-            "name": "Lógica de Programação",
-            "teacher": "Maria Clara",
-            "time": "Terça e Quinta 14:00 - 16:00",
-            "workload": 60,
-            "status": "completed",
+            "codigo": "IMD0135",
+            "disciplina-obrigatoria": false,
+            "nome": "Lógica de Programação",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "." }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "." }
             ]
           },
           {
-            "code": "IMD0150",
-            "type": "Optativa",
-            "name": "Introdução à Programação Web",
-            "teacher": "João Silva",
-            "time": "Quarta e Sexta 10:00 - 12:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0150",
+            "disciplina-obrigatoria": false,
+            "nome": "Introdução à Programação Web",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0154",
-            "type": "Optativa",
-            "name": "Fundamentos de Programação Funcional",
-            "teacher": "Lucas Almeida",
-            "time": "Segunda e Quarta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0154",
+            "disciplina-obrigatoria": false,
+            "nome": "Fundamentos de Programação Funcional",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0155",
-            "type": "Optativa",
-            "name": "Introdução ao Desenvolvimento de Jogos",
-            "teacher": "Mariana Costa",
-            "time": "Terça e Quinta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0155",
+            "disciplina-obrigatoria": false,
+            "nome": "Introdução ao Desenvolvimento de Jogos",
+            "carga-horaria-total": 60
           }
         ]
       },
@@ -347,47 +275,35 @@
         "interesse": false,
         "classes": [
           {
-            "code": "IMD0136",
-            "type": "Obrigatória",
-            "name": "Estruturas de Dados Avançadas",
-            "teacher": "Maria Clara",
-            "time": "Segunda e Quarta 8:00 - 10:00",
-            "workload": 60,
-            "status": "in-progress"
+            "codigo": "IMD0136",
+            "disciplina-obrigatoria": true,
+            "nome": "Estruturas de Dados Avançadas",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0152",
-            "type": "Obrigatória",
-            "name": "Programação Orientada a Objetos",
-            "teacher": "Carlos Mendes",
-            "time": "Segunda e Quarta 16:00 - 18:00",
-            "workload": 60,
-            "status": "in-progress",
+            "codigo": "IMD0152",
+            "disciplina-obrigatoria": true,
+            "nome": "Programação Orientada a Objetos",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0158",
-            "type": "Optativa",
-            "name": "Programação para IoT",
-            "teacher": "João Silva",
-            "time": "Terça e Quinta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0158",
+            "disciplina-obrigatoria": false,
+            "nome": "Programação para IoT",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0159",
-            "type": "Obrigatória",
-            "name": "Estruturas de Dados Avançadas",
-            "teacher": "Ana Souza",
-            "time": "Segunda e Quarta 10:00 - 12:00",
-            "workload": 60,
-            "status": "in-progress"
+            "codigo": "IMD0159",
+            "disciplina-obrigatoria": true,
+            "nome": "Estruturas de Dados Avançadas",
+            "carga-horaria-total": 60
           }
         ]
       },
@@ -397,55 +313,43 @@
         "interesse": true,
         "classes": [
           {
-            "code": "IMD0141",
-            "type": "Optativa",
-            "name": "Machine Learning",
-            "teacher": "Antonio Igor",
-            "time": "Terça e Quinta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0141",
+            "disciplina-obrigatoria": false,
+            "nome": "Machine Learning",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 4, "name": "Gabi", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 4, "nome": "Gabi", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0153",
-            "type": "Optativa",
-            "name": "Desenvolvimento Backend",
-            "teacher": "Fernanda Lima",
-            "time": "Terça e Quinta 10:00 - 12:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0153",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento Backend",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 4, "name": "Gabi", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 4, "nome": "Gabi", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0160",
-            "type": "Optativa",
-            "name": "Desenvolvimento Full Stack",
-            "teacher": "Carlos Mendes",
-            "time": "Quarta e Sexta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0160",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento Full Stack",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 4, "name": "Gabi", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 4, "nome": "Gabi", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0161",
-            "type": "Optativa",
-            "name": "Programação em Python Avançada",
-            "teacher": "Maria Clara",
-            "time": "Segunda e Quarta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0161",
+            "disciplina-obrigatoria": false,
+            "nome": "Programação em Python Avançada",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 4, "name": "Gabi", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 4, "nome": "Gabi", "urlImgPerfil": "" }
             ]
           }
         ]
@@ -454,7 +358,7 @@
   },
   {
     "id": 3,
-    "name": "Gabriele",
+    "nome": "Gabriele",
     "course": "E.S",
     "period": "1",
     "urlImgPerfil": ".",
@@ -463,13 +367,13 @@
     "friends": [
       {
         "id": 1,
-        "name": "Natalya",
+        "nome": "Natalya",
         "course": "T.I",
         "period": "3"
       },
       {
         "id": 4,
-        "name": "Gabi",
+        "nome": "Gabi",
         "course": "T.I",
         "period": "5"
       }
@@ -481,59 +385,44 @@
         "interesse": false,
         "classes": [
           {
-            "code": "IMD0130",
-            "type": "Obrigatória",
-            "name": "Banco de Dados",
-            "teacher": "Antonio Igor",
-            "time": "Segunda e Quarta 10:00 - 12:00",
-            "workload": 60,
-            "status": "completed",
+            "codigo": "IMD0130",
+            "disciplina-obrigatoria": true,
+            "nome": "Banco de Dados",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "." }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "." }
             ]
           },
           {
-            "code": "IMD0131",
-            "type": "Optativa",
-            "name": "Engenharia de Software I",
-            "teacher": "Antonio Igor",
-            "time": "Terça e Quinta 14:00 - 16:00",
-            "workload": 60,
-            "status": "completed",
+            "codigo": "IMD0131",
+            "disciplina-obrigatoria": false,
+            "nome": "Engenharia de Software I",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0151",
-            "type": "Optativa",
-            "name": "Desenvolvimento de Aplicações Móveis",
-            "teacher": "Ana Souza",
-            "time": "Terça e Quinta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0151",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento de Aplicações Móveis",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0154",
-            "type": "Optativa",
-            "name": "Fundamentos de Programação Funcional",
-            "teacher": "Lucas Almeida",
-            "time": "Segunda e Quarta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0154",
+            "disciplina-obrigatoria": false,
+            "nome": "Fundamentos de Programação Funcional",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0155",
-            "type": "Optativa",
-            "name": "Introdução ao Desenvolvimento de Jogos",
-            "teacher": "Mariana Costa",
-            "time": "Terça e Quinta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0155",
+            "disciplina-obrigatoria": false,
+            "nome": "Introdução ao Desenvolvimento de Jogos",
+            "carga-horaria-total": 60
           }
         ]
       },
@@ -543,55 +432,43 @@
         "interesse": true,
         "classes": [
           {
-            "code": "IMD0143",
-            "type": "Optativa",
-            "name": "Redes de Computadores",
-            "teacher": "Antonio Igor",
-            "time": "Segunda e Quarta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0143",
+            "disciplina-obrigatoria": false,
+            "nome": "Redes de Computadores",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0153",
-            "type": "Optativa",
-            "name": "Desenvolvimento Backend",
-            "teacher": "Fernanda Lima",
-            "time": "Terça e Quinta 10:00 - 12:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0153",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento Backend",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0160",
-            "type": "Optativa",
-            "name": "Desenvolvimento Full Stack",
-            "teacher": "Carlos Mendes",
-            "time": "Quarta e Sexta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0160",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento Full Stack",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0161",
-            "type": "Optativa",
-            "name": "Programação em Python Avançada",
-            "teacher": "Maria Clara",
-            "time": "Segunda e Quarta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0161",
+            "disciplina-obrigatoria": false,
+            "nome": "Programação em Python Avançada",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" },
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" },
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" }
             ]
           }
         ]
@@ -600,7 +477,7 @@
   },
   {
     "id": 4,
-    "name": "Gabi",
+    "nome": "Gabi",
     "course": "T.I",
     "period": "1",
     "urlImgPerfil": ".",
@@ -609,13 +486,13 @@
     "friends": [
       {
         "id": 2,
-        "name": "Naty",
+        "nome": "Naty",
         "course": "C.C",
         "period": "5"
       },
       {
         "id": 3,
-        "name": "Gabriele",
+        "nome": "Gabriele",
         "course": "E.S",
         "period": "3"
       }
@@ -627,52 +504,37 @@
         "interesse": false,
         "classes": [
           {
-            "code": "IMD0132",
-            "type": "Obrigatória",
-            "name": "Engenharia de Software II",
-            "teacher": "Antonio Igor",
-            "time": "Segunda e Quarta 8:00 - 10:00",
-            "workload": 60,
-            "status": "in-progress"
+            "codigo": "IMD0132",
+            "disciplina-obrigatoria": true,
+            "nome": "Engenharia de Software II",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0133",
-            "type": "Optativa",
-            "name": "Sistemas Operacionais",
-            "teacher": "Antonio Igor",
-            "time": "Terça e Quinta 10:00 - 12:00",
-            "workload": 60,
-            "status": "in-progress",
+            "codigo": "IMD0133",
+            "disciplina-obrigatoria": false,
+            "nome": "Sistemas Operacionais",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 1, "name": "Natalya", "urlImgPerfil": "" }
+              { "id": 1, "nome": "Natalya", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0152",
-            "type": "Obrigatória",
-            "name": "Programação Orientada a Objetos",
-            "teacher": "Carlos Mendes",
-            "time": "Segunda e Quarta 16:00 - 18:00",
-            "workload": 60,
-            "status": "in-progress"
+            "codigo": "IMD0152",
+            "disciplina-obrigatoria": true,
+            "nome": "Programação Orientada a Objetos",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0158",
-            "type": "Optativa",
-            "name": "Programação para IoT",
-            "teacher": "João Silva",
-            "time": "Terça e Quinta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started"
+            "codigo": "IMD0158",
+            "disciplina-obrigatoria": false,
+            "nome": "Programação para IoT",
+            "carga-horaria-total": 60
           },
           {
-            "code": "IMD0159",
-            "type": "Obrigatória",
-            "name": "Estruturas de Dados Avançadas",
-            "teacher": "Ana Souza",
-            "time": "Segunda e Quarta 10:00 - 12:00",
-            "workload": 60,
-            "status": "in-progress"
+            "codigo": "IMD0159",
+            "disciplina-obrigatoria": true,
+            "nome": "Estruturas de Dados Avançadas",
+            "carga-horaria-total": 60
           }
         ]
       },
@@ -682,55 +544,43 @@
         "interesse": true,
         "classes": [
           {
-            "code": "IMD0143",
-            "type": "Optativa",
-            "name": "Redes de Computadores",
-            "teacher": "Antonio Igor",
-            "time": "Segunda e Quarta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0143",
+            "disciplina-obrigatoria": false,
+            "nome": "Redes de Computadores",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0153",
-            "type": "Optativa",
-            "name": "Desenvolvimento Backend",
-            "teacher": "Fernanda Lima",
-            "time": "Terça e Quinta 10:00 - 12:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0153",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento Backend",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" }, 
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" }, 
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0160",
-            "type": "Optativa",
-            "name": "Desenvolvimento Full Stack",
-            "teacher": "Carlos Mendes",
-            "time": "Quarta e Sexta 14:00 - 16:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0160",
+            "disciplina-obrigatoria": false,
+            "nome": "Desenvolvimento Full Stack",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           },
           {
-            "code": "IMD0161",
-            "type": "Optativa",
-            "name": "Programação em Python Avançada",
-            "teacher": "Maria Clara",
-            "time": "Segunda e Quarta 16:00 - 18:00",
-            "workload": 60,
-            "status": "not-started",
+            "codigo": "IMD0161",
+            "disciplina-obrigatoria": false,
+            "nome": "Programação em Python Avançada",
+            "carga-horaria-total": 60,
             "friendsInClass": [
-              { "id": 2, "name": "Naty", "urlImgPerfil": "" },
-              { "id": 3, "name": "Gabriele", "urlImgPerfil": "" }
+              { "id": 2, "nome": "Naty", "urlImgPerfil": "" },
+              { "id": 3, "nome": "Gabriele", "urlImgPerfil": "" }
             ]
           }
         ]

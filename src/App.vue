@@ -13,11 +13,11 @@ watch(route, (newRoute) => {
 </script>
 
 <template>
-  <div class="min-h-screen h-full bg-bp_neutral-900 text-bp_neutral-50">
-    <div class="min-h-screen h-full bg-bp_neutral-800 text-bp_neutral-50 flex flex-col">
-      <NavBar v-if="showComponents" />
+  <div class="min-h-screen flex flex-col h-full bg-bp_neutral-800 text-bp_neutral-50">
+    <NavBar v-if="showComponents" />
+    <main class="flex-1 flex flex-col">
       <SimboraChat />
       <RouterView />
-    </div>
+    </main>
   </div>
 </template>

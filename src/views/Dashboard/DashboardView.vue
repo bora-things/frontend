@@ -87,7 +87,6 @@ async function fetchClasses() {
       const response = await api.get("/api/classrooms/me");
       data = response.data.filter((item) => item.component);
 
-      console.log(`Tentativa ${i + 1}: Encontradas ${data.length} turmas.`);
       if (data.length > 0) {
         break;
       }

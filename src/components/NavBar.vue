@@ -58,7 +58,7 @@ onMounted(() => {
     <img
       class="w-16 h-auto cursor-pointer"
       src="/images/simbora.svg"
-      @click="router.push('/dashboard')"
+      @click.prevent="router.push('/dashboard')"
       alt="Logo do Simbora"
     />
 
@@ -99,8 +99,10 @@ onMounted(() => {
             tabIndex="{0}"
             className="menu dropdown-content bg-bp_neutral-700 rounded-box z-1 w-52 p-2 shadow-sm"
           >
-            <li><a :href="`/perfil/${user ? user.id : 0}`">Perfil</a></li>
-            <li><a href="/amigos">Amigos</a></li>
+            <li>
+              <a @click.prevent="router.push(`/perfil/${user ? user.id : 0}`)">Perfil</a>
+            </li>
+            <li><a @click.prevent="router.push('/amigos')">Amigos</a></li>
             <li>
               <a @click="handleLogout" class="relative w-full flex gap-2">
                 <v-icon name="md-logout" class="w-5 h-5 text-red-500" />

@@ -4,7 +4,7 @@ import { useToast } from 'vue-toast-notification'
 const toast = useToast()
 export async function handleRemoveInterestedSubjectRequest(subjectId) {
   try {
-    await api.delete(`/api/users/interests/${subjectId}`)
+    await api.delete(`/api/students/me/interests/${subjectId}`)
   } catch (error) {
     toast.error(error.response.data.message || 'Erro ao ao adicionar disciplina interessada')
   }
@@ -17,7 +17,7 @@ export async function handleAddInterestedSubjectRequest({ subjectCode, year, per
       year,
       period
     }
-    await api.post(`/api/users/interests`, formData)
+    await api.post(`/api/students/me/interests`, formData)
   } catch (error) {
     toast.error(error.response.data.message || 'Erro ao adicionar disciplina interessada', {
       style: {
@@ -31,7 +31,7 @@ export async function handleAddInterestedSubjectRequest({ subjectCode, year, per
 
 export async function handleInterestedSubjectsRequest({ signal } = {}) {
   try {
-    const response = await api.get('/api/users/interests', { signal })
+    const response = await api.get('/api/students/me/interests', { signal })
     return response.data
   } catch (error) {
     if (error.name === 'CanceledError' || error.name === 'AbortError') {
