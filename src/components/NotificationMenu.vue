@@ -19,7 +19,7 @@ async function fetchNotifications() {
 async function handleUpdateNotificationStatus(notification, status) {
   try {
     updatingNotificationId.value = notification.id; // Mark the notification as updating
-    await api.patch("/api/friend-requests/update", {
+    await api.patch("/api/friend-requests", {
       request_id: notification.id,
       status: status,
     });

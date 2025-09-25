@@ -301,8 +301,11 @@ onMounted(async () => {
           <div v-if="friendStatus == 'NOT_FRIENDS'">
             <button
               @click="
-                sendFriendRequest(user.id);
-                friendStatus = 'REQUEST_SENT';
+                async () => {
+                  if (await sendFriendRequest(user.id)) {
+                    friendStatus = 'REQUEST_SENT';
+                  }
+                }
               "
               class="bg-bp_green-500 hover:opacity-75 font-bold p-2 rounded-xl gap-x-2 flex items-center"
             >

@@ -33,6 +33,7 @@ export async function sendFriendRequest(id) {
     await api.post('/api/friend-requests', {
       to_id: id,
     })
+    useToast().success('Solicitação de amizade enviada com sucesso!')
     return true
   } catch (error) {
     useToast().error(error.response.data.message)
