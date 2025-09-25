@@ -34,6 +34,12 @@ const router = createRouter({
      // name:'interests',
      // component:InterestedSubjectsView
     //},
+
+    {
+      path:"/acesso-negado",
+      name:"not-allowed",
+      component: NotAllowedView
+    },
     {
       path: '/:catchAll(.*)',
       name: 'not-found',
