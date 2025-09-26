@@ -210,7 +210,7 @@ async function fetchInterests() {
   try {
     isLoading.value = true;
     hasData.value = false;
-    const response = await api.get("/api/users/interests/friends", {
+    const response = await api.get("/api/students/me/interests/friends", {
       params: {
         period: props.periodo,
         year: props.ano,
