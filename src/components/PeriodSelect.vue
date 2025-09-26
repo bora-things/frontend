@@ -20,7 +20,7 @@
             v-for="(period, index) in periods"
             :key="index"
             :class="[
-              'hover:bg-bp_grayscale-800 p-2 rounded-md cursor-pointer',
+              'hover:bg-bp_grayscale-800 p-2  rounded-md cursor-pointer',
               selectedPeriod == `${period.ano}-${period.periodo}`
                 ? 'bg-bp_grayscale-800'
                 : '',
@@ -30,7 +30,12 @@
             ]"
             @click="$emit('select-period', `${period.ano}-${period.periodo}`)"
           >
-            {{ index + 1 }}º Período
+            <span class="leading-tight py-0 hover:bg-transparent hover:shadow-none">
+              {{ index + 1 }}º Período</span
+            >
+            <span class="text-sm leading-tight hover:bg-transparent hover:shadow-none">{{
+              period.ano + "." + period.periodo
+            }}</span>
           </li>
           <li
             class="hover:bg-bp_grayscale-700 p-2 rounded-md cursor-pointer"
