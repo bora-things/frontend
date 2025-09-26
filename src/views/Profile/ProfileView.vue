@@ -216,7 +216,10 @@ onMounted(async () => {
   <div
     class="container flex-1 flex flex-col mx-auto p-6 xl:max-w-7xl bg-bp_neutral-800 p-4 md:p-10 space-y-6 md:space-y-10"
   >
-    <div v-if="user" class="flex flex-col flex-1 gap-6">
+    <div
+      v-if="user && (friendStatus === 'SELF' ? semestresCursados.length > 0 : true)"
+      class="flex flex-col flex-1 gap-6"
+    >
       <div class="md:flex space-y-3 items-center md:justify-between">
         <div class="flex items-center space-x-4 md:space-x-10">
           <UserImage
@@ -371,7 +374,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-
+      <div></div>
       <div v-if="friendStatus === 'FRIENDS' || friendStatus === 'SELF'" class="space-y-6">
         <div v-if="friendStatus === 'SELF'" class="space-y-4">
           <p class="text-xl md:text-2xl mb-2">Semestres Cursados</p>
