@@ -2,7 +2,7 @@
 import BpPagination from '@/components/BpPagination.vue'
 import InputSearch from '@/components/InputSearch.vue'
 import ListItemFriend from '@/components/ListItemFriend.vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { getFriends } from './FriendsController'
 
 const friends = ref([])
@@ -19,23 +19,23 @@ function updateCurrentPagination(newValue) {
 
 onMounted(async () => {
   const fetchedFriends = await getFriends()
+  const statuses = ['friends', 'not_friends', 'pending_sent', 'pending_received'];
+  
   friends.value = fetchedFriends.map((f, index) => ({
     ...f,
-    is_friend: index % 3 === 0
+    friendship_status: statuses[index % 4]
   }));
 })
 
 const totalFriendsCount = computed(() => {
-  return friends.value.filter(friend => friend.is_friend === true).length;
+  return friends.value.filter(friend => friend.friendship_status === 'friends').length;
 });
 
 const filteredFriends = computed(() => {
-  currentPagination.value = 0;
-
   return friends.value.filter((friend) => {
     const matchesTab = 
       activeTab.value === 'all' || 
-      (activeTab.value === 'my-friends' && friend.is_friend === true);
+      (activeTab.value === 'my-friends' && friend.friendship_status === 'friends');
 
     const matchesCourse = 
       !selectedCourse.value || friend.degree === selectedCourse.value;
@@ -58,12 +58,15 @@ const paginatedFriends = computed(() => {
   return filteredFriends.value.slice(start, end)
 })
 
+watch([activeTab, searchQuery, selectedCourse, selectedPeriod], () => {
+  currentPagination.value = 0;
+})
+
 function clearFilters() {
   searchQuery.value = ''
   selectedCourse.value = ''
   selectedPeriod.value = ''
   activeTab.value = 'all'
-  currentPagination.value = 0
 }
 </script>
 
@@ -87,8 +90,8 @@ function clearFilters() {
                     <v-icon name="md-school" scale="1.2"/>
                     <select v-model="selectedCourse" class="bg-bp_neutral-800 text-bp_white-100" name="curso" id="curso-select">
                         <option value="">Todos os Cursos</option>
-                        <option value="cc">Ciência da Computação</option>
-                        <option value="ti">Tecnologia da Informação</option>
+                        <option value="Ciência da Computação">Ciência da Computação</option>
+                        <option value="TI">Tecnologia da Informação</option>
                         <option value="c&t">C&T</option>
                     </select>
                 </div>
