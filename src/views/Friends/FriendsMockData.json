@@ -5,7 +5,8 @@
       "period": "5",
       "degree": "História",
       "of_my_course": 0,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "not_friends"
     },
     {
       "id": "2",
@@ -13,7 +14,8 @@
       "period": "7",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "friends"
     },
     {
       "id": "3",
@@ -21,7 +23,8 @@
       "period": "4",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "pending_sent"
     },
     {
       "id": "4",
@@ -29,7 +32,8 @@
       "period": "7",
       "degree": "Geografia",
       "of_my_course": 0,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "pending_received"
     },
     {
       "id": "5",
@@ -37,7 +41,8 @@
       "period": "5",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 1
+      "favorite": 1,
+      "friendship_status": "friends"
     },
     {
       "id": "6",
@@ -45,7 +50,8 @@
       "period": "5",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 1
+      "favorite": 1,
+      "friendship_status": "friends"
     },
     {
       "id": "7",
@@ -53,7 +59,8 @@
       "period": "4",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 1
+      "favorite": 1,
+      "friendship_status": "friends"
     },
     {
       "id": "8",
@@ -61,15 +68,17 @@
       "period": "6",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 1
+      "favorite": 1,
+      "friendship_status": "friends"
     },
     {
-      "id": "1",
+      "id": "9",
       "name": "Natálya",
       "period": "4",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "pending_received"
     },
     {
       "id": "10",
@@ -77,7 +86,8 @@
       "period": "2",
       "degree": "Ciência da Computação",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "not_friends"
     },
     {
       "id": "11",
@@ -85,7 +95,8 @@
       "period": "1",
       "degree": "Biblioteconomia",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "not_friends"
     },
     {
       "id": "12",
@@ -93,7 +104,8 @@
       "period": "3",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "pending_sent"
     },
     {
       "id": "13",
@@ -101,7 +113,8 @@
       "period": "3",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "friends"
     },
     {
       "id": "14",
@@ -109,7 +122,8 @@
       "period": "2",
       "degree": "Ciência da Computação",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "pending_received"
     },
     {
       "id": "15",
@@ -117,7 +131,8 @@
       "period": "1",
       "degree": "Biblioteconomia",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "not_friends"
     },
     {
       "id": "16",
@@ -125,7 +140,8 @@
       "period": "3",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "friends"
     },
     {
       "id": "17",
@@ -133,7 +149,8 @@
       "period": "3",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "not_friends"
     },
     {
       "id": "18",
@@ -141,7 +158,8 @@
       "period": "2",
       "degree": "Ciência da Computação",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "pending_sent"
     },
     {
       "id": "19",
@@ -149,7 +167,8 @@
       "period": "1",
       "degree": "Biblioteconomia",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "pending_received"
     },
     {
       "id": "20",
@@ -157,7 +176,8 @@
       "period": "3",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "friends"
     },
     {
       "id": "21",
@@ -165,6 +185,7 @@
       "period": "3",
       "degree": "TI",
       "of_my_course": 1,
-      "favorite": 0
+      "favorite": 0,
+      "friendship_status": "not_friends"
     }
 ]
