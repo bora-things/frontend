@@ -70,5 +70,4 @@ onMounted(() => {
       </ul>
     </ul>
   </div>
-  <div class="flex justify-end"></div>
 </template>

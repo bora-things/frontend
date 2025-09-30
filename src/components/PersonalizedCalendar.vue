@@ -1,4 +1,5 @@
 <script setup>
+import api from "@/config/axios.config.js";
 import { computed, onMounted, ref } from "vue";
 
 const isCalendarOpen = ref(false);
@@ -7,13 +8,87 @@ const events = ref({
   enrollment: [],
   reEnrollment: [],
   extraEnrollment: [],
+  vacationEnrollment: [],
 });
+
+// Função para gerar array de datas entre duas datas
+function getDateRange(startInstant, endInstant) {
+  if (!startInstant || !endInstant) return [];
+
+  const dates = [];
+  const startDate = new Date(startInstant);
+  const endDate = new Date(endInstant);
+
+  const currentDate = new Date(startDate);
+  while (currentDate <= endDate) {
+    dates.push(currentDate.toISOString().split("T")[0]);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+}
+
+// Função para processar os dados da API e converter para o formato esperado pelo calendário
+function processCalendarData(apiData) {
+  const processedEvents = {
+    enrollment: [],
+    reEnrollment: [],
+    extraEnrollment: [],
+    vacationEnrollment: [],
+  };
+
+  apiData.forEach((period) => {
+    // Matrícula online
+    if (period.onlineEnrollmentStart && period.onlineEnrollmentEnd) {
+      processedEvents.enrollment.push(
+        ...getDateRange(period.onlineEnrollmentStart, period.onlineEnrollmentEnd)
+      );
+    }
+
+    // Rematrícula
+    if (period.reEnrollmentStart && period.reEnrollmentEnd) {
+      processedEvents.reEnrollment.push(
+        ...getDateRange(period.reEnrollmentStart, period.reEnrollmentEnd)
+      );
+    }
+
+    // Matrícula extraordinária
+    if (period.extraordinaryEnrollmentStart && period.extraordinaryEnrollmentEnd) {
+      processedEvents.extraEnrollment.push(
+        ...getDateRange(
+          period.extraordinaryEnrollmentStart,
+          period.extraordinaryEnrollmentEnd
+        )
+      );
+    }
+
+    // Matrícula em disciplinas de férias
+    if (period.vacationClassEnrollmentStart && period.vacationClassEnrollmentEnd) {
+      processedEvents.vacationEnrollment.push(
+        ...getDateRange(
+          period.vacationClassEnrollmentStart,
+          period.vacationClassEnrollmentEnd
+        )
+      );
+    }
+  });
+
+  // Remover duplicatas e ordenar
+  processedEvents.enrollment = [...new Set(processedEvents.enrollment)].sort();
+  processedEvents.reEnrollment = [...new Set(processedEvents.reEnrollment)].sort();
+  processedEvents.extraEnrollment = [...new Set(processedEvents.extraEnrollment)].sort();
+  processedEvents.vacationEnrollment = [
+    ...new Set(processedEvents.vacationEnrollment),
+  ].sort();
+
+  return processedEvents;
+}
 
 async function fetchCalendarEvents() {
   try {
-    const response = await fetch("src/assets/mocks/CalendarMockData.json");
-    const data = await response.json();
-    events.value = data;
+    const response = await api.get("/api/calendars");
+    const processedData = processCalendarData(response.data);
+    events.value = processedData;
   } catch (error) {
     console.error("Erro ao buscar dados do calendário:", error);
   }
@@ -21,19 +96,27 @@ async function fetchCalendarEvents() {
 
 const today = new Date();
 const currentMonth = ref(today.getMonth());
-const currentYear = ref(today.getFullYear());
-
-function handleCalendarClick() {
-  isCalendarOpen.value = !isCalendarOpen.value;
-}
+// Força o ano para 2025
+const currentYear = ref(2025);
 
 function getDaysInMonth(month, year) {
-  const date = new Date(year, month, 1);
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const daysInMonth = lastDay.getDate();
+  const startDayOfWeek = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
   const days = [];
-  while (date.getMonth() === month) {
-    days.push(new Date(date));
-    date.setDate(date.getDate() + 1);
+
+  // Adicionar dias vazios do início do mês
+  for (let i = 0; i < startDayOfWeek; i++) {
+    days.push(null);
   }
+
+  // Adicionar os dias do mês
+  for (let day = 1; day <= daysInMonth; day++) {
+    days.push(new Date(year, month, day));
+  }
+
   return days;
 }
 
@@ -46,34 +129,24 @@ function formatDate(date) {
 function getEventClass(dateStr) {
   const applyClass = (dates, colorClass) => {
     if (!dates.includes(dateStr)) return "";
-
-    const isFirst = dateStr === dates[0];
-    const isLast = dateStr === dates[dates.length - 1];
-
-    const borderRadius = isFirst ? "rounded-l-md" : isLast ? "rounded-r-md" : "";
-    const borderSide = [
-      isFirst ? "border-l" : "",
-      isLast ? "border-r" : "",
-      "border-t",
-      "border-b",
-    ].join(" ");
-
-    return `text-white ${borderSide} ${colorClass} ${borderRadius}`;
+    return `${colorClass} text-white`;
   };
 
-  if (dateStr === formatDate(today)) return "text-bp_green-500 font-bold";
+  if (dateStr === formatDate(today)) return "bg-bp_green-500 text-white rounded-full";
 
   return (
-    applyClass(events.value.enrollment, "border-bp_primary-700") ||
-    applyClass(events.value.reEnrollment, "border-bp_yellow-300") ||
-    applyClass(events.value.extraEnrollment, "border-bp_pink-100")
+    applyClass(events.value.enrollment, "bg-bp_primary-700/50 rounded-full") ||
+    applyClass(events.value.reEnrollment, "bg-bp_yellow-300/50 rounded-full") ||
+    applyClass(events.value.extraEnrollment, "bg-bp_pink-100/50 rounded-full")
   );
 }
 
 function prevMonth() {
   if (currentMonth.value === 0) {
     currentMonth.value = 11;
-    currentYear.value--;
+    if (currentYear.value > 2025) {
+      currentYear.value--;
+    }
   } else {
     currentMonth.value--;
   }
@@ -82,7 +155,9 @@ function prevMonth() {
 function nextMonth() {
   if (currentMonth.value === 11) {
     currentMonth.value = 0;
-    currentYear.value++;
+    if (currentYear.value < 2025) {
+      currentYear.value++;
+    }
   } else {
     currentMonth.value++;
   }
@@ -110,7 +185,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+  <div className="dropdown dropdown-hover ">
     <button
       tabindex="0"
       disabled="true"
@@ -150,27 +225,33 @@ onMounted(() => {
 
         <div class="grid grid-cols-7 text-center">
           <template v-for="(day, index) in days" :key="index">
-            <div :class="`p-2 my-1 ${getEventClass(formatDate(day))}`">
+            <div
+              v-if="day"
+              :class="`p-2 my-1 w-8 h-8 flex items-center justify-center ${getEventClass(
+                formatDate(day)
+              )}`"
+            >
               {{ day.getDate() }}
             </div>
+            <div v-else class="p-2 my-1 w-8 h-8"></div>
           </template>
         </div>
 
         <div class="mt-4 flex flex-wrap gap-4 text-sm">
           <div class="flex items-center gap-1">
-            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+            <span class="w-3 h-3 rounded-full bg-bp_green-500"></span>
             <span>Dia Atual</span>
           </div>
           <div class="flex items-center gap-1">
-            <span class="w-3 h-3 rounded-full bg-bp_primary-700"></span>
+            <span class="w-3 h-3 rounded-full bg-bp_primary-700/50"></span>
             <span>Matrícula</span>
           </div>
           <div class="flex items-center gap-1">
-            <span class="w-3 h-3 rounded-full bg-bp_yellow-300"></span>
+            <span class="w-3 h-3 rounded-full bg-bp_yellow-300/50"></span>
             <span>Rematrícula</span>
           </div>
           <div class="flex items-center gap-1">
-            <span class="w-3 h-3 rounded-full bg-bp_pink-100"></span>
+            <span class="w-3 h-3 rounded-full bg-bp_pink-100/50"></span>
             <span>Extraordinária</span>
           </div>
         </div>
