@@ -1,142 +1,318 @@
 <script setup>
-import BpPagination from '@/components/BpPagination.vue'
-import InputSearch from '@/components/InputSearch.vue'
-import ListItemFriend from '@/components/ListItemFriend.vue'
-import { computed, onMounted, ref, watch } from 'vue'
-import { getFriends } from './FriendsController'
+import BpPagination from "@/components/BpPagination.vue";
+import InputSearch from "@/components/InputSearch.vue";
+import ListItemFriend from "@/components/ListItemFriend.vue";
+import { computed, onMounted, ref, watch } from "vue";
+import { getFriends, getGeneralPeople } from "./FriendsController";
 
-const friends = ref([])
-const currentPagination = ref(0)
-const searchQuery = ref('')
+// Arrays separados para pessoas gerais e amigos
+const generalPeople = ref([]);
+const friends = ref([]);
 
-const activeTab = ref('all')
-const selectedCourse = ref('')
-const selectedPeriod = ref('')
+// Estado separado para cada aba
+const tabsState = ref({
+  all: {
+    data: [],
+    searchQuery: "",
+    currentPagination: 0,
+    totalPages: 0,
+    totalElements: 0,
+    isLoaded: false,
+    isLoading: false,
+  },
+  "my-friends": {
+    data: [],
+    searchQuery: "",
+    currentPagination: 0,
+    totalPages: 0,
+    totalElements: 0,
+    isLoaded: false,
+    isLoading: false,
+  },
+});
 
-function updateCurrentPagination(newValue) {
-  currentPagination.value = newValue
+const activeTab = ref("all");
+
+// Getters computados para a aba ativa
+const currentTabState = computed(() => tabsState.value[activeTab.value]);
+const searchQuery = computed({
+  get: () => {
+    const query = currentTabState.value?.searchQuery;
+    return typeof query === "string" ? query : "";
+  },
+  set: (value) => {
+    if (currentTabState.value) {
+      currentTabState.value.searchQuery = typeof value === "string" ? value : "";
+    }
+  },
+});
+const currentPagination = computed({
+  get: () => currentTabState.value.currentPagination,
+  set: (value) => (currentTabState.value.currentPagination = value),
+});
+const totalPages = computed(() => currentTabState.value.totalPages);
+const totalElements = computed(() => currentTabState.value.totalElements);
+const isLoading = computed(() => currentTabState.value.isLoading);
+
+const totalFriendsCount = ref(0);
+
+async function updateCurrentPagination(newValue) {
+  currentPagination.value = newValue;
+  await loadData();
+}
+
+// Função para mapear o status de amizade
+function mapFriendStatus(friendStatus) {
+  const statusMap = {
+    FRIENDS: "friends",
+    NOT_FRIENDS: "not_friends",
+    REQUEST_SENT: "pending_sent",
+    REQUEST_RECEIVED: "pending_received",
+  };
+  return statusMap[friendStatus] || "not_friends";
+}
+
+// Função para carregar pessoas gerais
+async function loadGeneralPeople() {
+  const tabState = tabsState.value.all;
+  tabState.isLoading = true;
+
+  try {
+    const params = {
+      page: currentPagination.value, // Usar o computed ao invés de tabState.currentPagination
+      size: 8,
+    };
+
+    // Usar o computed searchQuery ao invés do tabState.searchQuery
+    const query = searchQuery.value;
+
+    if (query && typeof query === "string" && query.trim()) {
+      params.studentName = query.trim();
+    } else {
+    }
+
+    const response = await getGeneralPeople(params);
+
+    // Mapear os dados para o formato esperado pelo frontend
+    const mappedData = response.content.map((person) => ({
+      id: person.id,
+      nome: person.studentName || "Nome não informado",
+      curso: person.courseName || "Curso não informado",
+      periodo: person.period || 0,
+      status: mapFriendStatus(person.friendStatus),
+      imageUrl: person.imageUrl,
+      requestId: person.requestId,
+    }));
+
+    tabState.data = mappedData;
+    tabState.totalPages = response.totalPages;
+    tabState.totalElements = response.totalElements;
+    tabState.isLoaded = true;
+  } catch (error) {
+    tabState.data = [];
+    tabState.totalPages = 0;
+    tabState.totalElements = 0;
+  } finally {
+    tabState.isLoading = false;
+  }
+}
+
+// Função para carregar amigos
+async function loadFriends() {
+  const tabState = tabsState.value["my-friends"];
+  tabState.isLoading = true;
+
+  try {
+    const params = {
+      page: currentPagination.value, // Usar o computed ao invés de tabState.currentPagination
+      size: 8,
+    };
+
+    // Usar o computed searchQuery ao invés do tabState.searchQuery
+    const query = searchQuery.value;
+
+    if (query && typeof query === "string" && query.trim()) {
+      params.studentName = query.trim();
+    } else {
+    }
+
+    const response = await getFriends(params);
+
+    const mappedData = response.content.map((friend) => ({
+      id: friend.id,
+      nome: friend.studentName || "Nome não informado",
+      curso: friend.courseName || "Curso não informado",
+      periodo: friend.period || 0,
+      status: mapFriendStatus(friend.friendStatus),
+      imageUrl: friend.imageUrl,
+      requestId: friend.requestId,
+    }));
+
+    tabState.data = mappedData;
+    tabState.totalPages = response.totalPages;
+    tabState.totalElements = response.totalElements;
+    tabState.isLoaded = true;
+
+    // Atualizar contador total de amigos
+    if (totalFriendsCount.value === 0) {
+      totalFriendsCount.value = response.totalElements;
+    }
+  } catch (error) {
+    tabState.data = [];
+    tabState.totalPages = 0;
+    tabState.totalElements = 0;
+  } finally {
+    tabState.isLoading = false;
+  }
+}
+
+// Função para carregar dados baseado na aba ativa
+async function loadData() {
+  const tabState = currentTabState.value;
+
+  // Evita múltiplas chamadas simultâneas
+  if (tabState.isLoading) {
+    return;
+  }
+
+  try {
+    if (activeTab.value === "my-friends") {
+      await loadFriends();
+    } else {
+      await loadGeneralPeople();
+    }
+  } catch (error) {}
+}
+
+// Função para trocar de aba (sem limpar pesquisa - cada aba mantém sua pesquisa)
+async function changeTab(newTab) {
+  if (activeTab.value === newTab) return; // Evita reload desnecessário
+
+  activeTab.value = newTab;
+
+  // Sempre carrega dados ao trocar de aba para garantir dados atualizados
+  await loadData();
+}
+
+// Função para verificar se precisa carregar dados ao trocar de aba
+async function checkAndLoadTabData() {
+  // Sempre carrega dados para garantir atualização
+  await loadData();
 }
 
 onMounted(async () => {
-  const fetchedFriends = await getFriends()
-  const statuses = ['friends', 'not_friends', 'pending_sent', 'pending_received'];
-  
-  friends.value = fetchedFriends.map((f, index) => ({
-    ...f,
-    friendship_status: statuses[index % 4]
-  }));
-})
+  // Carrega dados da aba ativa
+  await loadData();
 
-const totalFriendsCount = computed(() => {
-  return friends.value.filter(friend => friend.friendship_status === 'friends').length;
+  // Carregar contador total de amigos em paralelo se necessário
+  if (activeTab.value === "all" && totalFriendsCount.value === 0) {
+    try {
+      const friendsResponse = await getFriends({ page: 0, size: 1 });
+      totalFriendsCount.value = friendsResponse.totalElements;
+    } catch (error) {}
+  }
 });
 
-const filteredFriends = computed(() => {
-  return friends.value.filter((friend) => {
-    const matchesTab = 
-      activeTab.value === 'all' || 
-      (activeTab.value === 'my-friends' && friend.friendship_status === 'friends');
-
-    const matchesCourse = 
-      !selectedCourse.value || friend.degree === selectedCourse.value;
-
-    const matchesPeriod =
-      !selectedPeriod.value || friend.period.toString() === selectedPeriod.value;
-      
-    const matchesSearchQuery =
-      !searchQuery.value ||
-      friend.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      friend.id.toString().includes(searchQuery.value);
-
-    return matchesTab && matchesCourse && matchesPeriod && matchesSearchQuery;
-  });
-});
+const currentDataList = computed(() => currentTabState.value.data);
 
 const paginatedFriends = computed(() => {
-  const start = currentPagination.value * 14
-  const end = start + 14
-  return filteredFriends.value.slice(start, end)
-})
+  return currentDataList.value;
+});
 
-watch([activeTab, searchQuery, selectedCourse, selectedPeriod], () => {
+watch(searchQuery, async (newValue, oldValue) => {
+  if (oldValue && oldValue.trim() && (!newValue || !newValue.trim())) {
+    currentPagination.value = 0;
+    currentTabState.value.data = [];
+    await loadData();
+  }
+});
+
+async function handleSearch(query) {
+  const searchValue = query && typeof query === "string" ? query : searchQuery.value;
+
+  // Limpa os resultados anteriores antes de nova busca
+  currentTabState.value.data = [];
+  searchQuery.value = searchValue;
   currentPagination.value = 0;
-})
 
-function clearFilters() {
-  searchQuery.value = ''
-  selectedCourse.value = ''
-  selectedPeriod.value = ''
-  activeTab.value = 'all'
+  await loadData();
+}
+
+// Função específica para o submit do form
+async function handleFormSubmit(event) {
+  event.preventDefault();
+  await handleSearch(searchQuery.value);
 }
 </script>
 
 <template>
-    <main class="container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
-      <div class="container-search-friends">
-        <h2 class="text-3xl font-bold border-b border-bp_neutral-800 pb-6 mb-6">Conecte-se com outros alunos</h2>
-        <div class="space-y-6">
-          <div>
-              <form class="w-full lg:w-3/4">
-                <InputSearch
-                  v-model="searchQuery"
-                />
-              </form>
-          </div>
-          <div class="flex flex-wrap justify-between space-y-6 items-center">
-            <div class="flex flex-wrap md:space-x-6 space-y-4 md:space-y-0">
-              <div class="flex items-center bg-neutral-800 gap-2 border-2 border-bp_neutral-800 hover:border-bp_green-400 text-bp_green-400
-                         py-2 px-4 rounded-lg transition-colors duration-600 ease-in-out">
-                    <label for="curso-select" class="sr-only">Filtrar por Curso</label>
-                    <v-icon name="md-school" scale="1.2"/>
-                    <select v-model="selectedCourse" class="bg-bp_neutral-800 text-bp_white-100" name="curso" id="curso-select">
-                        <option value="">Todos os Cursos</option>
-                        <option value="Ciência da Computação">Ciência da Computação</option>
-                        <option value="TI">Tecnologia da Informação</option>
-                        <option value="c&t">C&T</option>
-                    </select>
-                </div>
-                <div class="flex items-center bg-neutral-800 gap-2 border-2 border-bp_neutral-800 hover:border-bp_green-400 text-bp_green-400
-                           py-2 px-4 rounded-lg transition-colors duration-600 ease-in-out">
-                    <label for="periodo-select" class="sr-only">Filtrar por Período</label>
-                    <v-icon name="md-calendartoday" scale="1"/>
-                    <select v-model="selectedPeriod" class="bg-bp_neutral-800 text-bp_white-100" name="periodo" id="periodo-select">
-                        <option value="">Todos os Períodos</option>
-                        <option value="1">1º Período</option>
-                        <option value="2">2º Período</option>
-                    </select>
-                </div>
-            </div>
-                <button 
-                    @click="clearFilters" 
-                    type="button" 
-                    class="border-b-2 border-bp_neutral-800 hover:border-bp_green-400 items-center text-lg text-bp_green-400 px-2 transition-colors duration-500 ease-in-out">
-                    <v-icon name="md-close" scale="1.2"/>  Limpar
-                </button>
-            </div>
-        </div>
+  <main class="container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
+    <div class="container-search-friends">
+      <h2 class="text-3xl font-bold border-b border-bp_neutral-800 pb-6 mb-6">
+        Conecte-se com outros alunos
+      </h2>
 
-        <nav class="flex border-b-2 border-bp_grayscale-500 space-x-4 text-bp_grayscale-500">
-            <button 
-                @click="activeTab = 'all'"
-                :class="['p-4', { 'border-b-2 border-bp_green-400 text-bp_green-400': activeTab === 'all' }]">
-                Buscar Todos
-            </button>
-            <button 
-                @click="activeTab = 'my-friends'"
-                :class="['p-4', { 'border-b-2 border-bp_green-400 text-bp_green-400': activeTab === 'my-friends' }]">
-                Meus Amigos ({{ totalFriendsCount }})
-            </button>
-        </nav>
+      <nav
+        class="flex border-b-2 border-bp_grayscale-500 space-x-4 text-bp_grayscale-500 mb-6"
+      >
+        <button
+          @click="changeTab('all')"
+          :class="[
+            'p-4',
+            { 'border-b-2 border-bp_green-400 text-bp_green-400': activeTab === 'all' },
+          ]"
+        >
+          Buscar Todos
+        </button>
+        <button
+          @click="changeTab('my-friends')"
+          :class="[
+            'p-4',
+            {
+              'border-b-2 border-bp_green-400 text-bp_green-400':
+                activeTab === 'my-friends',
+            },
+          ]"
+        >
+          Meus Amigos
+          <span v-if="activeTab === 'my-friends'">({{ totalElements }})</span>
+          <span v-else>({{ totalFriendsCount }})</span>
+        </button>
+      </nav>
 
-        <div class="grid grid-cols-1 gap-4 mt-6 lg:grid-cols-2">
-          <ListItemFriend v-for="friend in paginatedFriends" :key="friend.id" :friend="friend" />
+      <div class="space-y-6">
+        <div>
+          <form class="w-full lg:w-3/4" @submit.prevent="handleFormSubmit">
+            <InputSearch v-model="searchQuery" @search="handleSearch" />
+          </form>
         </div>
       </div>
-      <div class="flex justify-center mt-12 pb-7">
-        <BpPagination
-          :current="currentPagination"
-          @changeCurrentValue="updateCurrentPagination"
-          :count="totalPages" />
+
+      <div class="grid grid-cols-1 gap-4 mt-6 lg:grid-cols-2">
+        <div v-if="isLoading" class="col-span-full flex justify-center py-8">
+          <div class="text-bp_green-400">Carregando...</div>
+        </div>
+        <div
+          v-else-if="paginatedFriends.length === 0"
+          class="col-span-full flex justify-center py-8"
+        >
+          <div class="text-bp_grayscale-500">Nenhum amigo encontrado</div>
+        </div>
+        <ListItemFriend
+          v-else
+          v-for="friend in paginatedFriends"
+          :key="friend.id"
+          :friend="friend"
+        />
       </div>
-    </main>
+    </div>
+    <div class="flex justify-center mt-12 pb-7">
+      <BpPagination
+        v-if="totalPages > 1"
+        :current="currentPagination"
+        @changeCurrentValue="updateCurrentPagination"
+        :count="totalPages"
+      />
+    </div>
+  </main>
 </template>

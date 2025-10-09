@@ -54,7 +54,7 @@ function onImageError() {
 }
 
 const initials = computed(() => {
-  if (!props.fullName) return "";
+  if (!props.fullName || props.fullName.trim() === "") return "??";
   const names = props.fullName.trim().split(" ");
   const first = names[0]?.[0] || "";
   const second = names[1]?.[0] || "";
@@ -63,8 +63,9 @@ const initials = computed(() => {
 
 function stringToColor(str) {
   let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  const safeStr = str || "default";
+  for (let i = 0; i < safeStr.length; i++) {
+    hash = safeStr.charCodeAt(i) + ((hash << 5) - hash);
   }
   const h = hash % 360;
   return `hsl(${h}, 70%, 80%)`;
@@ -72,6 +73,8 @@ function stringToColor(str) {
 
 const avatarStyle = computed(() => ({
   background:
-    imageError.value || !props.imageUrl ? stringToColor(props.fullName) : "transparent",
+    imageError.value || !props.imageUrl
+      ? stringToColor(props.fullName || "default")
+      : "transparent",
 }));
 </script>

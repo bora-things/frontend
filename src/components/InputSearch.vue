@@ -1,35 +1,41 @@
 <script setup>
-import { ref } from 'vue';
+import { computed } from "vue";
 
-const searchQuery = ref('');
-const emit = defineEmits(['search']); 
+const emit = defineEmits(["search", "update:modelValue"]);
 
-const placeholder = defineProps({
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: "",
+  },
   placeholder: {
     type: String,
-    default: 'Pesquisar', // Set a default value to avoid issues
+    default: "Pesquisar",
   },
 });
 
-const handleSearch = () => {
-  console.log('Buscando:', searchQuery.value);
-  emit('search', searchQuery.value);
-};
+// Computed para implementar v-model corretamente
+const searchQuery = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
 
+const handleSearch = () => {
+  emit("search", searchQuery.value);
+};
 </script>
 <template>
-  <div class="flex justify-between items-center border border-bp_neutral-700 rounded-full overflow-hidden bg-bp_neutral-800">
+  <div
+    class="flex justify-between items-center border border-bp_neutral-700 rounded-full overflow-hidden bg-bp_neutral-800 focus-within:border-gray-400 transition-colors duration-500 ease-in-out"
+  >
     <input
       type="text"
       v-model="searchQuery"
-      class="flex py-2 pl-6 bg-transparent text-bp_neutral-500"
-      :placeholder="placeholder.placeholder"
+      class="flex py-2 pl-6 bg-transparent text-bp_neutral-500 w-full focus:outline-none"
+      :placeholder="placeholder"
     />
-    <button 
-      @click="handleSearch"
-      class="text-bp_primary-50 px-4 py-2">
+    <button @click="handleSearch" class="text-bp_primary-50 px-4 py-2">
       <v-icon name="md-search" scale="1.5" />
     </button>
   </div>
 </template>
-
