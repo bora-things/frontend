@@ -1,62 +1,43 @@
-<template>
-  <div class="flex flex-col items-start">
-    <div class="flex flex-col">
-      <div class="dropdown dropdown-hover">
-        <div tabindex="0" role="button" class="m-1 title-h1 p-0 flex items-center gap-2">
-          {{
-            periods.findIndex(
-              (item) =>
-                item.ano == selectedPeriod.split("-")[0] &&
-                item.periodo == selectedPeriod.split("-")[1]
-            ) + 1
-          }}º Período
-          <v-icon name="bi-chevron-down" scale="1.2"></v-icon>
-        </div>
-        <ul
-          tabindex="0"
-          class="title-h2 dropdown-content menu bg-bp_grayscale-700 rounded-box z-1 w-52 p-2 shadow-xl gap-1"
-        >
-          <li
-            v-for="(period, index) in periods"
-            :key="index"
-            :class="[
-              'hover:bg-bp_grayscale-800 p-2  rounded-md cursor-pointer',
-              selectedPeriod == `${period.ano}-${period.periodo}`
-                ? 'bg-bp_grayscale-800'
-                : '',
-              period.interest
-                ? 'border-r-2 border-bp_green-100/30 rounded-r-none hover:bg-bp_green-500/10 duration-300'
-                : '',
-            ]"
-            @click="$emit('select-period', `${period.ano}-${period.periodo}`)"
-          >
-            <span class="leading-tight py-0 hover:bg-transparent hover:shadow-none">
-              {{ index + 1 }}º Período</span
-            >
-            <span class="text-sm leading-tight hover:bg-transparent hover:shadow-none">{{
-              period.ano + "." + period.periodo
-            }}</span>
-          </li>
-          <li
-            class="hover:bg-bp_grayscale-700 p-2 rounded-md cursor-pointer"
-            @click="$emit('select-period', 'new')"
-          >
-            Novo Período
-          </li>
-        </ul>
-      </div>
-    </div>
-    <span class="font-sans text-vtd-secondary-100">
-      {{ selectedPeriod.replace("-", ".") }}
-    </span>
-  </div>
-</template>
-
 <script setup>
 import { defineEmits, defineProps } from "vue";
+
 const props = defineProps({
   periods: Array,
   selectedPeriod: String,
 });
-const emit = defineEmits(["select-period"]);
+
+defineEmits(["select-period"]);
+
+const getPeriodClasses = (period) => {
+  const isSelected = props.selectedPeriod === `${period.ano}-${period.periodo}`;
+
+  return {
+    'bg-bp_green-600 border-bp_green-600 text-white shadow-lg': isSelected,
+    'border-r-4 border-r-bp_green-100/50 bg-bp_grayscale-700 border-bp_grayscale-600 hover:bg-bp_grayscale-600 hover:border-bp_grayscale-500': !isSelected && !period.interest,
+    'border-2 border-dashed border-bp_green-600 hover:bg-bp_grayscale-700 hover:text-white transition-colors duration-200': period.interest && !isSelected,
+  };
+};
 </script>
+
+<template>
+  <div class="flex flex-wrap items-center gap-3">
+    <button
+      v-for="(period, index) in periods"
+      :key="index"
+      class="flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-colors duration-200 min-w-[120px]"
+      :class="getPeriodClasses(period)"
+      @click="$emit('select-period', `${period.ano}-${period.periodo}`)"
+    >
+      <span class="font-bold leading-tight">{{ index + 1 }}º Período</span>
+      <span class="text-sm leading-tight">{{ period.ano }}.{{ period.periodo }}</span>
+    </button>
+
+    <button
+      class="flex items-center justify-center gap-2 p-3 rounded-lg border-2 border-dashed border-bp_grayscale-500 text-bp_grayscale-300 hover:bg-bp_grayscale-700 hover:text-white transition-colors duration-200 min-w-[120px] h-[65px]"
+      @click="$emit('select-period', 'new')"
+    >
+      <v-icon name="bi-plus-lg" scale="1.1" />
+      <span class="font-bold leading-tight">Novo</span>
+    </button>
+  </div>
+</template>
