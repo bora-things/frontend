@@ -1,4 +1,5 @@
 <script setup>
+import EnrollmentDashboard from "@/components/EnrollmentDashboard.vue";
 import FriendInterests from "@/components/FriendsInterests.vue";
 import SubjectCard from "@/components/SubjectCard.vue";
 import api from "@/config/axios.config";
@@ -25,8 +26,16 @@ const componentType = ref("TODAS");
 const page = ref(0);
 
 const isSearchActive = ref(false);
+const showEnrollmentModal = ref(false);
+const enrollments = ref([]);
+const enrollmentPeriods = ref([]);
+
+const isEnrollmentPeriod = computed(() => {
+  return selectedPeriod.value?.startsWith("enrollment-");
+});
 
 const selectedPeriodWorkload = computed(() => {
+  if (isEnrollmentPeriod.value) return 0;
   if (!periodClasses.value.length) {
     return periodInterestedClasses.value.reduce(
       (acc, item) => acc + (item.component["carga-horaria-total"] || 0),
@@ -122,7 +131,7 @@ function setPeriods() {
   });
 
   const allPeriods = [...classesPeriods, ...interestedPeriods];
-  periods.value = allPeriods
+  const sortedPeriods = allPeriods
     .sort((a, b) => {
       if (a.ano === b.ano) {
         return a.periodo - b.periodo;
@@ -134,6 +143,15 @@ function setPeriods() {
         index === self.findIndex((t) => t.ano === item.ano && t.periodo === item.periodo)
       );
     });
+
+  // Adiciona os períodos de enrollment ao final
+  const enrollmentPeriodsToAdd = enrollmentPeriods.value.map((ep) => ({
+    ano: ep.ano,
+    periodo: ep.periodo,
+    isEnrollment: true,
+  }));
+
+  periods.value = [...sortedPeriods, ...enrollmentPeriodsToAdd];
 }
 
 let fetchInterestedClassesAbortController = null;
@@ -176,6 +194,34 @@ async function fetchComponents() {
   }
 }
 
+async function fetchEnrollments() {
+  try {
+    const response = await api.get("/api/enrollments/me");
+    const data = response.data;
+
+    // Simula que 2025.2 é 2026.1
+    enrollments.value = data.map((enrollment) => {
+      if (enrollment.ano === 2025 && enrollment.periodo === 2) {
+        return { ...enrollment, ano: 2026, periodo: 1 };
+      }
+      return enrollment;
+    });
+
+    // Agrupa por período para criar os períodos de enrollment
+    const periodsSet = new Set();
+    enrollments.value.forEach((e) => {
+      periodsSet.add(`${e.ano}-${e.periodo}`);
+    });
+
+    enrollmentPeriods.value = Array.from(periodsSet).map((key) => {
+      const [ano, periodo] = key.split("-");
+      return { ano: parseInt(ano), periodo: parseInt(periodo) };
+    });
+  } catch (error) {
+    console.error("Erro ao buscar pedidos de matrícula:", error);
+  }
+}
+
 watch(
   () => page.value,
   async (newPage) => {
@@ -191,7 +237,12 @@ watch(
 );
 
 onMounted(async () => {
-  await Promise.all([fetchClasses(), fetchInterestedClasses(), fetchComponents()]);
+  await Promise.all([
+    fetchClasses(),
+    fetchInterestedClasses(),
+    fetchComponents(),
+    fetchEnrollments(),
+  ]);
   setPeriods();
   selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
 });
@@ -260,6 +311,14 @@ function handleSearchedComponents(data) {
   isSearchActive.value = true;
 }
 
+function openEnrollmentModal() {
+  showEnrollmentModal.value = true;
+}
+
+function closeEnrollmentModal() {
+  showEnrollmentModal.value = false;
+}
+
 const sectionRef = ref(null);
 </script>
 <template>
@@ -271,35 +330,46 @@ const sectionRef = ref(null);
         @select-period="selectPeriod"
       />
 
-      <div className="tooltip tooltip-left">
-        <div
-          :class="[
-            'tooltip-content text-xl',
-            selectedPeriodWorkload < 480 ? 'tooltip-warning' : 'tooltip-error',
-          ]"
-          v-if="selectedPeriodWorkload > 360"
-        >
-          <div className="text-white">
-            <span
-              >Limite {{ selectedPeriodWorkload < 480 ? "Próximo" : "Alcançado" }}</span
-            >
+      <div class="flex items-center gap-4">
+        <div className="tooltip tooltip-left" v-if="!isEnrollmentPeriod">
+          <div
+            :class="[
+              'tooltip-content text-xl',
+              selectedPeriodWorkload < 480 ? 'tooltip-warning' : 'tooltip-error',
+            ]"
+            v-if="selectedPeriodWorkload > 360"
+          >
+            <div className="text-white">
+              <span
+                >Limite {{ selectedPeriodWorkload < 480 ? "Próximo" : "Alcançado" }}</span
+              >
+            </div>
           </div>
-        </div>
-        <div
-          :class="[
-            'text-2xl flex items-center',
-            selectedPeriodWorkload > 360
-              ? selectedPeriodWorkload >= 480
-                ? 'text-red-500'
-                : 'text-orange-400'
-              : 'text-white',
-          ]"
-        >
-          <v-icon name="bi-clock" scale="1.2" class="mr-2"></v-icon>
-          <span> {{ selectedPeriodWorkload }}h</span>
+          <div
+            :class="[
+              'text-2xl flex items-center',
+              selectedPeriodWorkload > 360
+                ? selectedPeriodWorkload >= 480
+                  ? 'text-red-500'
+                  : 'text-orange-400'
+                : 'text-white',
+            ]"
+          >
+            <v-icon name="bi-clock" scale="1.2" class="mr-2"></v-icon>
+            <span> {{ selectedPeriodWorkload }}h</span>
+          </div>
         </div>
       </div>
     </header>
+
+    <section
+      v-if="isEnrollmentPeriod"
+      class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4 p-4"
+      ref="sectionRef"
+      tabindex="-1"
+    >
+      <EnrollmentDashboard :enrollments="enrollments" :selected-period="selectedPeriod" />
+    </section>
 
     <div
       v-if="loading"
@@ -310,7 +380,7 @@ const sectionRef = ref(null);
     <section
       ref="sectionRef"
       tabindex="-1"
-      v-if="!loading && periodClasses.length > 0"
+      v-if="!loading && !isEnrollmentPeriod && periodClasses.length > 0"
       class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4 p-4"
       :key="selectedPeriod"
     >
