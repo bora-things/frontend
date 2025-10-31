@@ -1,4 +1,5 @@
 <script setup>
+import { capitalizeText } from "@/utils/capitalizeText";
 import { computed } from "vue";
 
 const props = defineProps({
@@ -11,14 +12,13 @@ const props = defineProps({
 const enrollmentStatus = computed(() => {
   const withinCapacity = props.enrollment.rank <= props.enrollment.capacidade;
   const isUncertain = props.enrollment.incerto;
-  const competition = props.enrollment.concorrencia;
 
   // Dentro da capacidade - possível entrada
   if (withinCapacity) {
     return {
       canEnroll: true,
       message: "Possível entrada",
-      color: "text-bp_green-400",
+      color: "text-bp_green-200",
       bgColor: "bg-bp_green-500/20",
       icon: "bi-check-circle-fill",
     };
@@ -28,7 +28,7 @@ const enrollmentStatus = computed(() => {
     return {
       canEnroll: null,
       message: "Incerto",
-      color: "text-yellow-400",
+      color: "text-yellow-200",
       bgColor: "bg-yellow-500/20",
       icon: "bi-hourglass-split",
     };
@@ -37,7 +37,7 @@ const enrollmentStatus = computed(() => {
   return {
     canEnroll: false,
     message: "Entrada improvável",
-    color: "text-red-400",
+    color: "text-red-200",
     bgColor: "bg-red-500/20",
     icon: "bi-x-circle-fill",
   };
@@ -87,14 +87,11 @@ function formatProcessedDate(dateString) {
     class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
   >
     <!-- Header com nome e status -->
-    <div class="flex justify-between items-start mb-1">
+    <div class="flex justify-between items-start">
       <div class="flex-1">
-        <h3 class="text-white font-semibold text-base mb-1 line-clamp-2">
-          {{ enrollment.componente.nome }}
+        <h3 class="font-sans font-medium">
+          {{ capitalizeText(enrollment.componente.nome) }}
         </h3>
-        <p class="text-bp_neutral-400 text-xs">
-          {{ enrollment.componente.codigo }}
-        </p>
       </div>
       <div>
         <div
@@ -111,26 +108,45 @@ function formatProcessedDate(dateString) {
     </div>
 
     <!-- Status badge -->
-
-    <!-- Informações principais -->
-    <div class="grid grid-cols-3 gap-3">
-      <div class="rounded">
-        <span class="text-bp_neutral-400 text-xs block mb-1">
-          {{ enrollment.incerto ? "Concorrência" : "Posição" }}
+    <div class="flex justify-between items-end">
+      <div class="grid grid-cols-2 gap-3">
+        <div class="rounded">
+          <span class="text-bp_neutral-400 text-xs block mb-1">
+            {{ enrollment.incerto ? "Concorrência" : "Posição" }}
+          </span>
+          <p class="text-white font-bold text-sm">
+            {{ enrollment.incerto ? enrollment.concorrencia : `${enrollment.rank}º` }}
+          </p>
+        </div>
+        <div class="rounded">
+          <span class="text-bp_neutral-400 text-xs block mb-1">Capacidade</span>
+          <p class="text-white font-bold text-sm">{{ enrollment.capacidade }}</p>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 items-end">
+        <span
+          class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+        >
+          {{ enrollment.componente.codigo }}
         </span>
-        <p class="text-white font-bold text-sm">
-          {{ enrollment.incerto ? enrollment.concorrencia : `${enrollment.rank}º` }}
-        </p>
-      </div>
-      <div class="rounded">
-        <span class="text-bp_neutral-400 text-xs block mb-1">Capacidade</span>
-        <p class="text-white font-bold text-sm">{{ enrollment.capacidade }}</p>
-      </div>
-      <div class="rounded">
-        <span class="text-bp_neutral-400 text-xs block mb-1">Processado Em</span>
-        <p class="text-white font-bold text-sm">
-          {{ formatProcessedDate(enrollment.data_processamento) }}
-        </p>
+        <div class="flex gap-2">
+          <span
+            :class="[
+              'font-sans badge text-vtd-secondary-100 bg-transparent border',
+              enrollment.componente['deisciplina-obrigatoria']
+                ? 'border-bp_green-600'
+                : 'border-sky-600',
+            ]"
+            >{{
+              enrollment.componente["disciplina-obrigatoria"] ? "OBRIGATÓRIO" : "OPTATIVO"
+            }}</span
+          >
+          <span
+            class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+          >
+            {{ enrollment.componente["carga-horaria-total"] }}H</span
+          >
+        </div>
       </div>
     </div>
     <div v-if="enrollment.rematricula" class="mt-3 pt-3 border-t border-bp_neutral-600">

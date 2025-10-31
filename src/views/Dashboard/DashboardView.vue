@@ -26,7 +26,6 @@ const componentType = ref("TODAS");
 const page = ref(0);
 
 const isSearchActive = ref(false);
-const showEnrollmentModal = ref(false);
 const enrollments = ref([]);
 const enrollmentPeriods = ref([]);
 
@@ -152,6 +151,13 @@ function setPeriods() {
   }));
 
   periods.value = [...sortedPeriods, ...enrollmentPeriodsToAdd];
+
+  periods.value = periods.value.sort((a, b) => {
+    if (a.ano == b.ano) {
+      return a.periodo - b.periodo;
+    }
+    return a.ano - b.ano;
+  });
 }
 
 let fetchInterestedClassesAbortController = null;
@@ -199,7 +205,6 @@ async function fetchEnrollments() {
     const response = await api.get("/api/enrollments/me");
     const data = response.data;
 
-    // Simula que 2025.2 é 2026.1
     enrollments.value = data.map((enrollment) => {
       if (enrollment.ano === 2025 && enrollment.periodo === 2) {
         return { ...enrollment, ano: 2026, periodo: 1 };
@@ -311,14 +316,6 @@ function handleSearchedComponents(data) {
   isSearchActive.value = true;
 }
 
-function openEnrollmentModal() {
-  showEnrollmentModal.value = true;
-}
-
-function closeEnrollmentModal() {
-  showEnrollmentModal.value = false;
-}
-
 const sectionRef = ref(null);
 </script>
 <template>
@@ -392,7 +389,7 @@ const sectionRef = ref(null);
       />
     </section>
     <div
-      v-else-if="!loading && periodClasses.length === 0"
+      v-else-if="!loading && periodClasses.length === 0 && !isEnrollmentPeriod"
       class="relative bg-bp_grayscale-700 rounded-md min-h-[200px] max-h-[440px] overflow-y-auto p-2 flex flex-col w-full border border-bp_green-100/40"
     >
       <FriendInterests

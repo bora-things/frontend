@@ -4,12 +4,9 @@
       <div class="dropdown dropdown-hover">
         <div tabindex="0" role="button" class="m-1 title-h1 p-0 flex items-center gap-2">
           <template v-if="currentPeriodIsEnrollment">
-            <v-icon name="bi-clipboard-check" scale="1.2" class="text-bp_green-400"></v-icon>
-            Pedidos {{ currentPeriodLabel }}
+            {{ currentPeriodIndex + 1 }}° Periodo
           </template>
-          <template v-else>
-            {{ currentPeriodIndex + 1 }}º Período
-          </template>
+          <template v-else> {{ currentPeriodIndex + 1 }}º Período </template>
           <v-icon name="bi-chevron-down" scale="1.2"></v-icon>
         </div>
         <ul
@@ -30,16 +27,7 @@
             ]"
             @click="$emit('select-period', getPeriodKey(period))"
           >
-            <template v-if="period.isEnrollment">
-              <span class="leading-tight py-0 hover:bg-transparent hover:shadow-none flex items-center gap-2">
-                <v-icon name="bi-clipboard-check" scale="1" class="text-bp_green-400"></v-icon>
-                Pedidos
-              </span>
-              <span class="text-sm leading-tight hover:bg-transparent hover:shadow-none">
-                {{ period.ano + "." + period.periodo }}
-              </span>
-            </template>
-            <template v-else>
+            <template class="flex flex-col items-start">
               <span class="leading-tight py-0 hover:bg-transparent hover:shadow-none">
                 {{ getNonEnrollmentIndex(index) + 1 }}º Período
               </span>
@@ -89,18 +77,15 @@ const currentPeriodLabel = computed(() => {
 });
 
 const currentPeriodIndex = computed(() => {
-  return props.periods
-    .filter((p) => !p.isEnrollment)
-    .findIndex(
-      (item) =>
-        item.ano == props.selectedPeriod.split("-")[0] &&
-        item.periodo == props.selectedPeriod.split("-")[1]
-    );
+  return props.periods.findIndex((item) => {
+    const [ano, periodo] = props.selectedPeriod.split("-").slice(-2);
+    return item.ano == ano && item.periodo == periodo;
+  });
 });
 
 const displayPeriodLabel = computed(() => {
   if (currentPeriodIsEnrollment.value) {
-    return `Pedidos ${currentPeriodLabel.value}`;
+    return `Solicitações de Matrícula ${currentPeriodLabel.value}`;
   }
   return props.selectedPeriod.replace("-", ".");
 });
@@ -113,6 +98,6 @@ function getPeriodKey(period) {
 }
 
 function getNonEnrollmentIndex(index) {
-  return props.periods.slice(0, index).filter((p) => !p.isEnrollment).length;
+  return index;
 }
 </script>
