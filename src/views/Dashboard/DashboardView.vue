@@ -8,6 +8,9 @@ import { VueDraggableNext } from "vue-draggable-next";
 
 import PeriodSelect from "@/components/PeriodSelect.vue";
 import {
+  fetchCalendarData,
+  fetchEnrollments,
+  getCurrentEnrollmentPeriod,
   handleAddInterestedSubjectRequest,
   handleInterestedSubjectsRequest,
   handleRemoveInterestedSubjectRequest,
@@ -27,10 +30,16 @@ const page = ref(0);
 
 const isSearchActive = ref(false);
 const enrollments = ref([]);
+const reEnrollments = ref([]);
 const enrollmentPeriods = ref([]);
+const currentEnrollmentPeriod = ref(null);
 
 const isEnrollmentPeriod = computed(() => {
   return selectedPeriod.value?.startsWith("enrollment-");
+});
+
+const isReEnrollmentPeriod = computed(() => {
+  return currentEnrollmentPeriod.value?.type === "reEnrollment";
 });
 
 const selectedPeriodWorkload = computed(() => {
@@ -143,12 +152,18 @@ function setPeriods() {
       );
     });
 
-  // Adiciona os períodos de enrollment ao final
-  const enrollmentPeriodsToAdd = enrollmentPeriods.value.map((ep) => ({
-    ano: ep.ano,
-    periodo: ep.periodo,
-    isEnrollment: true,
-  }));
+  const enrollmentPeriodsToAdd = enrollmentPeriods.value
+    .filter((ep) => {
+      // Só adiciona períodos de matrícula que não existem ainda
+      return !sortedPeriods.find(
+        (period) => period.ano == ep.ano && period.periodo == ep.periodo
+      );
+    })
+    .map((ep) => ({
+      ano: ep.ano,
+      periodo: ep.periodo,
+      isEnrollment: true,
+    }));
 
   periods.value = [...sortedPeriods, ...enrollmentPeriodsToAdd];
 
@@ -200,30 +215,38 @@ async function fetchComponents() {
   }
 }
 
-async function fetchEnrollments() {
+async function fetchEnrollmentData() {
   try {
-    const response = await api.get("/api/enrollments/me");
-    const data = response.data;
+    // Busca o calendário acadêmico
+    const calendarData = await fetchCalendarData();
+    currentEnrollmentPeriod.value = getCurrentEnrollmentPeriod(calendarData);
 
-    enrollments.value = data.map((enrollment) => {
-      if (enrollment.ano === 2025 && enrollment.periodo === 2) {
-        return { ...enrollment, ano: 2026, periodo: 1 };
-      }
-      return enrollment;
-    });
+    if (!currentEnrollmentPeriod.value) {
+      enrollments.value = [];
+      reEnrollments.value = [];
+      enrollmentPeriods.value = [];
+      return;
+    }
 
-    // Agrupa por período para criar os períodos de enrollment
-    const periodsSet = new Set();
-    enrollments.value.forEach((e) => {
-      periodsSet.add(`${e.ano}-${e.periodo}`);
-    });
+    const { type, year, period } = currentEnrollmentPeriod.value;
 
-    enrollmentPeriods.value = Array.from(periodsSet).map((key) => {
-      const [ano, periodo] = key.split("-");
-      return { ano: parseInt(ano), periodo: parseInt(periodo) };
-    });
+    if (type === "enrollment") {
+      enrollments.value = await fetchEnrollments(false);
+      reEnrollments.value = [];
+      enrollmentPeriods.value = [
+        {
+          ano: enrollments.value.length ? enrollments.value[0].ano : year,
+          periodo: enrollments.value.length ? enrollments.value[0].periodo : period,
+        },
+      ];
+    } else if (type === "reEnrollment") {
+      reEnrollments.value = await fetchEnrollments(true);
+      enrollments.value = [];
+
+      enrollmentPeriods.value = [];
+    }
   } catch (error) {
-    console.error("Erro ao buscar pedidos de matrícula:", error);
+    console.error("Erro ao buscar dados de matrícula:", error);
   }
 }
 
@@ -246,7 +269,7 @@ onMounted(async () => {
     fetchClasses(),
     fetchInterestedClasses(),
     fetchComponents(),
-    fetchEnrollments(),
+    fetchEnrollmentData(),
   ]);
   setPeriods();
   selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
@@ -360,12 +383,16 @@ const sectionRef = ref(null);
     </header>
 
     <section
-      v-if="isEnrollmentPeriod"
+      v-if="isEnrollmentPeriod && !isReEnrollmentPeriod"
       class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4 p-4"
       ref="sectionRef"
       tabindex="-1"
     >
-      <EnrollmentDashboard :enrollments="enrollments" :selected-period="selectedPeriod" />
+      <EnrollmentDashboard
+        :enrollments="enrollments"
+        :re-enrollments="reEnrollments"
+        :selected-period="selectedPeriod"
+      />
     </section>
 
     <div
@@ -374,10 +401,11 @@ const sectionRef = ref(null);
     >
       <span class="loading loading-spinner loading-lg text-white"></span>
     </div>
+
     <section
       ref="sectionRef"
       tabindex="-1"
-      v-if="!loading && !isEnrollmentPeriod && periodClasses.length > 0"
+      v-if="!loading && !isEnrollmentPeriod"
       class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4 p-4"
       :key="selectedPeriod"
     >
@@ -386,6 +414,12 @@ const sectionRef = ref(null);
         :key="item['id-turma']"
         class="w-full"
         :classSubject="item"
+      />
+      <EnrollmentDashboard
+        v-if="isReEnrollmentPeriod"
+        :enrollments="[]"
+        :re-enrollments="reEnrollments"
+        :selected-period="'enrollment' + '-' + selectedPeriod"
       />
     </section>
     <div

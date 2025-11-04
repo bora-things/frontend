@@ -13,8 +13,7 @@ const enrollmentStatus = computed(() => {
   const withinCapacity = props.enrollment.rank <= props.enrollment.capacidade;
   const isUncertain = props.enrollment.incerto;
 
-  // Dentro da capacidade - possível entrada
-  if (withinCapacity) {
+  if (withinCapacity && !isUncertain) {
     return {
       canEnroll: true,
       message: "Possível entrada",
@@ -24,7 +23,7 @@ const enrollmentStatus = computed(() => {
     };
   }
 
-  if (!withinCapacity && isUncertain) {
+  if (isUncertain) {
     return {
       canEnroll: null,
       message: "Incerto",
@@ -88,10 +87,17 @@ function formatProcessedDate(dateString) {
   >
     <!-- Header com nome e status -->
     <div class="flex justify-between items-start">
-      <div class="flex-1">
+      <div class="flex-1 flex items-start gap-2">
         <h3 class="font-sans font-medium">
           {{ capitalizeText(enrollment.componente.nome) }}
         </h3>
+        <span
+          v-if="enrollment.rematricula"
+          class="bg-bp_primary-400/20 text-bp_primary-400 px-2 py-0.5 rounded text-xs font-medium flex items-center gap-1 shrink-0"
+        >
+          <v-icon name="bi-arrow-repeat" scale="0.7"></v-icon>
+          Rematrícula
+        </span>
       </div>
       <div>
         <div
@@ -148,14 +154,6 @@ function formatProcessedDate(dateString) {
           >
         </div>
       </div>
-    </div>
-    <div v-if="enrollment.rematricula" class="mt-3 pt-3 border-t border-bp_neutral-600">
-      <span
-        class="bg-bp_primary-400/20 text-bp_primary-400 px-2 py-1 rounded text-xs font-medium"
-      >
-        <v-icon name="bi-arrow-repeat" scale="0.8"></v-icon>
-        Rematrícula
-      </span>
     </div>
   </div>
 </template>
