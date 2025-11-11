@@ -38,7 +38,7 @@ function openModal() {
 <template>
   <div
     :id="component.codigo"
-    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[180px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
     :class="{
       'border-bp_green-600': component['disciplina-obrigatoria'],
       'bg-bp_grayscale-800 border-bp_grayscale-500': !disabled && !blinking,

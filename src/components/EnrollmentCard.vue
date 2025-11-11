@@ -41,59 +41,21 @@ const enrollmentStatus = computed(() => {
     icon: "bi-x-circle-fill",
   };
 });
-
-function formatProcessedDate(dateString) {
-  if (!dateString) return "N/A";
-
-  const date = new Date(dateString);
-  const now = new Date();
-
-  // Zera as horas para comparar apenas as datas
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const processedDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-  const diffTime = today - processedDay;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) {
-    // Hoje - mostra "Hoje" + hora
-    const time = date.toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    return `Hoje ${time}`;
-  } else if (diffDays === 1) {
-    // Ontem
-    return "Ontem";
-  } else if (diffDays === 2) {
-    // Anteontem
-    return "2 dias atrás";
-  } else if (diffDays <= 7) {
-    // Até 7 dias
-    return `${diffDays} dias atrás`;
-  } else {
-    // Mais de 7 dias - mostra a data completa
-    return date.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-    });
-  }
-}
 </script>
 
 <template>
   <div
-    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[160px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[180px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
   >
     <!-- Header com nome e status -->
-    <div class="flex justify-between items-start">
+    <div class="flex items-start gap-2">
       <div class="flex-1 flex items-start gap-2">
         <h3 class="font-sans font-medium">
           {{ capitalizeText(enrollment.componente.nome) }}
         </h3>
         <span
           v-if="enrollment.rematricula"
-          class="bg-bp_primary-400/20 text-bp_primary-400 px-2 py-0.5 rounded text-xs font-medium flex items-center gap-1 shrink-0"
+          class="bg-bp_primary-400/20 text-bp_primary-400 px-3 py-1 rounded text-xs font-medium flex items-center gap-1 shrink-0"
         >
           <v-icon name="bi-arrow-repeat" scale="0.7"></v-icon>
           Rematrícula
@@ -125,8 +87,12 @@ function formatProcessedDate(dateString) {
           </p>
         </div>
         <div class="rounded">
-          <span class="text-bp_neutral-400 text-xs block mb-1">Capacidade</span>
-          <p class="text-white font-bold text-sm">{{ enrollment.capacidade }}</p>
+          <span class="text-bp_neutral-400 text-xs block mb-1">
+            {{ enrollment.incerto ? "Vagas " : "Capacidade" }}
+          </span>
+          <p class="text-white font-bold text-sm">
+            {{ enrollment.incerto ? enrollment.vagas_restantes : enrollment.capacidade }}
+          </p>
         </div>
       </div>
       <div class="flex flex-col gap-2 items-end">

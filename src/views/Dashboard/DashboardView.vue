@@ -6,7 +6,9 @@ import api from "@/config/axios.config";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
 
+import EnrollmentCard from "@/components/EnrollmentCard.vue";
 import PeriodSelect from "@/components/PeriodSelect.vue";
+import { formatProcessedDate } from "@/utils/formatProcessedDate.js";
 import {
   fetchCalendarData,
   fetchEnrollments,
@@ -382,9 +384,9 @@ const sectionRef = ref(null);
       </div>
     </header>
 
-    <section
+      <section
       v-if="isEnrollmentPeriod && !isReEnrollmentPeriod"
-      class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4 p-4"
+      class="bg-bp_neutral-700 rounded-md p-4"
       ref="sectionRef"
       tabindex="-1"
     >
@@ -406,21 +408,48 @@ const sectionRef = ref(null);
       ref="sectionRef"
       tabindex="-1"
       v-if="!loading && !isEnrollmentPeriod"
-      class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4 p-4"
+      class="bg-bp_neutral-700 rounded-md p-4 flex flex-col gap-2"
       :key="selectedPeriod"
     >
-      <SubjectCard
-        v-for="item in periodClasses"
-        :key="item['id-turma']"
-        class="w-full"
-        :classSubject="item"
-      />
-      <EnrollmentDashboard
-        v-if="isReEnrollmentPeriod"
-        :enrollments="[]"
-        :re-enrollments="reEnrollments"
-        :selected-period="'enrollment' + '-' + selectedPeriod"
-      />
+      <div
+        v-if="
+          !loading &&
+          isReEnrollmentPeriod &&
+          reEnrollments.length > 0 &&
+          reEnrollments[0].ano == selectedPeriod.split('-')[0] &&
+          reEnrollments[0].periodo == selectedPeriod.split('-')[1]
+        "
+        class="flex items-center justify-end gap-2 text-bp_neutral-400 text-sm"
+      >
+        <v-icon name="bi-clock" scale="1"></v-icon>
+        <span
+          >Última atualização:
+          {{ formatProcessedDate(reEnrollments[0].data_processamento) }}
+        </span>
+      </div>
+      <div class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4">
+        <SubjectCard
+          v-for="item in periodClasses"
+          :key="item['id-turma']"
+          class="w-full"
+          :classSubject="item"
+        />
+        <EnrollmentCard
+          v-if="
+            isReEnrollmentPeriod &&
+            reEnrollments.some(
+              (e) =>
+                e.ano == (selectedPeriod || '').split('-')[0] &&
+                e.periodo == (selectedPeriod || '').split('-')[1]
+            )
+          "
+          v-for="enrollment in reEnrollments"
+          :key="`${enrollment['id-turma']}-${enrollment['codigo-componente']}-${
+            enrollment.rematricula ? 'remat' : 'mat'
+          }`"
+          :enrollment="enrollment"
+        />
+      </div>
     </section>
     <div
       v-else-if="!loading && periodClasses.length === 0 && !isEnrollmentPeriod"
