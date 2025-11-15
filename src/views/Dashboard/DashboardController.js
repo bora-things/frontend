@@ -66,8 +66,8 @@ export function getCurrentEnrollmentPeriod(calendarData) {
   const now = new Date()
 
   for (const period of calendarData) {
-    // Verifica matrícula 
-    if (isDateInRange(period.onlineEnrollmentStart, period.onlineEnrollmentEnd ) || true ) {
+    // Verifica matrícula
+    if (isDateInRange(period.onlineEnrollmentStart, period.onlineEnrollmentEnd) || true) {
       return {
         type: 'enrollment',
         year: period.year,
@@ -77,7 +77,7 @@ export function getCurrentEnrollmentPeriod(calendarData) {
     }
 
     // Verifica re rematrícula
-    if (isDateInRange(period.reEnrollmentStart, period.reEnrollmentEnd) ) {
+    if (isDateInRange(period.reEnrollmentStart, period.reEnrollmentEnd) || true) {
       return {
         type: 'reEnrollment',
         year: period.year,
@@ -97,7 +97,7 @@ export async function fetchEnrollments(isReEnrollment = false) {
       params: { reEnrollment: isReEnrollment }
     })
 
-    // 
+    //
     return response.data.map((enrollment) => {
       if (!isReEnrollment && enrollment.ano === 2025 && enrollment.periodo === 2) {
         return { ...enrollment, ano: 2026, periodo: 1 }

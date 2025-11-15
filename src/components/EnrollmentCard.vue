@@ -9,9 +9,18 @@ const props = defineProps({
   },
 });
 
+const {
+  rank,
+  capacidade,
+  incerto,
+  rematricula,
+  concorrencia,
+  vagas_restantes,
+} = props.enrollment;
+
 const enrollmentStatus = computed(() => {
-  const withinCapacity = props.enrollment.rank <= props.enrollment.capacidade;
-  const isUncertain = props.enrollment.incerto;
+  const withinCapacity = rematricula ? rank <= vagas_restantes : rank <= capacidade;
+  const isUncertain = incerto;
 
   if (withinCapacity && !isUncertain) {
     return {
@@ -88,10 +97,14 @@ const enrollmentStatus = computed(() => {
         </div>
         <div class="rounded">
           <span class="text-bp_neutral-400 text-xs block mb-1">
-            {{ enrollment.incerto ? "Vagas " : "Capacidade" }}
+            {{ enrollment.incerto || enrollment.rematricula ? "Vagas " : "Capacidade" }}
           </span>
           <p class="text-white font-bold text-sm">
-            {{ enrollment.incerto ? enrollment.vagas_restantes : enrollment.capacidade }}
+            {{
+              enrollment.incerto || enrollment.rematricula
+                ? enrollment.vagas_restantes
+                : enrollment.capacidade
+            }}
           </p>
         </div>
       </div>
