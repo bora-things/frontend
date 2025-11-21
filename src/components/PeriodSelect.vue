@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, defineProps, ref } from "vue";
+import { defineEmits, defineProps, nextTick, onMounted, ref, watch } from "vue";
 
 const props = defineProps({
   periods: Array,
@@ -43,12 +43,39 @@ const scrollRight = () => {
     carouselRef.value.scrollBy({ left: 300, behavior: "smooth" });
   }
 };
+
+const scrollToEnd = () => {
+  if (carouselRef.value) {
+    const maxScroll = carouselRef.value.scrollWidth - carouselRef.value.clientWidth;
+    carouselRef.value.scrollLeft = maxScroll;
+  }
+};
+
+// Sempre rola para o final (direita) ao montar o componente
+onMounted(async () => {
+  await nextTick();
+  setTimeout(() => {
+    scrollToEnd();
+  }, 300);
+});
+
+// Observa mudanças nos períodos e rola para o final
+watch(
+  () => props.periods,
+  async () => {
+    await nextTick();
+    setTimeout(() => {
+      scrollToEnd();
+    }, 300);
+  },
+  { deep: true }
+);
 </script>
 
 <template>
   <div class="relative w-[90%] flex items-center gap-2">
     <button
-      v-if="periods && periods.length > 3"
+      v-if="periods.length > 3"
       @click="scrollLeft"
       class="btn btn-circle btn-outline btn-sm bg-bp_grayscale-700 border-bp_grayscale-600 hover:bg-bp_grayscale-600 hover:text-white hover:scale-105"
     >
@@ -81,6 +108,7 @@ const scrollRight = () => {
       </div>
 
       <button
+        v-if="periods && periods.length > 0"
         class="flex-shrink-0 flex items-center justify-center gap-2 p-2 rounded-lg border-2 border-dashed border-bp_grayscale-500 text-bp_grayscale-300 hover:bg-bp_grayscale-700 hover:text-white transition-colors duration-200 md:min-w-[90px] h-[45px]"
         @click="$emit('select-period', 'new')"
       >
