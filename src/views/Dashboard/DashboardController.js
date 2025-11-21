@@ -67,7 +67,7 @@ export function getCurrentEnrollmentPeriod(calendarData) {
 
   for (const period of calendarData) {
     // Verifica matrícula
-    if (isDateInRange(period.onlineEnrollmentStart, period.onlineEnrollmentEnd) || true) {
+    if (isDateInRange(period.onlineEnrollmentStart, period.onlineEnrollmentEnd)  ) {
       return {
         type: 'enrollment',
         year: period.year,
@@ -77,7 +77,7 @@ export function getCurrentEnrollmentPeriod(calendarData) {
     }
 
     // Verifica re rematrícula
-    if (isDateInRange(period.reEnrollmentStart, period.reEnrollmentEnd) || true) {
+    if (isDateInRange(period.reEnrollmentStart, period.reEnrollmentEnd) ) {
       return {
         type: 'reEnrollment',
         year: period.year,

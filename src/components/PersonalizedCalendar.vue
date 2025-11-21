@@ -2,8 +2,6 @@
 import api from "@/config/axios.config.js";
 import { computed, onMounted, ref } from "vue";
 
-const isCalendarOpen = ref(false);
-
 const events = ref({
   enrollment: [],
   reEnrollment: [],
@@ -16,8 +14,9 @@ function getDateRange(startInstant, endInstant) {
   if (!startInstant || !endInstant) return [];
 
   const dates = [];
-  const startDate = new Date(startInstant);
-  const endDate = new Date(endInstant);
+  // Converter timestamps Unix (em segundos) para milissegundos
+  const startDate = new Date(startInstant * 1000);
+  const endDate = new Date(endInstant * 1000);
 
   const currentDate = new Date(startDate);
   while (currentDate <= endDate) {

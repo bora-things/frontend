@@ -384,7 +384,7 @@ const sectionRef = ref(null);
       </div>
     </header>
 
-      <section
+    <section
       v-if="isEnrollmentPeriod && !isReEnrollmentPeriod"
       class="bg-bp_neutral-700 rounded-md p-4"
       ref="sectionRef"
@@ -407,7 +407,7 @@ const sectionRef = ref(null);
     <section
       ref="sectionRef"
       tabindex="-1"
-      v-if="!loading && !isEnrollmentPeriod"
+      v-if="!loading && !isEnrollmentPeriod && periodClasses.length > 0"
       class="bg-bp_neutral-700 rounded-md p-4 flex flex-col gap-2"
       :key="selectedPeriod"
     >
