@@ -274,7 +274,26 @@ onMounted(async () => {
     fetchEnrollmentData(),
   ]);
   setPeriods();
-  selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
+
+  // Define o período padrão baseado no período acadêmico atual
+  if (currentEnrollmentPeriod.value) {
+    const defaultPeriod = `${currentEnrollmentPeriod.value.year}-${currentEnrollmentPeriod.value.period}`;
+    // Verifica se o período existe na lista de períodos
+    const periodExists = periods.value.some(
+      (p) =>
+        p.ano == currentEnrollmentPeriod.value.year &&
+        p.periodo == currentEnrollmentPeriod.value.period
+    );
+    if (periodExists) {
+      selectPeriod(defaultPeriod);
+    } else {
+      // Se não existir, usa o primeiro período disponível
+      selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
+    }
+  } else {
+    // Fallback para o primeiro período se não houver período acadêmico atual
+    selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
+  }
 });
 
 watch(

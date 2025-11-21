@@ -61,33 +61,39 @@ function isDateInRange(startDate, endDate) {
   return now >= start && now <= end
 }
 
-// Determina o tipo de período atual (matrícula, rematrícula, ou nenhum)
 export function getCurrentEnrollmentPeriod(calendarData) {
-  const now = new Date()
+  const currentPeriod = calendarData.find((period) => period.current === true)
+  
+  if (!currentPeriod) {
+    return null
+  }
 
-  for (const period of calendarData) {
-    // Verifica matrícula
-    if (isDateInRange(period.onlineEnrollmentStart, period.onlineEnrollmentEnd) ) {
-      return {
-        type: 'enrollment',
-        year: period.year,
-        period: period.period,
-        isReEnrollment: false
-      }
-    }
+  const baseResult = {
+    year: currentPeriod.year,
+    period: currentPeriod.period
+  }
 
-    // Verifica re rematrícula
-    if (isDateInRange(period.reEnrollmentStart, period.reEnrollmentEnd) || true) {
-      return {
-        type: 'reEnrollment',
-        year: period.year,
-        period: period.period,
-        isReEnrollment: true
-      }
+  if (isDateInRange(currentPeriod.onlineEnrollmentStart, currentPeriod.onlineEnrollmentEnd)) {
+    return {
+      ...baseResult,
+      type: 'enrollment',
+      isReEnrollment: false
     }
   }
 
-  return null
+  if (isDateInRange(currentPeriod.reEnrollmentStart, currentPeriod.reEnrollmentEnd)|| true) {
+    return {
+      ...baseResult,
+      type: 'reEnrollment',
+      isReEnrollment: true
+    }
+  }
+
+  return {
+    ...baseResult,
+    type: null,
+    isReEnrollment: false
+  }
 }
 
 // Busca enrollments com base no tipo de período
