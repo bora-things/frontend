@@ -47,7 +47,6 @@ const scrollRight = () => {
 
 <template>
   <div class="relative w-[90%] flex items-center gap-2">
-    <!-- Botão Esquerda -->
     <button
       v-if="periods && periods.length > 3"
       @click="scrollLeft"
@@ -56,7 +55,6 @@ const scrollRight = () => {
       <v-icon name="bi-chevron-left" scale="1" />
     </button>
 
-    <!-- Carrossel -->
     <div
       ref="carouselRef"
       class="flex items-center gap-3 overflow-x-auto scroll-smooth px-2"
@@ -73,17 +71,17 @@ const scrollRight = () => {
         :data-tip="period.isEnrollment ? 'Período de Solicitação de Matrícula' : ''"
       >
         <button
-          class="flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-colors duration-200 min-w-[120px]"
+          class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-colors duration-200 md:min-w-[90px]"
           :class="getPeriodClasses(period)"
           @click="$emit('select-period', getPeriodKey(period))"
         >
-          <span class="font-bold leading-tight">{{ index + 1 }}º Período</span>
-          <span class="text-sm leading-tight">{{ period.ano }}.{{ period.periodo }}</span>
+          <span class="font-bold text-sm leading-tight">{{ index + 1 }}º Período</span>
+          <span class="text-xs leading-tight">{{ period.ano }}.{{ period.periodo }}</span>
         </button>
       </div>
 
       <button
-        class="flex-shrink-0 flex items-center justify-center gap-2 p-3 rounded-lg border-2 border-dashed border-bp_grayscale-500 text-bp_grayscale-300 hover:bg-bp_grayscale-700 hover:text-white transition-colors duration-200 min-w-[120px] h-[65px]"
+        class="flex-shrink-0 flex items-center justify-center gap-2 p-2 rounded-lg border-2 border-dashed border-bp_grayscale-500 text-bp_grayscale-300 hover:bg-bp_grayscale-700 hover:text-white transition-colors duration-200 md:min-w-[90px] h-[45px]"
         @click="$emit('select-period', 'new')"
       >
         <v-icon name="bi-plus-lg" scale="1.1" />
@@ -91,7 +89,6 @@ const scrollRight = () => {
       </button>
     </div>
 
-    <!-- Botão Direita -->
     <button
       v-if="periods && periods.length > 3"
       @click="scrollRight"

@@ -344,7 +344,7 @@ function handleSearchedComponents(data) {
 const sectionRef = ref(null);
 </script>
 <template>
-  <main class="container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
+  <div class="container mx-auto p-6 w-[70%] 2xl:w-[60%] flex flex-col flex-1">
     <header class="flex items-center justify-between pb-4">
       <PeriodSelect
         :periods="periods"
@@ -378,7 +378,7 @@ const sectionRef = ref(null);
             ]"
           >
             <v-icon name="bi-clock" scale="1.2" class="mr-2"></v-icon>
-            <span> {{ selectedPeriodWorkload }}h</span>
+            <span class="text-md"> {{ selectedPeriodWorkload }}h</span>
           </div>
         </div>
       </div>
@@ -513,5 +513,5 @@ const sectionRef = ref(null);
       :fetch-components="fetchComponents"
       @searched-components="handleSearchedComponents"
     />
-  </main>
+  </div>
 </template>

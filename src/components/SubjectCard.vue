@@ -38,7 +38,7 @@ function openModal() {
 <template>
   <div
     :id="component.codigo"
-    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[180px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[150px] rounded-md flex flex-col justify-between p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
     :class="{
       'border-bp_green-600': component['disciplina-obrigatoria'],
       'bg-bp_grayscale-800 border-bp_grayscale-500': !disabled && !blinking,
@@ -47,7 +47,7 @@ function openModal() {
     }"
     @click="openModal"
   >
-    <p class="font-sans font-medium">{{ capitalizeText(component.nome) }}</p>
+    <p class="font-sans font-medium text-sm">{{ capitalizeText(component.nome) }}</p>
     <div class="flex justify-between items-end">
       <div>
         <div v-if="visibleUsers.length > 0" class="flex gap-2 items-center">
