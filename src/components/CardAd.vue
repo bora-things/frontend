@@ -39,7 +39,7 @@ onMounted(() => {
     </button>
     <ul
       tabIndex="{0}"
-      className="dropdown-content mt-1 flex flex-col bg-bp_grayscale-700 p-4 rounded-md
+      className="dropdown-content mt-0 pt-3 flex flex-col bg-bp_grayscale-700 p-4 rounded-md
        shadow-lg transition-all ease-in-out duration-300 w-[90%] md:w-96 max-h-[70vh] overflow-y-auto custom-scrollbar z-50"
     >
       <header class="flex justify-between items-center mb-4">

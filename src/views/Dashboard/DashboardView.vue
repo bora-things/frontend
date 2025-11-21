@@ -1,12 +1,18 @@
 <script setup>
+import EnrollmentDashboard from "@/components/EnrollmentDashboard.vue";
 import FriendInterests from "@/components/FriendsInterests.vue";
 import SubjectCard from "@/components/SubjectCard.vue";
 import api from "@/config/axios.config";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
 
+import EnrollmentCard from "@/components/EnrollmentCard.vue";
 import PeriodSelect from "@/components/PeriodSelect.vue";
+import { formatProcessedDate } from "@/utils/formatProcessedDate.js";
 import {
+  fetchCalendarData,
+  fetchEnrollments,
+  getCurrentEnrollmentPeriod,
   handleAddInterestedSubjectRequest,
   handleInterestedSubjectsRequest,
   handleRemoveInterestedSubjectRequest,
@@ -25,8 +31,21 @@ const componentType = ref("TODAS");
 const page = ref(0);
 
 const isSearchActive = ref(false);
+const enrollments = ref([]);
+const reEnrollments = ref([]);
+const enrollmentPeriods = ref([]);
+const currentEnrollmentPeriod = ref(null);
+
+const isEnrollmentPeriod = computed(() => {
+  return selectedPeriod.value?.startsWith("enrollment-");
+});
+
+const isReEnrollmentPeriod = computed(() => {
+  return currentEnrollmentPeriod.value?.type === "reEnrollment";
+});
 
 const selectedPeriodWorkload = computed(() => {
+  if (isEnrollmentPeriod.value) return 0;
   if (!periodClasses.value.length) {
     return periodInterestedClasses.value.reduce(
       (acc, item) => acc + (item.component["carga-horaria-total"] || 0),
@@ -122,7 +141,7 @@ function setPeriods() {
   });
 
   const allPeriods = [...classesPeriods, ...interestedPeriods];
-  periods.value = allPeriods
+  const sortedPeriods = allPeriods
     .sort((a, b) => {
       if (a.ano === b.ano) {
         return a.periodo - b.periodo;
@@ -134,6 +153,28 @@ function setPeriods() {
         index === self.findIndex((t) => t.ano === item.ano && t.periodo === item.periodo)
       );
     });
+
+  const enrollmentPeriodsToAdd = enrollmentPeriods.value
+    .filter((ep) => {
+      // Só adiciona períodos de matrícula que não existem ainda
+      return !sortedPeriods.find(
+        (period) => period.ano == ep.ano && period.periodo == ep.periodo
+      );
+    })
+    .map((ep) => ({
+      ano: ep.ano,
+      periodo: ep.periodo,
+      isEnrollment: true,
+    }));
+
+  periods.value = [...sortedPeriods, ...enrollmentPeriodsToAdd];
+
+  periods.value = periods.value.sort((a, b) => {
+    if (a.ano == b.ano) {
+      return a.periodo - b.periodo;
+    }
+    return a.ano - b.ano;
+  });
 }
 
 let fetchInterestedClassesAbortController = null;
@@ -176,6 +217,41 @@ async function fetchComponents() {
   }
 }
 
+async function fetchEnrollmentData() {
+  try {
+    // Busca o calendário acadêmico
+    const calendarData = await fetchCalendarData();
+    currentEnrollmentPeriod.value = getCurrentEnrollmentPeriod(calendarData);
+
+    if (!currentEnrollmentPeriod.value) {
+      enrollments.value = [];
+      reEnrollments.value = [];
+      enrollmentPeriods.value = [];
+      return;
+    }
+
+    const { type, year, period } = currentEnrollmentPeriod.value;
+
+    if (type === "enrollment") {
+      enrollments.value = await fetchEnrollments(false);
+      reEnrollments.value = [];
+      enrollmentPeriods.value = [
+        {
+          ano: enrollments.value.length ? enrollments.value[0].ano : year,
+          periodo: enrollments.value.length ? enrollments.value[0].periodo : period,
+        },
+      ];
+    } else if (type === "reEnrollment") {
+      reEnrollments.value = await fetchEnrollments(true);
+      enrollments.value = [];
+
+      enrollmentPeriods.value = [];
+    }
+  } catch (error) {
+    console.error("Erro ao buscar dados de matrícula:", error);
+  }
+}
+
 watch(
   () => page.value,
   async (newPage) => {
@@ -191,9 +267,33 @@ watch(
 );
 
 onMounted(async () => {
-  await Promise.all([fetchClasses(), fetchInterestedClasses(), fetchComponents()]);
+  await Promise.all([
+    fetchClasses(),
+    fetchInterestedClasses(),
+    fetchComponents(),
+    fetchEnrollmentData(),
+  ]);
   setPeriods();
-  selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
+
+  // Define o período padrão baseado no período acadêmico atual
+  if (currentEnrollmentPeriod.value) {
+    const defaultPeriod = `${currentEnrollmentPeriod.value.year}-${currentEnrollmentPeriod.value.period}`;
+    // Verifica se o período existe na lista de períodos
+    const periodExists = periods.value.some(
+      (p) =>
+        p.ano == currentEnrollmentPeriod.value.year &&
+        p.periodo == currentEnrollmentPeriod.value.period
+    );
+    if (periodExists) {
+      selectPeriod(defaultPeriod);
+    } else {
+      // Se não existir, usa o primeiro período disponível
+      selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
+    }
+  } else {
+    // Fallback para o primeiro período se não houver período acadêmico atual
+    selectPeriod(periods.value[0].ano + "-" + periods.value[0].periodo);
+  }
 });
 
 watch(
@@ -263,7 +363,7 @@ function handleSearchedComponents(data) {
 const sectionRef = ref(null);
 </script>
 <template>
-  <main class="container mx-auto p-6 xl:max-w-7xl flex flex-col flex-1">
+  <div class="container mx-auto p-6 w-[70%] 2xl:w-[60%] flex flex-col flex-1">
     <header class="flex items-center justify-between pb-4">
       <PeriodSelect
         :periods="periods"
@@ -271,35 +371,50 @@ const sectionRef = ref(null);
         @select-period="selectPeriod"
       />
 
-      <div className="tooltip tooltip-left">
-        <div
-          :class="[
-            'tooltip-content text-xl',
-            selectedPeriodWorkload < 480 ? 'tooltip-warning' : 'tooltip-error',
-          ]"
-          v-if="selectedPeriodWorkload > 360"
-        >
-          <div className="text-white">
-            <span
-              >Limite {{ selectedPeriodWorkload < 480 ? "Próximo" : "Alcançado" }}</span
-            >
+      <div class="flex items-center gap-4">
+        <div className="tooltip tooltip-left" v-if="!isEnrollmentPeriod">
+          <div
+            :class="[
+              'tooltip-content text-xl',
+              selectedPeriodWorkload < 480 ? 'tooltip-warning' : 'tooltip-error',
+            ]"
+            v-if="selectedPeriodWorkload > 360"
+          >
+            <div className="text-white">
+              <span
+                >Limite {{ selectedPeriodWorkload < 480 ? "Próximo" : "Alcançado" }}</span
+              >
+            </div>
           </div>
-        </div>
-        <div
-          :class="[
-            'text-2xl flex items-center',
-            selectedPeriodWorkload > 360
-              ? selectedPeriodWorkload >= 480
-                ? 'text-red-500'
-                : 'text-orange-400'
-              : 'text-white',
-          ]"
-        >
-          <v-icon name="bi-clock" scale="1.2" class="mr-2"></v-icon>
-          <span> {{ selectedPeriodWorkload }}h</span>
+          <div
+            :class="[
+              'text-2xl flex items-center',
+              selectedPeriodWorkload > 360
+                ? selectedPeriodWorkload >= 480
+                  ? 'text-red-500'
+                  : 'text-orange-400'
+                : 'text-white',
+            ]"
+          >
+            <v-icon name="bi-clock" scale="1.2" class="mr-2"></v-icon>
+            <span class="text-md"> {{ selectedPeriodWorkload }}h</span>
+          </div>
         </div>
       </div>
     </header>
+
+    <section
+      v-if="isEnrollmentPeriod && !isReEnrollmentPeriod"
+      class="bg-bp_neutral-700 rounded-md p-4"
+      ref="sectionRef"
+      tabindex="-1"
+    >
+      <EnrollmentDashboard
+        :enrollments="enrollments"
+        :re-enrollments="reEnrollments"
+        :selected-period="selectedPeriod"
+      />
+    </section>
 
     <div
       v-if="loading"
@@ -307,22 +422,56 @@ const sectionRef = ref(null);
     >
       <span class="loading loading-spinner loading-lg text-white"></span>
     </div>
+
     <section
       ref="sectionRef"
       tabindex="-1"
-      v-if="!loading && periodClasses.length > 0"
-      class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4 p-4"
+      v-if="!loading && !isEnrollmentPeriod && periodClasses.length > 0"
+      class="bg-bp_neutral-700 rounded-md p-4 flex flex-col gap-2"
       :key="selectedPeriod"
     >
-      <SubjectCard
-        v-for="item in periodClasses"
-        :key="item['id-turma']"
-        class="w-full"
-        :classSubject="item"
-      />
+      <div
+        v-if="
+          !loading &&
+          isReEnrollmentPeriod &&
+          reEnrollments.length > 0 &&
+          reEnrollments[0].ano == selectedPeriod.split('-')[0] &&
+          reEnrollments[0].periodo == selectedPeriod.split('-')[1]
+        "
+        class="flex items-center justify-end gap-2 text-bp_neutral-400 text-sm"
+      >
+        <v-icon name="bi-clock" scale="1"></v-icon>
+        <span
+          >Última atualização:
+          {{ formatProcessedDate(reEnrollments[0].data_processamento) }}
+        </span>
+      </div>
+      <div class="grid md:grid-cols-3 bg-bp_neutral-700 rounded-md gap-4">
+        <SubjectCard
+          v-for="item in periodClasses"
+          :key="item['id-turma']"
+          class="w-full"
+          :classSubject="item"
+        />
+        <EnrollmentCard
+          v-if="
+            isReEnrollmentPeriod &&
+            reEnrollments.some(
+              (e) =>
+                e.ano == (selectedPeriod || '').split('-')[0] &&
+                e.periodo == (selectedPeriod || '').split('-')[1]
+            )
+          "
+          v-for="enrollment in reEnrollments"
+          :key="`${enrollment['id-turma']}-${enrollment['codigo-componente']}-${
+            enrollment.rematricula ? 'remat' : 'mat'
+          }`"
+          :enrollment="enrollment"
+        />
+      </div>
     </section>
     <div
-      v-else-if="!loading && periodClasses.length === 0"
+      v-else-if="!loading && periodClasses.length === 0 && !isEnrollmentPeriod"
       class="relative bg-bp_grayscale-700 rounded-md min-h-[200px] max-h-[440px] overflow-y-auto p-2 flex flex-col w-full border border-bp_green-100/40"
     >
       <FriendInterests
@@ -383,5 +532,5 @@ const sectionRef = ref(null);
       :fetch-components="fetchComponents"
       @searched-components="handleSearchedComponents"
     />
-  </main>
+  </div>
 </template>

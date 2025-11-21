@@ -2,8 +2,6 @@
 import api from "@/config/axios.config.js";
 import { computed, onMounted, ref } from "vue";
 
-const isCalendarOpen = ref(false);
-
 const events = ref({
   enrollment: [],
   reEnrollment: [],
@@ -16,8 +14,9 @@ function getDateRange(startInstant, endInstant) {
   if (!startInstant || !endInstant) return [];
 
   const dates = [];
-  const startDate = new Date(startInstant);
-  const endDate = new Date(endInstant);
+  // Converter timestamps Unix (em segundos) para milissegundos
+  const startDate = new Date(startInstant * 1000);
+  const endDate = new Date(endInstant * 1000);
 
   const currentDate = new Date(startDate);
   while (currentDate <= endDate) {
@@ -185,17 +184,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div className="dropdown dropdown-hover ">
+  <div className="dropdown dropdown-hover dropdown-end">
     <button
       tabindex="0"
-      disabled="true"
       class="relative bg-bp_grayscale-800 border border-bp_neutral-600 rounded-full w-12 h-12"
     >
       <v-icon class="p-2" name="md-calendartoday-round" scale="2" />
     </button>
     <ul
       tabIndex="{0}"
-      className="dropdown-content mt-1 flex flex-col bg-bp_grayscale-700 p-4 rounded-md
+      className="dropdown-content mt-0 pt-3 flex flex-col bg-bp_grayscale-700 p-4 rounded-md
        shadow-lg transition-all ease-in-out duration-300 w-80 md:w-96 max-h-[70vh] overflow-y-auto"
     >
       <div class="p-4">
