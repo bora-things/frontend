@@ -38,7 +38,7 @@ function openModal() {
 <template>
   <div
     :id="component.codigo"
-    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[150px] rounded-md flex flex-col justify-between p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[150px] rounded-md flex flex-col justify-between gap-2 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
     :class="{
       'border-bp_green-600': component['disciplina-obrigatoria'],
       'bg-bp_grayscale-800 border-bp_grayscale-500': !disabled && !blinking,
@@ -47,7 +47,12 @@ function openModal() {
     }"
     @click="openModal"
   >
-    <p class="font-sans font-medium text-sm">{{ capitalizeText(component.nome) }}</p>
+    <p 
+      class="font-sans font-medium text-sm line-clamp-2"
+      :title="capitalizeText(component.nome)"
+    >
+      {{ capitalizeText(component.nome) }}
+    </p>
     <div class="flex justify-between items-end">
       <div>
         <div v-if="visibleUsers.length > 0" class="flex gap-2 items-center">
@@ -75,14 +80,14 @@ function openModal() {
 
       <div class="flex flex-col gap-2 items-end">
         <span
-          class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+          class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent p-2 border text-vtd-secondary-100 text-xs"
         >
           {{ component.codigo }}
         </span>
         <div class="flex gap-2">
           <span
             :class="[
-              'font-sans badge text-vtd-secondary-100 bg-transparent border',
+              'font-sans badge text-vtd-secondary-100 bg-transparent border text-xs p-2',
               component['disciplina-obrigatoria']
                 ? 'border-bp_green-600'
                 : 'border-sky-600',
@@ -90,7 +95,7 @@ function openModal() {
             >{{ component["disciplina-obrigatoria"] ? "OBRIGATÓRIO" : "OPTATIVO" }}</span
           >
           <span
-            class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+            class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100 text-xs p-2"
           >
             {{ component["carga-horaria-total"] }}H</span
           >

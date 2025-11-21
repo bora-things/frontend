@@ -54,23 +54,19 @@ const enrollmentStatus = computed(() => {
 
 <template>
   <div
-    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[180px] rounded-md flex flex-col justify-between gap-6 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
+    class="bg-bp_grayscale-800 border-bp_grayscale-500 border w-full h-[150px] rounded-md flex flex-col justify-between gap-2 p-4 text-vtd-secondary-100 cursor-pointer hover:bg-bp_grayscale-700 transition-colors duration-200"
   >
     <!-- Header com nome e status -->
     <div class="flex items-start gap-2">
       <div class="flex-1 flex items-start gap-2">
-        <h3 class="font-sans font-medium">
+        <h3 
+          class="font-sans font-medium text-sm line-clamp-2"
+          :title="capitalizeText(enrollment.componente.nome)"
+        >
           {{ capitalizeText(enrollment.componente.nome) }}
         </h3>
-        <span
-          v-if="enrollment.rematricula"
-          class="bg-bp_primary-400/20 text-bp_primary-400 px-3 py-1 rounded text-xs font-medium flex items-center gap-1 shrink-0"
-        >
-          <v-icon name="bi-arrow-repeat" scale="0.7"></v-icon>
-          Rematrícula
-        </span>
       </div>
-      <div>
+      <div class="flex-shrink-0">
         <div
           :class="[
             'inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium',
@@ -110,14 +106,14 @@ const enrollmentStatus = computed(() => {
       </div>
       <div class="flex flex-col gap-2 items-end">
         <span
-          class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+          class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent p-2 border text-vtd-secondary-100 text-xs"
         >
           {{ enrollment.componente.codigo }}
         </span>
         <div class="flex gap-2">
           <span
             :class="[
-              'font-sans badge text-vtd-secondary-100 bg-transparent border',
+              'font-sans badge text-vtd-secondary-100 bg-transparent border text-xs p-2',
               enrollment.componente['deisciplina-obrigatoria']
                 ? 'border-bp_green-600'
                 : 'border-sky-600',
@@ -127,7 +123,7 @@ const enrollmentStatus = computed(() => {
             }}</span
           >
           <span
-            class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100"
+            class="font-sans badge border-bp_grayscale-500 flex items-center justify-center bg-transparent border text-vtd-secondary-100 text-xs p-2"
           >
             {{ enrollment.componente["carga-horaria-total"] }}H</span
           >

@@ -1,4 +1,4 @@
-export function capitalizeText(text) {
+export function capitalizeText(text,number) {
   if (!text || typeof text !== 'string') {
     return ''
   }
@@ -10,5 +10,5 @@ export function capitalizeText(text) {
     }
     return word.charAt(0).toUpperCase() + word.slice(1)
   })
-  return capitalizedWords.join(' ')
+  return capitalizedWords.join(' ').slice(0,number || capitalizedWords.join(' ').length);
 }
